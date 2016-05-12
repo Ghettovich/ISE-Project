@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="30a3e1db9cf54057b9e839c47b121719" Name="Diagram1">
+        <EntityTypeShape EntityType="AbInitioModel.aanvullendepersoonsinformatie" Width="1.5" PointX="3" PointY="9.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="AbInitioModel.aanvullenderelatieinformatie" Width="1.5" PointX="8.25" PointY="8.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="AbInitioModel.account" Width="1.5" PointX="3.75" PointY="19.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="AbInitioModel.meestvoorkomendenaman" Width="1.5" PointX="3" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="AbInitioModel.personeninstamboom" Width="1.5" PointX="3" PointY="6.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="AbInitioModel.persoon" Width="1.5" PointX="0.75" PointY="8.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="AbInitioModel.persoonhistorie" Width="1.5" PointX="3" PointY="14.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="AbInitioModel.persooninformatietype" Width="1.5" PointX="0.75" PointY="14" IsExpanded="true" />
+        <EntityTypeShape EntityType="AbInitioModel.relatie" Width="1.5" PointX="6" PointY="9.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="AbInitioModel.relatiehistorie" Width="1.5" PointX="8.25" PointY="12.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="AbInitioModel.relatieinformatietype" Width="1.5" PointX="6" PointY="7" IsExpanded="true" />
+        <EntityTypeShape EntityType="AbInitioModel.relatietype" Width="1.5" PointX="3.75" PointY="4" IsExpanded="true" />
+        <EntityTypeShape EntityType="AbInitioModel.stamboom" Width="1.5" PointX="0.75" PointY="4" IsExpanded="true" />
+        <EntityTypeShape EntityType="AbInitioModel.stamboomtoegang" Width="1.5" PointX="6" PointY="3.625" IsExpanded="true" />
+        <AssociationConnector Association="AbInitioModel.fk_aanvullendPersoonId" ManuallyRouted="false" />
+        <AssociationConnector Association="AbInitioModel.fk_aanvullendPersoonInformatieType" ManuallyRouted="false" />
+        <AssociationConnector Association="AbInitioModel.fk_relatieId" ManuallyRouted="false" />
+        <AssociationConnector Association="AbInitioModel.fk_relatieinformatieType" ManuallyRouted="false" />
+        <AssociationConnector Association="AbInitioModel.fk_accountIdStamboomtoegang" ManuallyRouted="false" />
+        <AssociationConnector Association="AbInitioModel.fk_namenStamboom" ManuallyRouted="false" />
+        <AssociationConnector Association="AbInitioModel.fk_personenInStamboom" ManuallyRouted="false" />
+        <AssociationConnector Association="AbInitioModel.fk_stamboomPersonen" ManuallyRouted="false" />
+        <AssociationConnector Association="AbInitioModel.fk_persoonIdPersoonhistorie" ManuallyRouted="false" />
+        <AssociationConnector Association="AbInitioModel.fk_relatie_persoon1" ManuallyRouted="false" />
+        <AssociationConnector Association="AbInitioModel.fk_relatie_persoon2" ManuallyRouted="false" />
+        <AssociationConnector Association="AbInitioModel.fk_relatieIdRelatiehistory" ManuallyRouted="false" />
+        <AssociationConnector Association="AbInitioModel.fk_relatietypeRelatie" ManuallyRouted="false" />
+        <AssociationConnector Association="AbInitioModel.fk_stamboomIdStamboomToegang" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

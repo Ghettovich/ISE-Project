@@ -1,0 +1,165 @@
+﻿@model AbInitio.Web.ViewModels.BeheerViewModel
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Beheer - Ab Initio</h2>
+
+<a href="/Persoon/Create">Persoon toevoegen</a>
+
+<table class="table table-striped">
+    <tr>
+        <th>
+            Voornaam
+        </th>
+        <th>
+            Overige namen
+        </th>
+        <th>
+            Tussenvoegsel
+        </th>
+        <th>
+            Achternaam
+        </th>
+        <th>
+            Achtervoegsel
+        </th>
+        <th>
+            Geboortenaam
+        </th>
+        <th>
+            Geslacht
+        </th>
+        <th>
+            Status
+        </th>
+        <th>
+            Geboortedatum
+        </th>
+        <th>
+            Geboorteprecisie
+        </th>
+        <th>
+            Geboortedatum2
+        </th>
+        <th>
+            Geboorteplaats
+        </th>
+        <th>
+            Adress
+        </th>
+        <th>
+            Beroep
+        </th>
+        <th></th>
+    </tr>
+    @foreach (var item in Model.PersoonLijst)
+            {
+        <tr>
+            <td>
+                @item.voornaam
+            </td>
+            <td>
+                @item.overigenamen
+            </td>
+            <td>
+                @item.tussenvoegsel
+            </td>
+            <td>
+                @item.achternaam
+            </td>
+            <td>
+                @item.achtervoegsel
+            </td>
+            <td>
+                @item.geboortenaam
+            </td>
+            <td>
+                @item.geslacht
+            </td>
+            <td>
+                @item.status
+            </td>
+            <td>
+                @item.geboortedatum
+            </td>
+            <td>
+                @item.geboorteprecisie
+            </td>
+            <td>
+                @item.geboortedatum2
+            </td>
+            <td>
+                @item.geboorteplaats
+            </td>
+            <td>
+                @item.adress
+            </td>
+            <td>
+                @item.beroep
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.persoonid }) |
+                @Html.ActionLink("Details", "Details", new { id = item.persoonid }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.persoonid })
+            </td>
+        </tr>
+    }
+</table>
+
+
+
+
+@*@for (int i = 0; i < 25; i++)
+                {
+        <tr>
+            <td>
+                Voornaam
+            </td>
+            <td>
+                Overige namen
+            </td>
+            <td>
+                Tussenvoegsel
+            </td>
+            <td>
+                Achternaam
+            </td>
+            <td>
+                Achtervoegsel
+            </td>
+            <td>
+                Geboortenaam
+            </td>
+            <td>
+                Geslacht
+            </td>
+            <td>
+                Status
+            </td>
+            <td>
+                Geboortedatum
+            </td>
+            <td>
+                GeboortePrecisie
+            </td>
+            <td>
+                Geboortedatum2
+            </td>
+            <td>
+                Geboorteplaats
+            </td>
+            <td>
+                Adress
+            </td>
+            <td>
+                Beroep
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            </td>
+        </tr>
+    }*@

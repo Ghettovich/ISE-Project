@@ -1,0 +1,115 @@
+﻿@model AbInitio.Web.ViewModels.PersoonViewModel
+
+@{
+    ViewBag.Title = "Gebruiker2";
+}
+
+<h2>Gebruiker2</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<div class="row">
+    <table class="table">
+        <tr>
+            <th>
+                Voornaam
+            </th>
+            <th>
+                Overige namen
+            </th>
+            <th>
+                Tussenvoegsel
+            </th>
+            <th>
+                Achternaam
+            </th>
+            <th>
+                Achtervoegsel
+            </th>
+            <th>
+                Geboortenaam
+            </th>
+            <th>
+                Geslacht
+            </th>
+            <th>
+                Status
+            </th>
+            <th>
+                Geboortedatum
+            </th>
+            <th>
+                Geboorteprecisie
+            </th>
+            <th>
+                Geboortedatum2
+            </th>
+            <th>
+                Geboorteplaats
+            </th>
+            <th>
+                Adress
+            </th>
+            <th>
+                Beroep
+            </th>
+            <th></th>
+        </tr>
+
+        @for (int i = 0; i < 25; i++)
+        {
+            <tr>
+                <td>
+                    Voornaam
+                </td>
+                <td>
+                    Overige namen
+                </td>                    
+                <td>
+                    Tussenvoegsel
+                </td>
+                <td>
+                    Achternaam
+                </td>                    
+                <td>
+                    Achtervoegsel
+                </td>
+                <td>
+                    Geboortenaam
+                </td>
+                <td>
+                    Geslacht
+                </td>
+                <td>
+                    Status
+                </td>
+                <td>
+                    Geboortedatum
+                </td>
+                <td>
+                    GeboortePrecisie
+                </td>
+                <td>
+                    Geboortedatum2
+                </td>
+                <td>
+                    Geboorteplaats
+                </td>
+                <td>
+                    Adress
+                </td>
+                <td>
+                    Beroep
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                    @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                    @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                </td>
+            </tr>
+        }
+
+    </table>
+
+</div>
