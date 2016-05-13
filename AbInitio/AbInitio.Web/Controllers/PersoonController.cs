@@ -1,4 +1,5 @@
-﻿using AbInitio.Web.Models;
+﻿using AbInitio.Web.DAL;
+using AbInitio.Web.Models;
 using AbInitio.Web.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -19,18 +20,42 @@ namespace AbInitio.Web.Controllers
         // GET: Persoon/Details/5
         public ActionResult Details(int id)
         {
+            return View();
+        }
+
+        [HttpGet]
+        public ActionResult WijzigRelatie(int persoonid)
+        {
 
 
 
             return View();
         }
 
-        // GET: Persoon/Create
+        [HttpPost]
+        public ActionResult WijzigRelatie(RelatieModel model)
+        {
+            if (ModelState.IsValid)
+            {
+
+
+
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                //add errors
+                return View(model);
+            }
+        }
+
+        [HttpGet]
         public ActionResult Gebruiker1()
         {
             return View();
         }
 
+        [HttpGet]
         public ActionResult Gebruiker2()
         {
             return View();
@@ -43,7 +68,6 @@ namespace AbInitio.Web.Controllers
             return View(model);
         }
 
-        // POST: Persoon/Create
         [HttpPost]
         public ActionResult Create(NieuwPersoonModel model)
         {
@@ -65,6 +89,31 @@ namespace AbInitio.Web.Controllers
             {
                 return View();
             }
+        }
+
+        [HttpGet]
+        public ActionResult RelatieToevoegen(int persoonid)
+        {
+
+            persoonid = 1;
+            RelatieModel viewmodel = new RelatieModel();
+            viewmodel.relatietypes = PersoonDal.RelatieTypes();
+            viewmodel.persoon1 = PersoonDal.GetPersoon(persoonid);
+            return View(viewmodel);
+
+        }
+
+        [HttpPost]
+        public ActionResult RelatieToevoegen(RelatieModel model)
+        {
+
+            if (ModelState.IsValid)
+            {
+
+
+            }
+
+            return View();
         }
 
         // GET: Persoon/Edit/5

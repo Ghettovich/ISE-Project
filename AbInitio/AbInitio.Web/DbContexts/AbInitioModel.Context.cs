@@ -26,7 +26,7 @@ namespace AbInitio.Web.DbContexts
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<aanvullendepersoonsinformatie> aanvullendepersoonsinformaties { get; set; }
+        public virtual DbSet<aanvullendepersooninformatie> aanvullendepersooninformaties { get; set; }
         public virtual DbSet<aanvullenderelatieinformatie> aanvullenderelatieinformaties { get; set; }
         public virtual DbSet<account> accounts { get; set; }
         public virtual DbSet<meestvoorkomendenaman> meestvoorkomendenamen { get; set; }

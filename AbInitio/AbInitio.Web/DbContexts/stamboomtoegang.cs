@@ -17,7 +17,7 @@ namespace AbInitio.Web.DbContexts
         public int stamboomaccountid { get; set; }
         public int accountid { get; set; }
         public int stamboomid { get; set; }
-        public int stamboomRechten { get; set; }
+        public int stamboomrechten { get; set; }
     
         public virtual account account { get; set; }
         public virtual stamboom stamboom { get; set; }

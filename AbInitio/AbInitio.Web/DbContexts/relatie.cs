@@ -30,8 +30,8 @@ namespace AbInitio.Web.DbContexts
         public virtual ICollection<aanvullenderelatieinformatie> aanvullenderelatieinformaties { get; set; }
         public virtual persoon persoon { get; set; }
         public virtual persoon persoon1 { get; set; }
+        public virtual relatietype relatietype { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<relatiehistorie> relatiehistories { get; set; }
-        public virtual relatietype relatietype { get; set; }
     }
 }

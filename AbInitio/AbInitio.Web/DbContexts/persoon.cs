@@ -17,7 +17,7 @@ namespace AbInitio.Web.DbContexts
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public persoon()
         {
-            this.aanvullendepersoonsinformaties = new HashSet<aanvullendepersoonsinformatie>();
+            this.aanvullendepersooninformaties = new HashSet<aanvullendepersooninformatie>();
             this.personeninstambooms = new HashSet<personeninstamboom>();
             this.persoonhistories = new HashSet<persoonhistorie>();
             this.relaties = new HashSet<relatie>();
@@ -36,12 +36,9 @@ namespace AbInitio.Web.DbContexts
         public Nullable<System.DateTime> geboortedatum { get; set; }
         public string geboorteprecisie { get; set; }
         public Nullable<System.DateTime> geboortedatum2 { get; set; }
-        public string geboorteplaats { get; set; }
-        public string adress { get; set; }
-        public string beroep { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<aanvullendepersoonsinformatie> aanvullendepersoonsinformaties { get; set; }
+        public virtual ICollection<aanvullendepersooninformatie> aanvullendepersooninformaties { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<personeninstamboom> personeninstambooms { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

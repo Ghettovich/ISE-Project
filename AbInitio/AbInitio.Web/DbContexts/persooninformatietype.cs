@@ -17,13 +17,13 @@ namespace AbInitio.Web.DbContexts
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public persooninformatietype()
         {
-            this.aanvullendepersoonsinformaties = new HashSet<aanvullendepersoonsinformatie>();
+            this.aanvullendepersooninformaties = new HashSet<aanvullendepersooninformatie>();
         }
     
         public int persooninformatietypeid { get; set; }
         public string persooninformatietype1 { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<aanvullendepersoonsinformatie> aanvullendepersoonsinformaties { get; set; }
+        public virtual ICollection<aanvullendepersooninformatie> aanvullendepersooninformaties { get; set; }
     }
 }

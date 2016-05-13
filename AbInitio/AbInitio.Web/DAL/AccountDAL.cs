@@ -117,10 +117,7 @@ namespace AbInitio.Web.DAL
                                     status = (test.GetValue(8) != null ? test.GetValue(4).ToString() : string.Empty),
                                     geboortedatum = (test.GetValue(9) != null ? test.GetValue(1).ToString() : string.Empty),
                                     geboorteprecisie = (test.GetValue(10) != null ? test.GetValue(2).ToString() : string.Empty),
-                                    geboortedatum2 = (test.GetValue(11) != null ? test.GetValue(3).ToString() : string.Empty),
-                                    geboorteplaats = (test.GetValue(12) != null ? test.GetValue(4).ToString() : string.Empty),
-                                    adress = (test.GetValue(13) != null ? test.GetValue(1).ToString() : string.Empty),
-                                    beroep = (test.GetValue(14) != null ? test.GetValue(2).ToString() : string.Empty)
+                                    geboortedatum2 = (test.GetValue(11) != null ? test.GetValue(3).ToString() : string.Empty)
                                 });
                                 count++;
                             }

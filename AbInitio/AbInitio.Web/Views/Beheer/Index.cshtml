@@ -43,15 +43,6 @@
         <th>
             Geboortedatum2
         </th>
-        <th>
-            Geboorteplaats
-        </th>
-        <th>
-            Adress
-        </th>
-        <th>
-            Beroep
-        </th>
         <th></th>
     </tr>
     @foreach (var item in Model.PersoonLijst)
@@ -89,15 +80,6 @@
             </td>
             <td>
                 @item.geboortedatum2
-            </td>
-            <td>
-                @item.geboorteplaats
-            </td>
-            <td>
-                @item.adress
-            </td>
-            <td>
-                @item.beroep
             </td>
             <td>
                 @Html.ActionLink("Edit", "Edit", new { id = item.persoonid }) |

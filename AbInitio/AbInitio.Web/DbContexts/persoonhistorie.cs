@@ -29,7 +29,7 @@ namespace AbInitio.Web.DbContexts
         public string geboorteprecisie { get; set; }
         public Nullable<System.DateTime> geboortedatum2 { get; set; }
         public string geboorteplaats { get; set; }
-        public string adress { get; set; }
+        public string adres { get; set; }
         public string beroep { get; set; }
     
         public virtual persoon persoon { get; set; }

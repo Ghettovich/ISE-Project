@@ -12,15 +12,14 @@ namespace AbInitio.Web.DbContexts
     using System;
     using System.Collections.Generic;
     
-    public partial class relatiehistorie
+    public partial class aanvullendepersooninformatie
     {
-        public int relatiehistorieid { get; set; }
-        public int relatieid { get; set; }
-        public System.DateTime gewijzigdop { get; set; }
-        public int persoonid1 { get; set; }
-        public int relatietypeid2 { get; set; }
-        public int persoonid2 { get; set; }
+        public int aanvullendepersooninformatieid { get; set; }
+        public int persoonid { get; set; }
+        public int persooninformatietypeid { get; set; }
+        public string persooninformatie { get; set; }
     
-        public virtual relatie relatie { get; set; }
+        public virtual persoon persoon { get; set; }
+        public virtual persooninformatietype persooninformatietype { get; set; }
     }
 }
