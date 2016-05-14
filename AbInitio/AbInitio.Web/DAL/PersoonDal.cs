@@ -11,6 +11,7 @@ namespace AbInitio.Web.DAL
 {
     public class PersoonDal
     {
+        //select list item is voor een dropdown op de view
         public static List<SelectListItem> RelatieTypes()
         {
             List<SelectListItem> relaties = new List<SelectListItem>();
