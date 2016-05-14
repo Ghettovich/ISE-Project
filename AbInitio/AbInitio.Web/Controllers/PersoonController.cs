@@ -99,6 +99,8 @@ namespace AbInitio.Web.Controllers
             RelatieModel viewmodel = new RelatieModel();
             viewmodel.relatietypes = PersoonDal.RelatieTypes();
             viewmodel.persoon1 = PersoonDal.GetPersoon(persoonid);
+
+
             return View(viewmodel);
 
         }

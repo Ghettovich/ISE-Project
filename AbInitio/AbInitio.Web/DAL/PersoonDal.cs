@@ -37,6 +37,7 @@ namespace AbInitio.Web.DAL
             } return relaties;
         }
 
+        //Ophalen persoon
         public static persoon GetPersoon(int id)
         {
             using (DataConfig dbdc = new DataConfig())
