@@ -1,0 +1,36 @@
+﻿@model AbInitio.Web.ViewModels.StamboomViewModel
+
+
+@if (Model.stamboomid > 0)
+{
+
+    <div class="btn-group btn-group-justified">
+        <a href="@(Url.Action("PersoonToevoegen", "Persoon", new { stamboomid = Model.stamboomid }))">Nieuw persoon</a>
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Naam</th>
+                <th>Overige namen</th>
+                <th>Geslacht</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.PersononenInStamboom)
+            {
+                <tr>
+                    <td>@(item.voornaam + item.tussenvoegsel + item.achternaam)</td>
+                    <td>@(item.overigenamen)</td>
+                    <td>@(item.GeefGeslacht)</td>
+                    <td>
+                        <a class="wijzig_persoon" href="@(Url.Action("WijzigPersoon", "Persoon", new { persoonid = item.persoonid }))">
+                            <span class="glyphicon glyphicon-pencil"></span>
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+

@@ -1,0 +1,38 @@
+﻿@model AbInitio.Web.ViewModels.BeheerViewModel
+
+
+<div class="beheertab_content">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Familienaam</th>
+                <th>Levensverwachting man</th>
+                <th>Levensverwachting vrouw</th>
+                <th>Langstlevende man</th>
+                <th>Langstlevende vrouw</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.StamboomLijst)
+            {
+                <tr class="stamboom_row" data-href="@Url.Action("BeheerStamboom", "Beheer", new { stamboomid = item.stamboomid })">
+                    <td>@(item.familienaam)</td>
+                    <td>@(item.levensverwachtingman)</td>
+                    <td>@(item.levensverwachtingvrouw)</td>
+                    <td>@(item.langstlevendeman)</td>
+                    <td>@(item.langstlevendevrouw)</td>
+                    <td class="actions">
+                        <a href="@(Url.Action("WijzigStamboom", "Beheer", new { stamboomid = item.stamboomid }))">
+                            <span class="glyphicon glyphicon-pencil"></span>
+                        </a>
+                    </td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+</div>
+
+
+

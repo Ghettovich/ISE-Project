@@ -1,0 +1,38 @@
+﻿@model AbInitio.Web.ViewModels.BeheerViewModel
+@{
+    ViewBag.Title = "_BeheerStamboom";
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Naam</th>
+            <th>Overige namen</th>
+            <th>Achtervoegsel</th>
+            <th>Geslacht</th>
+            <th>Geboortenaam</th>
+            <th>Geboortedatum</th>
+            <th>Geboorteprecisie</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model.PersoonLijst)
+        {
+        <tr class="persoon_row" data-href="@Url.Action("PersoonDetails", "Beheer", new { persoonid = item.persoonid })">
+            <td>@(item.GeefVolledigeNaam)</td>
+            <td>@(item.overigenamen)</td>
+            <td>@(item.achtervoegsel)</td>
+            <td>@(item.GeefGeslacht)</td>
+            <td>@(item.geboortenaam)</td>
+            <td>@(item.geboortedatum)</td>
+            <td>@(item.geboorteprecisie)</td>
+            <td>
+                <a class="wijzig_persoon" href="@(Url.Action("WijzigPersoon", "Beheer", new { persoonid = item.persoonid }))">
+                    <span class="glyphicon glyphicon-pencil"></span>
+                </a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

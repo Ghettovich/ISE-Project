@@ -1,0 +1,64 @@
+﻿@model AbInitio.Web.ViewModels.BeheerViewModel
+@{
+    ViewBag.Title = "BeheerStamboom";
+}
+
+<h2>BeheerStamboom</h2>
+<h4>Stamboom : @Model.Stamboom.familienaam</h4>
+<hr />
+<div class="row">
+    <div class="col-md-12">
+        <dl class="dl-horizontal">
+            <dt>
+                Levensverwachting man
+            </dt>
+            <dd>
+                @Model.Stamboom.levensverwachtingman
+            </dd>
+            <dt>
+                Levensverwachting vrouw
+            </dt>
+            <dd>
+                @Model.Stamboom.levensverwachtingvrouw
+            </dd>
+            <dt>
+                Langst levende man
+            </dt>
+            <dd>
+                @Model.Stamboom.langstlevendeman
+            </dd>
+            <dt>
+                Langst levende vrouw
+            </dt>
+            <dd>
+                @Model.Stamboom.langstlevendevrouw
+            </dd>
+            <dt>
+                Gemiddeld aantal kinderen
+            </dt>
+            <dd>
+                @Model.Stamboom.gemiddeldaantalkinderen
+            </dd>
+            <dt>
+                Gemiddeld aantal geboortes
+            </dt>
+            <dd>
+                @Model.Stamboom.gemiddeldaantalgeboortes
+            </dd>
+        </dl>
+    </div>
+    <div class="col-md-12">
+        <form role="form" class="form-inline">
+            <div class="form-group">
+                <input type="text" name="zoekterm" class="form-control" id="zoekterm" placeholder="Term" />
+            </div>
+            <button type="submit" class="btn btn-default">Zoek</button>
+        </form>
+    </div>
+    <hr />
+    
+    <a href="@(Url.Action("PersoonToevoegen", "Persoon", new { stamboomid = Model.stamboomid }))">Nieuw persoon</a>
+    <a href="@(Url.Action("RelatieToevoegen", "Persoon", new { stamboomid = Model.stamboomid }))">Nieuwe relatie</a>
+
+    @Html.Partial("_BeheerStamboom", Model)
+</div>

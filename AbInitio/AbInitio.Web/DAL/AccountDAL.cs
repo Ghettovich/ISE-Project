@@ -85,52 +85,7 @@ namespace AbInitio.Web.DAL
         }
 
 
-        public static List<PersoonPartial> AllePersonen()
-        {
-            List<PersoonPartial> persoon_list = new List<PersoonPartial>();
-            try
-            {
-                using (DataConfig dbdc = new DataConfig())
-                {
-                    using (IDbCommand cmd = dbdc.CreateCommand())
-                    {
-                        int limit = 25;
-                        int count = 0;
-                        cmd.CommandText = "SELECT * FROM persoon";
-                        dbdc.Open();
-                        using (IDataReader dr = dbdc.CreateSqlReader())
-                        {
-                            while (dr.Read() && count < limit)
-                            {
-                                object[] test = new object[dr.FieldCount];
-                                dr.GetValues(test);
-                                persoon_list.Add(new PersoonPartial
-                                {
-                                    persoonid = (int)test.GetValue(0),
-                                    voornaam = (test.GetValue(1) != null ? test.GetValue(1).ToString() : string.Empty),
-                                    overigenamen = (test.GetValue(2) != null ? test.GetValue(2).ToString() : string.Empty),
-                                    tussenvoegsel = (test.GetValue(3) != null ? test.GetValue(3).ToString() : string.Empty),
-                                    achternaam = (test.GetValue(4) != null ? test.GetValue(4).ToString() : string.Empty),
-                                    achtervoegsel = (test.GetValue(5) != null ? test.GetValue(1).ToString() : string.Empty),
-                                    geboortenaam = (test.GetValue(6) != null ? test.GetValue(2).ToString() : string.Empty),
-                                    geslacht = (test.GetValue(7) != null ? test.GetValue(3).ToString() : string.Empty),
-                                    status = (test.GetValue(8) != null ? test.GetValue(4).ToString() : string.Empty),
-                                    geboortedatum = (test.GetValue(9) != null ? test.GetValue(1).ToString() : string.Empty),
-                                    geboorteprecisie = (test.GetValue(10) != null ? test.GetValue(2).ToString() : string.Empty),
-                                    geboortedatum2 = (test.GetValue(11) != null ? test.GetValue(3).ToString() : string.Empty)
-                                });
-                                count++;
-                            }
-                        }
-                    }
-                }
-                return persoon_list;
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
+
 
     }
 }

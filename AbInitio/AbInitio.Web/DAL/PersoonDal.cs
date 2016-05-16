@@ -11,127 +11,411 @@ namespace AbInitio.Web.DAL
 {
     public class PersoonDal
     {
-        //select list item is voor een dropdown op de view
+        /// <summary>
+        /// Selectlist kun je gemakkelijk een dropdown meemaken op de view, 
+        /// je zet er de Value (e.g. relatietypeid) zodat deze weer met de view kan worden meegestuurd
+        /// Text is voor de items die in de dropdown te zien zijn
+        /// </summary>
+        /// <returns></returns>
         public static List<SelectListItem> RelatieTypes()
         {
-            List<SelectListItem> relaties = new List<SelectListItem>();
-            using (DataConfig dbdc = new DataConfig())
+            try
             {
-                dbdc.Open();
-                using (IDbCommand cmd = dbdc.CreateCommand())
+                List<SelectListItem> relaties = new List<SelectListItem>();
+                using (DataConfig dbdc = new DataConfig())
                 {
-                    cmd.CommandText = "SELECT relatietypeid, relatietype FROM relatietype";
-                    using (IDataReader reader = dbdc.CreateSqlReader())
+                    dbdc.Open();
+                    using (IDbCommand cmd = dbdc.CreateCommand())
                     {
-                        while (reader.Read())
+                        cmd.CommandText = "SELECT relatietypeid, relatietype FROM relatietype";
+                        using (IDataReader reader = dbdc.CreateSqlReader())
                         {
-                            object[] test = new object[reader.FieldCount];
-                            reader.GetValues(test);
-                            SelectListItem item = new SelectListItem();
-                            item.Selected = false;
-                            item.Value = test.GetValue(0).ToString();
-                            item.Text = test.GetValue(1).ToString();
-                            relaties.Add(item);
+                            while (reader.Read())
+                            {
+                                object[] test = new object[reader.FieldCount];
+                                reader.GetValues(test);
+                                SelectListItem item = new SelectListItem();
+                                item.Selected = false;
+                                item.Value = test.GetValue(0).ToString();
+                                item.Text = test.GetValue(1).ToString();
+                                relaties.Add(item);
+                            }
                         }
                     }
                 }
-            } return relaties;
-        }
-
-        //Ophalen persoon
-        public static persoon GetPersoon(int id)
-        {
-            using (DataConfig dbdc = new DataConfig())
-            {
-                dbdc.Open();
-                using (IDbCommand cmd = dbdc.CreateCommand())
-                {
-                    cmd.CommandText = "SELECT * FROM persoon WHERE persoonid = @persoonid";
-
-                    IDataParameter dp;
-                    dp = cmd.CreateParameter();
-                    dp.ParameterName = "@persoonid";
-                    dp.Value = id;
-                    cmd.Parameters.Add(dp);
-
-                    using (IDataReader dr = dbdc.CreateSqlReader())
-                    {
-                        persoon p = new persoon();
-                        //dynamic persoon = new persoon();
-                        object[] test = new object[dr.FieldCount];
-
-                        while (dr.Read())
-                        {
-                            dr.GetValues(test);
-                            p = new PersoonPartial
-                            {
-                                persoonid = (int)test.GetValue(0),
-                                voornaam = (test.GetValue(1) != null ? test.GetValue(1).ToString() : string.Empty),
-                                overigenamen = (test.GetValue(2) != null ? test.GetValue(2).ToString() : string.Empty),
-                                tussenvoegsel = (test.GetValue(3) != null ? test.GetValue(3).ToString() : string.Empty),
-                                achternaam = (test.GetValue(4) != null ? test.GetValue(4).ToString() : string.Empty),
-                                achtervoegsel = (test.GetValue(5) != null ? test.GetValue(1).ToString() : string.Empty),
-                                geboortenaam = (test.GetValue(6) != null ? test.GetValue(2).ToString() : string.Empty),
-                                geslacht = (test.GetValue(7) != null ? test.GetValue(3).ToString() : string.Empty),
-                                status = (test.GetValue(8) != null ? test.GetValue(4).ToString() : string.Empty),
-                                geboortedatum = (test.GetValue(9) != null ? test.GetValue(1).ToString() : string.Empty),
-                                geboorteprecisie = (test.GetValue(10) != null ? test.GetValue(2).ToString() : string.Empty),
-                                geboortedatum2 = (test.GetValue(11) != null ? test.GetValue(3).ToString() : string.Empty)
-                            };
-                        } return p;
-                    }
-                }
+                return relaties;
             }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
         }
 
-        public static List<SelectListItem> RelatiesTotPersoon(int id)
+        /// <summary>
+        /// Haalt de personen op en de relatie types tot deze persoon
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public static List<PersoonPartial> RelatiesTotPersoon(int persoonid)
         {
-            List<SelectListItem> personen = new List<SelectListItem>();
-
-            using (DataConfig dbdc = new DataConfig())
+            try
             {
-                dbdc.Open();
-                using (IDbCommand cmd = dbdc.CreateCommand())
+                List<PersoonPartial> persoonrelaties = new List<PersoonPartial>();
+
+                using (DataConfig dbdc = new DataConfig())
                 {
-                    cmd.CommandText = "SELECT p.voornaam, p.tussenvoegsel, p.achternaam";
-                    cmd.CommandText += "FROM relatie r INNER JOIN persoon ON r.persoonid1 = p.persoonid";
-                    cmd.CommandText += "WHERE r.persoonid1 = @persoonid";
-
-                    IDataParameter dp;
-                    dp = cmd.CreateParameter();
-                    dp.ParameterName = "@persoonid1";
-                    dp.Value = id;
-                    cmd.Parameters.Add(dp);
-
-                    using (IDataReader dr = dbdc.CreateSqlReader())
+                    dbdc.Open();
+                    using (IDbCommand cmd = dbdc.CreateCommand())
                     {
-                        persoon p = new persoon();
-                        //dynamic persoon = new persoon();
-                        object[] test = new object[dr.FieldCount];
+                        cmd.CommandText = "SELECT p.persoonid, p.voornaam, p.tussenvoegsel, p.achternaam, r.relatieid, rt.relatietype ";
+                        cmd.CommandText += "FROM dbo.persoon p INNER JOIN dbo.relatie r ON r.persoonid2 = p.persoonid ";
+                        cmd.CommandText += "INNER JOIN dbo.relatietype rt ON rt.relatietypeid = r.relatietypeid ";
+                        cmd.CommandText += "WHERE EXISTS ( SELECT 1 FROM dbo.relatie r2 WHERE r2.persoonid1 = @persoonid AND r2.persoonid2 = r.persoonid2);";
 
-                        while (dr.Read())
+                        IDataParameter dp;
+                        dp = cmd.CreateParameter();
+                        dp.ParameterName = "@persoonid";
+                        dp.Value = persoonid;
+                        cmd.Parameters.Add(dp);
+
+                        using (IDataReader dr = dbdc.CreateSqlReader())
                         {
-                            dr.GetValues(test);
-                            p = new PersoonPartial
+                            object[] results = new object[dr.FieldCount];
+
+                            while (dr.Read())
                             {
-                                persoonid = (int)test.GetValue(0),
-                                voornaam = (test.GetValue(1) != null ? test.GetValue(1).ToString() : string.Empty),
-                                overigenamen = (test.GetValue(2) != null ? test.GetValue(2).ToString() : string.Empty),
-                                tussenvoegsel = (test.GetValue(3) != null ? test.GetValue(3).ToString() : string.Empty),
-                                achternaam = (test.GetValue(4) != null ? test.GetValue(4).ToString() : string.Empty),
-                                achtervoegsel = (test.GetValue(5) != null ? test.GetValue(1).ToString() : string.Empty),
-                                geboortenaam = (test.GetValue(6) != null ? test.GetValue(2).ToString() : string.Empty),
-                                geslacht = (test.GetValue(7) != null ? test.GetValue(3).ToString() : string.Empty),
-                                status = (test.GetValue(8) != null ? test.GetValue(4).ToString() : string.Empty),
-                                geboortedatum = (test.GetValue(9) != null ? test.GetValue(1).ToString() : string.Empty),
-                                geboorteprecisie = (test.GetValue(10) != null ? test.GetValue(2).ToString() : string.Empty),
-                                geboortedatum2 = (test.GetValue(11) != null ? test.GetValue(3).ToString() : string.Empty)
-                            };
+                                dr.GetValues(results);
+                                persoonrelaties.Add(new PersoonPartial
+                                {
+                                    persoonid = (int)results.GetValue(0),
+                                    voornaam = (results.GetValue(1) != null ? results.GetValue(1).ToString() : string.Empty),
+                                    tussenvoegsel = (results.GetValue(2) != null ? results.GetValue(2).ToString() : string.Empty),
+                                    achternaam = (results.GetValue(3) != null ? results.GetValue(3).ToString() : string.Empty),
+                                    RelatieID = (int)results.GetValue(4),
+                                    RelatieType = results.GetValue(5).ToString()
+                                });
+                            }
                         }
-                        return personen;
+                    }
+                }
+                return persoonrelaties;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+
+        }
+
+        /// <summary>
+        /// Vind een persoon in de persoon tabel middels de id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>persoon</returns>
+        public static PersoonPartial GetPersoon(int id)
+        {
+            try
+            {
+                PersoonPartial prson = null;
+                using (DataConfig dbdc = new DataConfig())
+                {
+                    dbdc.Open();
+                    using (IDbCommand cmd = dbdc.CreateCommand())
+                    {
+                        cmd.CommandText = "SELECT * FROM persoon WHERE persoonid = @persoonid";
+                        IDataParameter dp = cmd.CreateParameter();
+                        dp.ParameterName = "@persoonid";
+                        dp.Value = id;
+                        cmd.Parameters.Add(dp);
+
+                        using (IDataReader dr = dbdc.CreateSqlReader())
+                        {
+                            object[] results = new object[dr.FieldCount];
+                            while (dr.Read())
+                            {
+                                dr.GetValues(results);
+                                prson = new PersoonPartial
+                                {
+                                    persoonid = (int)results.GetValue(0),
+                                    voornaam = (results.GetValue(1) != null ? results.GetValue(1).ToString() : string.Empty),
+                                    overigenamen = (results.GetValue(2) != null ? results.GetValue(2).ToString() : string.Empty),
+                                    tussenvoegsel = (results.GetValue(3) != null ? results.GetValue(3).ToString() : string.Empty),
+                                    achternaam = (results.GetValue(4) != null ? results.GetValue(4).ToString() : string.Empty),
+                                    achtervoegsel = (results.GetValue(5) != null ? results.GetValue(5).ToString() : string.Empty),
+                                    geboortenaam = (results.GetValue(6) != null ? results.GetValue(6).ToString() : string.Empty),
+                                    geslacht = (results.GetValue(7) != null ? results.GetValue(7).ToString() : string.Empty),
+                                    status = (results.GetValue(8) != null ? results.GetValue(8).ToString() : string.Empty),
+                                    geboortedatum = (results.GetValue(9) != null ? results.GetValue(9).ToString() : string.Empty),
+                                    geboorteprecisie = (results.GetValue(10) != null ? results.GetValue(10).ToString() : string.Empty),
+                                    geboortedatum2 = (results.GetValue(11) != null ? results.GetValue(11).ToString() : string.Empty)
+                                };
+                            }
+                        }
+                    }
+                }
+                return prson;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+
+        }
+
+        /// <summary>
+        /// Geeft alle stambomen van een account
+        /// </summary>
+        /// <param name="accountid"></param>
+        /// <returns>Lijst met stambomen waarin de account id toegang heeft</returns>
+        public static List<stamboom> GebruikerStambomen(int accountid)
+        {
+            try
+            {
+                List<stamboom> stambomen = new List<stamboom>();
+                using (DataConfig dbdc = new DataConfig())
+                {
+                    using (IDbCommand cmd = dbdc.CreateCommand())
+                    {
+                        cmd.CommandText = "SELECT s.stamboomid, s.familienaam FROM dbo.stamboom s INNER JOIN dbo.stamboomtoegang stg ON stg.stamboomid = s.stamboomid AND stg.stamboomaccountid = @accountid";
+                        cmd.CommandType = CommandType.Text;
+                        IDbDataParameter dp;
+                        dp = cmd.CreateParameter();
+                        dp.ParameterName = "@accountid";
+                        dp.Value = accountid;
+                        cmd.Parameters.Add(dp);
+
+                        dbdc.Open();
+                        using (IDataReader dr = dbdc.CreateSqlReader())
+                        {
+                            object[] results = new object[dr.FieldCount];
+                            while (dr.Read())
+                            {
+                                dr.GetValues(results);
+                                stambomen.Add(new stamboom
+                                {
+                                    stamboomid = (int)results.GetValue(0),
+                                    familienaam = results.GetValue(1).ToString()
+                                });
+                            }
+                        }
+                    }
+                }
+                return stambomen;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+        }
+
+        /// <summary>
+        /// Geeft alle stambomen waarin de persoon zich bevind
+        /// </summary>
+        /// <param name="persoonid"></param>
+        /// <returns>Lijst met stambomen waar in de persoon voorkomt</returns>
+        public static List<stamboom> PersoonInStambomen(int persoonid)
+        {
+
+            try
+            {
+                List<stamboom> stambomen = new List<stamboom>();
+                using (DataConfig dbdc = new DataConfig())
+                {
+                    using (IDbCommand cmd = dbdc.CreateCommand())
+                    {
+                        cmd.CommandText = "SELECT s.stamboomid, s.familienaam FROM dbo.stamboom s ";
+                        cmd.CommandText += "INNER JOIN dbo.personeninstamboom pis ON pis.stamboomid = s.stamboomid AND pis.persoonid = @persoonid";
+                        cmd.CommandType = CommandType.Text;
+                        IDbDataParameter dp;
+                        dp = cmd.CreateParameter();
+                        dp.ParameterName = "@persoonid";
+                        dp.Value = persoonid;
+                        cmd.Parameters.Add(dp);
+
+                        dbdc.Open();
+                        using (IDataReader dr = dbdc.CreateSqlReader())
+                        {
+                            object[] results = new object[dr.FieldCount];
+                            while (dr.Read())
+                            {
+                                dr.GetValues(results);
+                                stambomen.Add(new stamboom
+                                {
+                                    stamboomid = (int)results.GetValue(0),
+                                    familienaam = results.GetValue(1).ToString()
+                                });
+                            }
+                        }
+                    }
+                }
+                return stambomen;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+        }
+
+        /// <summary>
+        /// Geeft alle personen van in stamboom
+        /// </summary>
+        /// <param name="stamboomid"></param>
+        /// <returns></returns>
+        public static List<PersoonPartial> PersonenInStamboom(int stamboomid)
+        {
+
+            try
+            {
+                List<PersoonPartial> personen = new List<PersoonPartial>();
+                using (DataConfig dbdc = new DataConfig())
+                {
+                    using (IDbCommand cmd = dbdc.CreateCommand())
+                    {
+                        cmd.CommandText = "SELECT p.persoonid, p.voornaam, p.overigenamen, p.tussenvoegsel, p.achternaam, p.achtervoegsel, ";
+                        cmd.CommandText += "p.geboortenaam, p.geslacht, p.status, p.geboortedatum, p.geboorteprecisie ";
+                        cmd.CommandText += "FROM dbo.persoon p ";
+                        cmd.CommandText += "INNER JOIN dbo.personeninstamboom pis ON pis.persoonid = p.persoonid ";
+                        cmd.CommandText += "WHERE pis.stamboomid = @stamboomid";
+
+                        IDbDataParameter dp = cmd.CreateParameter();
+                        dp.ParameterName = "@stamboomid";
+                        dp.Value = stamboomid;
+                        cmd.Parameters.Add(dp);
+
+                        dbdc.Open();
+                        using (IDataReader dr = dbdc.CreateSqlReader())
+                        {
+                            object[] results = new object[dr.FieldCount];
+                            while (dr.Read())
+                            {
+
+                                dr.GetValues(results);
+                                personen.Add(new PersoonPartial
+                                {
+                                    persoonid = (int)results.GetValue(0),
+                                    voornaam = (results.GetValue(1) != null ? results.GetValue(1).ToString() : string.Empty),
+                                    overigenamen = (results.GetValue(2) != null ? results.GetValue(2).ToString() : string.Empty),
+                                    tussenvoegsel = (results.GetValue(3) != null ? results.GetValue(3).ToString() : string.Empty),
+                                    achternaam = (results.GetValue(4) != null ? results.GetValue(4).ToString() : string.Empty),
+                                    achtervoegsel = (results.GetValue(5) != null ? results.GetValue(5).ToString() : string.Empty),
+                                    geboortenaam = (results.GetValue(6) != null ? results.GetValue(6).ToString() : string.Empty),
+                                    geslacht = (results.GetValue(7) != null ? results.GetValue(7).ToString() : string.Empty),
+                                    status = (results.GetValue(8) != null ? results.GetValue(8).ToString() : string.Empty),
+                                    geboortedatum = (results.GetValue(9) != null ? results.GetValue(9).ToString() : string.Empty),
+                                    geboorteprecisie = (results.GetValue(10) != null ? results.GetValue(10).ToString() : string.Empty)
+                                });
+                            }
+                        }
+                    }
+                }
+                return personen;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+        }
+
+
+        public static void PersonenInRelatie(int relatieid, out int persoon1, out int persoon2)
+        {
+            try
+            {
+                persoon1 = 0;
+                persoon2 = 0;
+                using (DataConfig dbdc = new DataConfig())
+                {
+                    using (IDbCommand cmd = dbdc.CreateCommand())
+                    {
+
+                        cmd.CommandText = "SELECT r.persoonid1, r.persoonid2 FROM relatie r WHERE r.relatieid = @relatieid";
+                        IDataParameter dp = cmd.CreateParameter();
+                        dp.ParameterName = "@relatieid";
+                        dp.Value = relatieid;
+                        cmd.Parameters.Add(dp);
+
+                        dbdc.Open();
+                        using (IDataReader reader = dbdc.CreateSqlReader())
+                        {
+                            object[] results = new object[reader.FieldCount];
+                            reader.Read();
+                            persoon1 = (int)reader.GetValue(0);
+                            persoon2 = (int)reader.GetValue(1);
+                        }
                     }
                 }
             }
+            catch (Exception)
+            {
+                throw;
+            }
+
+
         }
+
+        /// <summary>
+        /// Alleen voor beheer
+        /// </summary>
+        /// <returns>Geeft alle personen terug</returns>
+        public static List<PersoonPartial> AllePersonen()
+        {
+            List<PersoonPartial> persoon_list = new List<PersoonPartial>();
+            try
+            {
+                using (DataConfig dbdc = new DataConfig())
+                {
+                    using (IDbCommand cmd = dbdc.CreateCommand())
+                    {
+                        int limit = 25;
+                        int count = 0;
+                        cmd.CommandText = "SELECT * FROM persoon";
+                        dbdc.Open();
+                        using (IDataReader dr = dbdc.CreateSqlReader())
+                        {
+                            while (dr.Read() && count < limit)
+                            {
+                                object[] results = new object[dr.FieldCount];
+                                dr.GetValues(results);
+                                persoon_list.Add(new PersoonPartial
+                                {
+                                    persoonid = (int)results.GetValue(0),
+                                    voornaam = (results.GetValue(1) != null ? results.GetValue(1).ToString() : string.Empty),
+                                    overigenamen = (results.GetValue(2) != null ? results.GetValue(2).ToString() : string.Empty),
+                                    tussenvoegsel = (results.GetValue(3) != null ? results.GetValue(3).ToString() : string.Empty),
+                                    achternaam = (results.GetValue(4) != null ? results.GetValue(4).ToString() : string.Empty),
+                                    achtervoegsel = (results.GetValue(5) != null ? results.GetValue(5).ToString() : string.Empty),
+                                    geboortenaam = (results.GetValue(6) != null ? results.GetValue(6).ToString() : string.Empty),
+                                    geslacht = (results.GetValue(7) != null ? results.GetValue(7).ToString() : string.Empty),
+                                    status = (results.GetValue(8) != null ? results.GetValue(8).ToString() : string.Empty),
+                                    geboortedatum = (results.GetValue(9) != null ? results.GetValue(9).ToString() : string.Empty),
+                                    geboorteprecisie = (results.GetValue(10) != null ? results.GetValue(10).ToString() : string.Empty),
+                                    geboortedatum2 = (results.GetValue(11) != null ? results.GetValue(11).ToString() : string.Empty)
+                                });
+                                count++;
+                            }
+                        }
+                    }
+                }
+                return persoon_list;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+
     }
 }

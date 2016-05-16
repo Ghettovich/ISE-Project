@@ -32,28 +32,4 @@ namespace AbInitio.Web.Models
         public string Wachtwoord { get; set; }
 
     }
-
-    public class RelatieModel
-    {
-        [Required]
-        public int persoonid1 { get; set; }
-
-        [Required]
-        public int persoonid2 { get; set; }
-
-        [Required]
-        public int relatietypeid { get; set; }
-
-        public List<SelectListItem> relatietypes { get; set; }
-
-        public persoon persoon1 { get; set; }
-
-        public List<persoon> relaties { get; set; }
-
-        public persoon persoon2 { get; set; }
-
-
-    }
-    
-    
 }

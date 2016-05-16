@@ -22,3 +22,17 @@ select,
 textarea {
     max-width: 280px;
 }
+
+.stamboom_row :hover {
+    cursor:pointer;
+}
+
+.persoon_row :hover {
+    cursor:pointer;
+}
+
+.dl-horizontal dt 
+{
+    white-space: normal;
+    width: 177px; 
+}

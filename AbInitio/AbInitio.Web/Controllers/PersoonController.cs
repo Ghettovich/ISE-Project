@@ -9,81 +9,71 @@ using System.Web.Mvc;
 
 namespace AbInitio.Web.Controllers
 {
+
+    
+
     public class PersoonController : Controller
     {
-        // GET: Persoon
-        public ActionResult Index()
-        {
-            return View();
-        }
-
-        // GET: Persoon/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
+        int accountid = 1;
+        int accountid2 = 2;
 
         [HttpGet]
-        public ActionResult WijzigRelatie(int persoonid)
+        public ActionResult Gebruiker1(int? stamboomid)
         {
+            StamboomViewModel viewmodel = new StamboomViewModel();
+            viewmodel.StambomenGebruiker = PersoonDal.GebruikerStambomen(accountid);
 
-
-
-            return View();
-        }
-
-        [HttpPost]
-        public ActionResult WijzigRelatie(RelatieModel model)
-        {
-            if (ModelState.IsValid)
+            if (stamboomid.HasValue)
             {
+                viewmodel.stamboomid = stamboomid.Value;
+                viewmodel.PersononenInStamboom = PersoonDal.PersonenInStamboom(stamboomid.Value);
 
+                if (Request.IsAjaxRequest())
+                {
+                    return PartialView("_PersonenInStamboom", viewmodel);
+                }
+            } return View(viewmodel);
+        }
 
+        [HttpGet]
+        public ActionResult Gebruiker2(int? stamboomid)
+        {
+            StamboomViewModel viewmodel = new StamboomViewModel();
+            viewmodel.StambomenGebruiker = PersoonDal.GebruikerStambomen(accountid2);
 
-                return RedirectToAction("Index");
-            }
-            else
+            if (stamboomid.HasValue)
             {
-                //add errors
-                return View(model);
+                viewmodel.stamboomid = stamboomid.Value;
+                viewmodel.PersononenInStamboom = PersoonDal.PersonenInStamboom(stamboomid.Value);
+
+                if (Request.IsAjaxRequest())
+                {
+                    return PartialView("_PersonenInStamboom", viewmodel);
+                }
             }
+            return View(viewmodel);
         }
 
         [HttpGet]
-        public ActionResult Gebruiker1()
-        {
-            return View();
-        }
-
-        [HttpGet]
-        public ActionResult Gebruiker2()
-        {
-            return View();
-        }
-
-        [HttpGet]
-        public ActionResult Create()
+        public ActionResult PersoonToevoegen(int stamboomid)
         {
             NieuwPersoonModel model = new NieuwPersoonModel();
             return View(model);
         }
 
         [HttpPost]
-        public ActionResult Create(NieuwPersoonModel model)
+        public ActionResult PersoonToevoegen(NieuwPersoonModel model)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
+                    // TODO: Add insert logic here
                     return RedirectToAction("Index");
+
+
                 }
-
-
                 return View(model);
-
-                // TODO: Add insert logic here
-
-
             }
             catch
             {
@@ -118,48 +108,31 @@ namespace AbInitio.Web.Controllers
             return View();
         }
 
-        // GET: Persoon/Edit/5
-        public ActionResult Edit(int id)
+        [HttpGet]
+        public ActionResult WijzigRelatie(int persoonid)
         {
             return View();
         }
 
-        // POST: Persoon/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult WijzigRelatie(RelatieModel model)
         {
-            try
+            if (ModelState.IsValid)
             {
-                // TODO: Add update logic here
-
                 return RedirectToAction("Index");
             }
-            catch
+            else
             {
-                return View();
+                //add errors
+                return View(model);
             }
         }
 
-        // GET: Persoon/Delete/5
-        public ActionResult Delete(int id)
+        [HttpGet]
+        public ActionResult WijzigPersoon(int id)
         {
             return View();
         }
-
-        // POST: Persoon/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
+                
     }
 }

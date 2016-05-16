@@ -1,20 +1,14 @@
-﻿using AbInitio.Web.Models;
-using System;
+﻿using AbInitio.Web.DbContexts;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace AbInitio.Web.ViewModels
 {
     public class StamboomViewModel
     {
-        public NieuwPersoonModel nieuwPersoonModel = new NieuwPersoonModel();
+
+        public int stamboomid { get; set; }
+        public List<stamboom> StambomenGebruiker { get; set; }
+        public List<PersoonPartial> PersononenInStamboom { get; set; }
         
-
-        public StamboomViewModel()
-        {
-
-        }
-
     }
 }
