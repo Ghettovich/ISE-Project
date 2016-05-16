@@ -136,8 +136,9 @@
     <Compile Include="Controllers\PersoonController.cs" />
     <Compile Include="Controllers\StamboomController.cs" />
     <Compile Include="DAL\AccountDAL.cs" />
+    <Compile Include="DAL\PersoonDal.cs" />
     <Compile Include="DAL\StamboomDAL.cs" />
-    <Compile Include="DbContexts\aanvullendepersoonsinformatie.cs">
+    <Compile Include="DbContexts\aanvullendepersooninformatie.cs">
       <DependentUpon>AbInitioModel.tt</DependentUpon>
     </Compile>
     <Compile Include="DbContexts\aanvullenderelatieinformatie.cs">
@@ -198,11 +199,11 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountModel.cs" />
+    <Compile Include="Models\RelatieModel.cs" />
     <Compile Include="Models\StamboomModel.cs" />
     <Compile Include="Partials\PersoonPartial.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\BeheerViewModel.cs" />
-    <Compile Include="ViewModels\PersoonViewModel.cs" />
     <Compile Include="ViewModels\StamboomViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -240,6 +241,8 @@
       <DependentUpon>AbInitioModel.edmx</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-2.2.3.intellisense.js" />
+    <Content Include="Scripts\AbInitioFunctions.js" />
+    <Content Include="Scripts\BeheerFunctions.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\jquery-2.2.3.js" />
@@ -276,11 +279,20 @@
     <Content Include="Views\Beheer\Index.cshtml" />
     <Content Include="Views\Stamboom\Index.cshtml" />
     <Content Include="Views\Persoon\Gebruiker1.cshtml" />
-    <Content Include="Views\Beheer\AllePersonenTest.cshtml" />
     <Content Include="Views\Persoon\Gebruiker2.cshtml" />
     <Content Include="Views\Forms\NieuwPersoon.cshtml" />
     <Content Include="Views\Persoon\Create.cshtml" />
-    <Content Include="Views\Beheer\AllePersonenTest2.cshtml" />
+    <Content Include="Views\Persoon\RelatieToevoegen.cshtml" />
+    <Content Include="Views\Persoon\_PersonenInStamboom.cshtml" />
+    <Content Include="Views\Beheer\_Stambomen.cshtml" />
+    <Content Include="Views\Beheer\_Personen.cshtml" />
+    <Content Include="Views\Beheer\_Relaties.cshtml" />
+    <Content Include="Views\Beheer\Personen.cshtml" />
+    <Content Include="Views\Beheer\PersoonDetails.cshtml" />
+    <Content Include="Views\Beheer\BeheerStamboom.cshtml" />
+    <Content Include="Views\Beheer\_BeheerStamboom.cshtml" />
+    <Content Include="Views\Beheer\_RelatiesTotPersoon.cshtml" />
+    <Content Include="Views\Beheer\WijzigRelatie.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -296,6 +308,9 @@
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
@@ -317,6 +332,9 @@
           <CustomServerUrl>
           </CustomServerUrl>
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+          <servers defaultServer="SelfHostServer">
+            <server name="SelfHostServer" exePath="" cmdArgs="" url="http://localhost:16168/" workingDir="" />
+          </servers>
         </WebProjectProperties>
       </FlavorProperties>
     </VisualStudio>

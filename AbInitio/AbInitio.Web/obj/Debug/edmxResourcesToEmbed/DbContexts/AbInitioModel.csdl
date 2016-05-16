@@ -1,15 +1,87 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Schema Namespace="AbInitioModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-  <EntityType Name="aanvullendepersoonsinformatie">
+  <EntityContainer Name="AbInitioEntities" annotation:LazyLoadingEnabled="false">
+    <EntitySet Name="aanvullendepersooninformaties" EntityType="AbInitioModel.aanvullendepersooninformatie" />
+    <EntitySet Name="aanvullenderelatieinformaties" EntityType="AbInitioModel.aanvullenderelatieinformatie" />
+    <EntitySet Name="accounts" EntityType="AbInitioModel.account" />
+    <EntitySet Name="meestvoorkomendenamen" EntityType="AbInitioModel.meestvoorkomendenaman" />
+    <EntitySet Name="personeninstambooms" EntityType="AbInitioModel.personeninstamboom" />
+    <EntitySet Name="persoons" EntityType="AbInitioModel.persoon" />
+    <EntitySet Name="persoonhistories" EntityType="AbInitioModel.persoonhistorie" />
+    <EntitySet Name="persooninformatietypes" EntityType="AbInitioModel.persooninformatietype" />
+    <EntitySet Name="relaties" EntityType="AbInitioModel.relatie" />
+    <EntitySet Name="relatiehistories" EntityType="AbInitioModel.relatiehistorie" />
+    <EntitySet Name="relatieinformatietypes" EntityType="AbInitioModel.relatieinformatietype" />
+    <EntitySet Name="relatietypes" EntityType="AbInitioModel.relatietype" />
+    <EntitySet Name="stambooms" EntityType="AbInitioModel.stamboom" />
+    <EntitySet Name="stamboomtoegangs" EntityType="AbInitioModel.stamboomtoegang" />
+    <AssociationSet Name="fk_aanvulle_rel_aanvu_persoon" Association="AbInitioModel.fk_aanvulle_rel_aanvu_persoon">
+      <End Role="persoon" EntitySet="persoons" />
+      <End Role="aanvullendepersooninformatie" EntitySet="aanvullendepersooninformaties" />
+    </AssociationSet>
+    <AssociationSet Name="fk_aanvulle_rel_perso_persooni" Association="AbInitioModel.fk_aanvulle_rel_perso_persooni">
+      <End Role="persooninformatietype" EntitySet="persooninformatietypes" />
+      <End Role="aanvullendepersooninformatie" EntitySet="aanvullendepersooninformaties" />
+    </AssociationSet>
+    <AssociationSet Name="fk_aanvulle_rel_aanvu_relatie" Association="AbInitioModel.fk_aanvulle_rel_aanvu_relatie">
+      <End Role="relatie" EntitySet="relaties" />
+      <End Role="aanvullenderelatieinformatie" EntitySet="aanvullenderelatieinformaties" />
+    </AssociationSet>
+    <AssociationSet Name="fk_aanvulle_rel_relat_relatiei" Association="AbInitioModel.fk_aanvulle_rel_relat_relatiei">
+      <End Role="relatieinformatietype" EntitySet="relatieinformatietypes" />
+      <End Role="aanvullenderelatieinformatie" EntitySet="aanvullenderelatieinformaties" />
+    </AssociationSet>
+    <AssociationSet Name="fk_stamboom_rel_accou_account" Association="AbInitioModel.fk_stamboom_rel_accou_account">
+      <End Role="account" EntitySet="accounts" />
+      <End Role="stamboomtoegang" EntitySet="stamboomtoegangs" />
+    </AssociationSet>
+    <AssociationSet Name="fk_meestvoo_reference_stamboom" Association="AbInitioModel.fk_meestvoo_reference_stamboom">
+      <End Role="stamboom" EntitySet="stambooms" />
+      <End Role="meestvoorkomendenaman" EntitySet="meestvoorkomendenamen" />
+    </AssociationSet>
+    <AssociationSet Name="fk_personen_rel_perso_persoon" Association="AbInitioModel.fk_personen_rel_perso_persoon">
+      <End Role="persoon" EntitySet="persoons" />
+      <End Role="personeninstamboom" EntitySet="personeninstambooms" />
+    </AssociationSet>
+    <AssociationSet Name="fk_personen_rel_stamb_stamboom" Association="AbInitioModel.fk_personen_rel_stamb_stamboom">
+      <End Role="stamboom" EntitySet="stambooms" />
+      <End Role="personeninstamboom" EntitySet="personeninstambooms" />
+    </AssociationSet>
+    <AssociationSet Name="fk_persoonh_rel_perso_persoon" Association="AbInitioModel.fk_persoonh_rel_perso_persoon">
+      <End Role="persoon" EntitySet="persoons" />
+      <End Role="persoonhistorie" EntitySet="persoonhistories" />
+    </AssociationSet>
+    <AssociationSet Name="fk_relatie_rel_perso_persoon1" Association="AbInitioModel.fk_relatie_rel_perso_persoon1">
+      <End Role="persoon" EntitySet="persoons" />
+      <End Role="relatie" EntitySet="relaties" />
+    </AssociationSet>
+    <AssociationSet Name="fk_relatie_rel_perso_persoon2" Association="AbInitioModel.fk_relatie_rel_perso_persoon2">
+      <End Role="persoon" EntitySet="persoons" />
+      <End Role="relatie" EntitySet="relaties" />
+    </AssociationSet>
+    <AssociationSet Name="fk_relatie_rel_relat_relatiet" Association="AbInitioModel.fk_relatie_rel_relat_relatiet">
+      <End Role="relatietype" EntitySet="relatietypes" />
+      <End Role="relatie" EntitySet="relaties" />
+    </AssociationSet>
+    <AssociationSet Name="fk_relatieh_rel_relat_relatie" Association="AbInitioModel.fk_relatieh_rel_relat_relatie">
+      <End Role="relatie" EntitySet="relaties" />
+      <End Role="relatiehistorie" EntitySet="relatiehistories" />
+    </AssociationSet>
+    <AssociationSet Name="fk_stamboom_rel_stamb_stamboom" Association="AbInitioModel.fk_stamboom_rel_stamb_stamboom">
+      <End Role="stamboom" EntitySet="stambooms" />
+      <End Role="stamboomtoegang" EntitySet="stamboomtoegangs" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="aanvullendepersooninformatie">
     <Key>
       <PropertyRef Name="aanvullendepersooninformatieid" />
     </Key>
     <Property Name="aanvullendepersooninformatieid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="persoonid" Type="Int32" Nullable="false" />
     <Property Name="persooninformatietypeid" Type="Int32" Nullable="false" />
-    <Property Name="persooninformatie" Type="String" MaxLength="256" FixedLength="false" Unicode="false" Nullable="false" />
-    <NavigationProperty Name="persoon" Relationship="Self.fk_aanvullendPersoonId" FromRole="aanvullendepersoonsinformatie" ToRole="persoon" />
-    <NavigationProperty Name="persooninformatietype" Relationship="Self.fk_aanvullendPersoonInformatieType" FromRole="aanvullendepersoonsinformatie" ToRole="persooninformatietype" />
+    <Property Name="persooninformatie" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="persoon" Relationship="AbInitioModel.fk_aanvulle_rel_aanvu_persoon" FromRole="aanvullendepersooninformatie" ToRole="persoon" />
+    <NavigationProperty Name="persooninformatietype" Relationship="AbInitioModel.fk_aanvulle_rel_perso_persooni" FromRole="aanvullendepersooninformatie" ToRole="persooninformatietype" />
   </EntityType>
   <EntityType Name="aanvullenderelatieinformatie">
     <Key>
@@ -18,19 +90,19 @@
     <Property Name="aanvullenderelatieinformatieid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="relatieid" Type="Int32" Nullable="false" />
     <Property Name="relatieinformatietypeid" Type="Int32" Nullable="false" />
-    <Property Name="relatieinformatie" Type="String" MaxLength="256" FixedLength="false" Unicode="false" Nullable="false" />
-    <NavigationProperty Name="relatie" Relationship="Self.fk_relatieId" FromRole="aanvullenderelatieinformatie" ToRole="relatie" />
-    <NavigationProperty Name="relatieinformatietype" Relationship="Self.fk_relatieinformatieType" FromRole="aanvullenderelatieinformatie" ToRole="relatieinformatietype" />
+    <Property Name="relatieinformatie" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="relatie" Relationship="AbInitioModel.fk_aanvulle_rel_aanvu_relatie" FromRole="aanvullenderelatieinformatie" ToRole="relatie" />
+    <NavigationProperty Name="relatieinformatietype" Relationship="AbInitioModel.fk_aanvulle_rel_relat_relatiei" FromRole="aanvullenderelatieinformatie" ToRole="relatieinformatietype" />
   </EntityType>
   <EntityType Name="account">
     <Key>
       <PropertyRef Name="accountid" />
     </Key>
     <Property Name="accountid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="gebruikersnaam" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-    <Property Name="wachtwoord" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="gebruikersnaam" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="wachtwoord" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
     <Property Name="accounttype" Type="Int32" Nullable="false" />
-    <NavigationProperty Name="stamboomtoegangs" Relationship="Self.fk_accountIdStamboomtoegang" FromRole="account" ToRole="stamboomtoegang" />
+    <NavigationProperty Name="stamboomtoegangs" Relationship="AbInitioModel.fk_stamboom_rel_accou_account" FromRole="account" ToRole="stamboomtoegang" />
   </EntityType>
   <EntityType Name="meestvoorkomendenaman">
     <Key>
@@ -38,9 +110,9 @@
     </Key>
     <Property Name="statestiekid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="stamboomid" Type="Int32" Nullable="false" />
-    <Property Name="naam" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="naam" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
     <Property Name="naamsoort" Type="Boolean" Nullable="false" />
-    <NavigationProperty Name="stamboom" Relationship="Self.fk_namenStamboom" FromRole="meestvoorkomendenamen" ToRole="stamboom" />
+    <NavigationProperty Name="stamboom" Relationship="AbInitioModel.fk_meestvoo_reference_stamboom" FromRole="meestvoorkomendenaman" ToRole="stamboom" />
   </EntityType>
   <EntityType Name="personeninstamboom">
     <Key>
@@ -50,8 +122,8 @@
     <Property Name="stamboomid" Type="Int32" Nullable="false" />
     <Property Name="persoonid" Type="Int32" Nullable="false" />
     <Property Name="kekuleid" Type="Int32" Nullable="false" />
-    <NavigationProperty Name="persoon" Relationship="Self.fk_personenInStamboom" FromRole="personeninstamboom" ToRole="persoon" />
-    <NavigationProperty Name="stamboom" Relationship="Self.fk_stamboomPersonen" FromRole="personeninstamboom" ToRole="stamboom" />
+    <NavigationProperty Name="persoon" Relationship="AbInitioModel.fk_personen_rel_perso_persoon" FromRole="personeninstamboom" ToRole="persoon" />
+    <NavigationProperty Name="stamboom" Relationship="AbInitioModel.fk_personen_rel_stamb_stamboom" FromRole="personeninstamboom" ToRole="stamboom" />
   </EntityType>
   <EntityType Name="persoon">
     <Key>
@@ -69,14 +141,11 @@
     <Property Name="geboortedatum" Type="DateTime" Precision="3" />
     <Property Name="geboorteprecisie" Type="String" MaxLength="6" FixedLength="false" Unicode="false" />
     <Property Name="geboortedatum2" Type="DateTime" Precision="3" />
-    <Property Name="geboorteplaats" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-    <Property Name="adress" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-    <Property Name="beroep" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-    <NavigationProperty Name="aanvullendepersoonsinformaties" Relationship="Self.fk_aanvullendPersoonId" FromRole="persoon" ToRole="aanvullendepersoonsinformatie" />
-    <NavigationProperty Name="personeninstambooms" Relationship="Self.fk_personenInStamboom" FromRole="persoon" ToRole="personeninstamboom" />
-    <NavigationProperty Name="persoonhistories" Relationship="Self.fk_persoonIdPersoonhistorie" FromRole="persoon" ToRole="persoonhistorie" />
-    <NavigationProperty Name="relaties" Relationship="Self.fk_relatie_persoon1" FromRole="persoon" ToRole="relatie" />
-    <NavigationProperty Name="relaties1" Relationship="Self.fk_relatie_persoon2" FromRole="persoon" ToRole="relatie" />
+    <NavigationProperty Name="aanvullendepersooninformaties" Relationship="AbInitioModel.fk_aanvulle_rel_aanvu_persoon" FromRole="persoon" ToRole="aanvullendepersooninformatie" />
+    <NavigationProperty Name="personeninstambooms" Relationship="AbInitioModel.fk_personen_rel_perso_persoon" FromRole="persoon" ToRole="personeninstamboom" />
+    <NavigationProperty Name="persoonhistories" Relationship="AbInitioModel.fk_persoonh_rel_perso_persoon" FromRole="persoon" ToRole="persoonhistorie" />
+    <NavigationProperty Name="relaties" Relationship="AbInitioModel.fk_relatie_rel_perso_persoon1" FromRole="persoon" ToRole="relatie" />
+    <NavigationProperty Name="relaties1" Relationship="AbInitioModel.fk_relatie_rel_perso_persoon2" FromRole="persoon" ToRole="relatie" />
   </EntityType>
   <EntityType Name="persoonhistorie">
     <Key>
@@ -97,17 +166,17 @@
     <Property Name="geboorteprecisie" Type="String" MaxLength="6" FixedLength="false" Unicode="false" />
     <Property Name="geboortedatum2" Type="DateTime" Precision="3" />
     <Property Name="geboorteplaats" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-    <Property Name="adress" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="adres" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
     <Property Name="beroep" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-    <NavigationProperty Name="persoon" Relationship="Self.fk_persoonIdPersoonhistorie" FromRole="persoonhistorie" ToRole="persoon" />
+    <NavigationProperty Name="persoon" Relationship="AbInitioModel.fk_persoonh_rel_perso_persoon" FromRole="persoonhistorie" ToRole="persoon" />
   </EntityType>
   <EntityType Name="persooninformatietype">
     <Key>
       <PropertyRef Name="persooninformatietypeid" />
     </Key>
     <Property Name="persooninformatietypeid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="persooninformatietype1" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-    <NavigationProperty Name="aanvullendepersoonsinformaties" Relationship="Self.fk_aanvullendPersoonInformatieType" FromRole="persooninformatietype" ToRole="aanvullendepersoonsinformatie" />
+    <Property Name="persooninformatietype1" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="aanvullendepersooninformaties" Relationship="AbInitioModel.fk_aanvulle_rel_perso_persooni" FromRole="persooninformatietype" ToRole="aanvullendepersooninformatie" />
   </EntityType>
   <EntityType Name="relatie">
     <Key>
@@ -117,11 +186,11 @@
     <Property Name="persoonid1" Type="Int32" Nullable="false" />
     <Property Name="relatietypeid" Type="Int32" Nullable="false" />
     <Property Name="persoonid2" Type="Int32" Nullable="false" />
-    <NavigationProperty Name="aanvullenderelatieinformaties" Relationship="Self.fk_relatieId" FromRole="relatie" ToRole="aanvullenderelatieinformatie" />
-    <NavigationProperty Name="persoon" Relationship="Self.fk_relatie_persoon1" FromRole="relatie" ToRole="persoon" />
-    <NavigationProperty Name="persoon1" Relationship="Self.fk_relatie_persoon2" FromRole="relatie" ToRole="persoon" />
-    <NavigationProperty Name="relatiehistories" Relationship="Self.fk_relatieIdRelatiehistory" FromRole="relatie" ToRole="relatiehistorie" />
-    <NavigationProperty Name="relatietype" Relationship="Self.fk_relatietypeRelatie" FromRole="relatie" ToRole="relatietype" />
+    <NavigationProperty Name="aanvullenderelatieinformaties" Relationship="AbInitioModel.fk_aanvulle_rel_aanvu_relatie" FromRole="relatie" ToRole="aanvullenderelatieinformatie" />
+    <NavigationProperty Name="persoon" Relationship="AbInitioModel.fk_relatie_rel_perso_persoon1" FromRole="relatie" ToRole="persoon" />
+    <NavigationProperty Name="persoon1" Relationship="AbInitioModel.fk_relatie_rel_perso_persoon2" FromRole="relatie" ToRole="persoon" />
+    <NavigationProperty Name="relatietype" Relationship="AbInitioModel.fk_relatie_rel_relat_relatiet" FromRole="relatie" ToRole="relatietype" />
+    <NavigationProperty Name="relatiehistories" Relationship="AbInitioModel.fk_relatieh_rel_relat_relatie" FromRole="relatie" ToRole="relatiehistorie" />
   </EntityType>
   <EntityType Name="relatiehistorie">
     <Key>
@@ -131,32 +200,32 @@
     <Property Name="relatieid" Type="Int32" Nullable="false" />
     <Property Name="gewijzigdop" Type="DateTime" Nullable="false" Precision="3" />
     <Property Name="persoonid1" Type="Int32" Nullable="false" />
-    <Property Name="relatietypeid" Type="Int32" Nullable="false" />
+    <Property Name="relatietypeid2" Type="Int32" Nullable="false" />
     <Property Name="persoonid2" Type="Int32" Nullable="false" />
-    <NavigationProperty Name="relatie" Relationship="Self.fk_relatieIdRelatiehistory" FromRole="relatiehistorie" ToRole="relatie" />
+    <NavigationProperty Name="relatie" Relationship="AbInitioModel.fk_relatieh_rel_relat_relatie" FromRole="relatiehistorie" ToRole="relatie" />
   </EntityType>
   <EntityType Name="relatieinformatietype">
     <Key>
       <PropertyRef Name="relatieinformatietypeid" />
     </Key>
     <Property Name="relatieinformatietypeid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="relatieinformatietype1" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-    <NavigationProperty Name="aanvullenderelatieinformaties" Relationship="Self.fk_relatieinformatieType" FromRole="relatieinformatietype" ToRole="aanvullenderelatieinformatie" />
+    <Property Name="relatieinformatietype1" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="aanvullenderelatieinformaties" Relationship="AbInitioModel.fk_aanvulle_rel_relat_relatiei" FromRole="relatieinformatietype" ToRole="aanvullenderelatieinformatie" />
   </EntityType>
   <EntityType Name="relatietype">
     <Key>
       <PropertyRef Name="relatietypeid" />
     </Key>
     <Property Name="relatietypeid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="relatietype1" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-    <NavigationProperty Name="relaties" Relationship="Self.fk_relatietypeRelatie" FromRole="relatietype" ToRole="relatie" />
+    <Property Name="relatietype1" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="relaties" Relationship="AbInitioModel.fk_relatie_rel_relat_relatiet" FromRole="relatietype" ToRole="relatie" />
   </EntityType>
   <EntityType Name="stamboom">
     <Key>
       <PropertyRef Name="stamboomid" />
     </Key>
     <Property Name="stamboomid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="familienaam" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="familienaam" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
     <Property Name="levensverwachtingman" Type="Int32" />
     <Property Name="levensverwachtingvrouw" Type="Int32" />
     <Property Name="langstlevendeman" Type="Int32" />
@@ -165,9 +234,9 @@
     <Property Name="jongstlevendevrouw" Type="Int32" />
     <Property Name="gemiddeldaantalkinderen" Type="Int32" />
     <Property Name="gemiddeldaantalgeboortes" Type="Int32" />
-    <NavigationProperty Name="meestvoorkomendenamen" Relationship="Self.fk_namenStamboom" FromRole="stamboom" ToRole="meestvoorkomendenamen" />
-    <NavigationProperty Name="personeninstambooms" Relationship="Self.fk_stamboomPersonen" FromRole="stamboom" ToRole="personeninstamboom" />
-    <NavigationProperty Name="stamboomtoegangs" Relationship="Self.fk_stamboomIdStamboomToegang" FromRole="stamboom" ToRole="stamboomtoegang" />
+    <NavigationProperty Name="meestvoorkomendenamen" Relationship="AbInitioModel.fk_meestvoo_reference_stamboom" FromRole="stamboom" ToRole="meestvoorkomendenaman" />
+    <NavigationProperty Name="personeninstambooms" Relationship="AbInitioModel.fk_personen_rel_stamb_stamboom" FromRole="stamboom" ToRole="personeninstamboom" />
+    <NavigationProperty Name="stamboomtoegangs" Relationship="AbInitioModel.fk_stamboom_rel_stamb_stamboom" FromRole="stamboom" ToRole="stamboomtoegang" />
   </EntityType>
   <EntityType Name="stamboomtoegang">
     <Key>
@@ -176,43 +245,43 @@
     <Property Name="stamboomaccountid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="accountid" Type="Int32" Nullable="false" />
     <Property Name="stamboomid" Type="Int32" Nullable="false" />
-    <Property Name="stamboomRechten" Type="Int32" Nullable="false" />
-    <NavigationProperty Name="account" Relationship="Self.fk_accountIdStamboomtoegang" FromRole="stamboomtoegang" ToRole="account" />
-    <NavigationProperty Name="stamboom" Relationship="Self.fk_stamboomIdStamboomToegang" FromRole="stamboomtoegang" ToRole="stamboom" />
+    <Property Name="stamboomrechten" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="account" Relationship="AbInitioModel.fk_stamboom_rel_accou_account" FromRole="stamboomtoegang" ToRole="account" />
+    <NavigationProperty Name="stamboom" Relationship="AbInitioModel.fk_stamboom_rel_stamb_stamboom" FromRole="stamboomtoegang" ToRole="stamboom" />
   </EntityType>
-  <Association Name="fk_aanvullendPersoonId">
-    <End Role="persoon" Type="Self.persoon" Multiplicity="1">
+  <Association Name="fk_aanvulle_rel_aanvu_persoon">
+    <End Type="AbInitioModel.persoon" Role="persoon" Multiplicity="1">
       <OnDelete Action="Cascade" />
     </End>
-    <End Role="aanvullendepersoonsinformatie" Type="Self.aanvullendepersoonsinformatie" Multiplicity="*" />
+    <End Type="AbInitioModel.aanvullendepersooninformatie" Role="aanvullendepersooninformatie" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="persoon">
         <PropertyRef Name="persoonid" />
       </Principal>
-      <Dependent Role="aanvullendepersoonsinformatie">
+      <Dependent Role="aanvullendepersooninformatie">
         <PropertyRef Name="persoonid" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="fk_aanvullendPersoonInformatieType">
-    <End Role="persooninformatietype" Type="Self.persooninformatietype" Multiplicity="1">
+  <Association Name="fk_aanvulle_rel_perso_persooni">
+    <End Type="AbInitioModel.persooninformatietype" Role="persooninformatietype" Multiplicity="1">
       <OnDelete Action="Cascade" />
     </End>
-    <End Role="aanvullendepersoonsinformatie" Type="Self.aanvullendepersoonsinformatie" Multiplicity="*" />
+    <End Type="AbInitioModel.aanvullendepersooninformatie" Role="aanvullendepersooninformatie" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="persooninformatietype">
         <PropertyRef Name="persooninformatietypeid" />
       </Principal>
-      <Dependent Role="aanvullendepersoonsinformatie">
+      <Dependent Role="aanvullendepersooninformatie">
         <PropertyRef Name="persooninformatietypeid" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="fk_relatieId">
-    <End Role="relatie" Type="Self.relatie" Multiplicity="1">
+  <Association Name="fk_aanvulle_rel_aanvu_relatie">
+    <End Type="AbInitioModel.relatie" Role="relatie" Multiplicity="1">
       <OnDelete Action="Cascade" />
     </End>
-    <End Role="aanvullenderelatieinformatie" Type="Self.aanvullenderelatieinformatie" Multiplicity="*" />
+    <End Type="AbInitioModel.aanvullenderelatieinformatie" Role="aanvullenderelatieinformatie" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="relatie">
         <PropertyRef Name="relatieid" />
@@ -222,11 +291,11 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="fk_relatieinformatieType">
-    <End Role="relatieinformatietype" Type="Self.relatieinformatietype" Multiplicity="1">
+  <Association Name="fk_aanvulle_rel_relat_relatiei">
+    <End Type="AbInitioModel.relatieinformatietype" Role="relatieinformatietype" Multiplicity="1">
       <OnDelete Action="Cascade" />
     </End>
-    <End Role="aanvullenderelatieinformatie" Type="Self.aanvullenderelatieinformatie" Multiplicity="*" />
+    <End Type="AbInitioModel.aanvullenderelatieinformatie" Role="aanvullenderelatieinformatie" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="relatieinformatietype">
         <PropertyRef Name="relatieinformatietypeid" />
@@ -236,11 +305,11 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="fk_accountIdStamboomtoegang">
-    <End Role="account" Type="Self.account" Multiplicity="1">
+  <Association Name="fk_stamboom_rel_accou_account">
+    <End Type="AbInitioModel.account" Role="account" Multiplicity="1">
       <OnDelete Action="Cascade" />
     </End>
-    <End Role="stamboomtoegang" Type="Self.stamboomtoegang" Multiplicity="*" />
+    <End Type="AbInitioModel.stamboomtoegang" Role="stamboomtoegang" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="account">
         <PropertyRef Name="accountid" />
@@ -250,25 +319,25 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="fk_namenStamboom">
-    <End Role="stamboom" Type="Self.stamboom" Multiplicity="1">
+  <Association Name="fk_meestvoo_reference_stamboom">
+    <End Type="AbInitioModel.stamboom" Role="stamboom" Multiplicity="1">
       <OnDelete Action="Cascade" />
     </End>
-    <End Role="meestvoorkomendenamen" Type="Self.meestvoorkomendenaman" Multiplicity="*" />
+    <End Type="AbInitioModel.meestvoorkomendenaman" Role="meestvoorkomendenaman" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="stamboom">
         <PropertyRef Name="stamboomid" />
       </Principal>
-      <Dependent Role="meestvoorkomendenamen">
+      <Dependent Role="meestvoorkomendenaman">
         <PropertyRef Name="stamboomid" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="fk_personenInStamboom">
-    <End Role="persoon" Type="Self.persoon" Multiplicity="1">
+  <Association Name="fk_personen_rel_perso_persoon">
+    <End Type="AbInitioModel.persoon" Role="persoon" Multiplicity="1">
       <OnDelete Action="Cascade" />
     </End>
-    <End Role="personeninstamboom" Type="Self.personeninstamboom" Multiplicity="*" />
+    <End Type="AbInitioModel.personeninstamboom" Role="personeninstamboom" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="persoon">
         <PropertyRef Name="persoonid" />
@@ -278,11 +347,11 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="fk_stamboomPersonen">
-    <End Role="stamboom" Type="Self.stamboom" Multiplicity="1">
+  <Association Name="fk_personen_rel_stamb_stamboom">
+    <End Type="AbInitioModel.stamboom" Role="stamboom" Multiplicity="1">
       <OnDelete Action="Cascade" />
     </End>
-    <End Role="personeninstamboom" Type="Self.personeninstamboom" Multiplicity="*" />
+    <End Type="AbInitioModel.personeninstamboom" Role="personeninstamboom" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="stamboom">
         <PropertyRef Name="stamboomid" />
@@ -292,9 +361,11 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="fk_persoonIdPersoonhistorie">
-    <End Role="persoon" Type="Self.persoon" Multiplicity="1" />
-    <End Role="persoonhistorie" Type="Self.persoonhistorie" Multiplicity="*" />
+  <Association Name="fk_persoonh_rel_perso_persoon">
+    <End Type="AbInitioModel.persoon" Role="persoon" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Type="AbInitioModel.persoonhistorie" Role="persoonhistorie" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="persoon">
         <PropertyRef Name="persoonid" />
@@ -304,23 +375,9 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="fk_relatie_persoon1">
-    <End Role="persoon" Type="Self.persoon" Multiplicity="1">
-      <OnDelete Action="Cascade" />
-    </End>
-    <End Role="relatie" Type="Self.relatie" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="persoon">
-        <PropertyRef Name="persoonid" />
-      </Principal>
-      <Dependent Role="relatie">
-        <PropertyRef Name="persoonid1" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="fk_relatie_persoon2">
-    <End Role="persoon" Type="Self.persoon" Multiplicity="1" />
-    <End Role="relatie" Type="Self.relatie" Multiplicity="*" />
+  <Association Name="fk_relatie_rel_perso_persoon1">
+    <End Type="AbInitioModel.persoon" Role="persoon" Multiplicity="1" />
+    <End Type="AbInitioModel.relatie" Role="relatie" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="persoon">
         <PropertyRef Name="persoonid" />
@@ -330,23 +387,25 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="fk_relatieIdRelatiehistory">
-    <End Role="relatie" Type="Self.relatie" Multiplicity="1" />
-    <End Role="relatiehistorie" Type="Self.relatiehistorie" Multiplicity="*" />
+  <Association Name="fk_relatie_rel_perso_persoon2">
+    <End Type="AbInitioModel.persoon" Role="persoon" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Type="AbInitioModel.relatie" Role="relatie" Multiplicity="*" />
     <ReferentialConstraint>
-      <Principal Role="relatie">
-        <PropertyRef Name="relatieid" />
+      <Principal Role="persoon">
+        <PropertyRef Name="persoonid" />
       </Principal>
-      <Dependent Role="relatiehistorie">
-        <PropertyRef Name="relatieid" />
+      <Dependent Role="relatie">
+        <PropertyRef Name="persoonid1" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="fk_relatietypeRelatie">
-    <End Role="relatietype" Type="Self.relatietype" Multiplicity="1">
+  <Association Name="fk_relatie_rel_relat_relatiet">
+    <End Type="AbInitioModel.relatietype" Role="relatietype" Multiplicity="1">
       <OnDelete Action="Cascade" />
     </End>
-    <End Role="relatie" Type="Self.relatie" Multiplicity="*" />
+    <End Type="AbInitioModel.relatie" Role="relatie" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="relatietype">
         <PropertyRef Name="relatietypeid" />
@@ -356,11 +415,25 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="fk_stamboomIdStamboomToegang">
-    <End Role="stamboom" Type="Self.stamboom" Multiplicity="1">
+  <Association Name="fk_relatieh_rel_relat_relatie">
+    <End Type="AbInitioModel.relatie" Role="relatie" Multiplicity="1">
       <OnDelete Action="Cascade" />
     </End>
-    <End Role="stamboomtoegang" Type="Self.stamboomtoegang" Multiplicity="*" />
+    <End Type="AbInitioModel.relatiehistorie" Role="relatiehistorie" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="relatie">
+        <PropertyRef Name="relatieid" />
+      </Principal>
+      <Dependent Role="relatiehistorie">
+        <PropertyRef Name="relatieid" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_stamboom_rel_stamb_stamboom">
+    <End Type="AbInitioModel.stamboom" Role="stamboom" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Type="AbInitioModel.stamboomtoegang" Role="stamboomtoegang" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="stamboom">
         <PropertyRef Name="stamboomid" />
@@ -370,76 +443,4 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <EntityContainer Name="AbInitioEntities" annotation:LazyLoadingEnabled="false">
-    <EntitySet Name="aanvullendepersoonsinformaties" EntityType="Self.aanvullendepersoonsinformatie" />
-    <EntitySet Name="aanvullenderelatieinformaties" EntityType="Self.aanvullenderelatieinformatie" />
-    <EntitySet Name="accounts" EntityType="Self.account" />
-    <EntitySet Name="meestvoorkomendenamen" EntityType="Self.meestvoorkomendenaman" />
-    <EntitySet Name="personeninstambooms" EntityType="Self.personeninstamboom" />
-    <EntitySet Name="persoons" EntityType="Self.persoon" />
-    <EntitySet Name="persoonhistories" EntityType="Self.persoonhistorie" />
-    <EntitySet Name="persooninformatietypes" EntityType="Self.persooninformatietype" />
-    <EntitySet Name="relaties" EntityType="Self.relatie" />
-    <EntitySet Name="relatiehistories" EntityType="Self.relatiehistorie" />
-    <EntitySet Name="relatieinformatietypes" EntityType="Self.relatieinformatietype" />
-    <EntitySet Name="relatietypes" EntityType="Self.relatietype" />
-    <EntitySet Name="stambooms" EntityType="Self.stamboom" />
-    <EntitySet Name="stamboomtoegangs" EntityType="Self.stamboomtoegang" />
-    <AssociationSet Name="fk_aanvullendPersoonId" Association="Self.fk_aanvullendPersoonId">
-      <End Role="persoon" EntitySet="persoons" />
-      <End Role="aanvullendepersoonsinformatie" EntitySet="aanvullendepersoonsinformaties" />
-    </AssociationSet>
-    <AssociationSet Name="fk_aanvullendPersoonInformatieType" Association="Self.fk_aanvullendPersoonInformatieType">
-      <End Role="persooninformatietype" EntitySet="persooninformatietypes" />
-      <End Role="aanvullendepersoonsinformatie" EntitySet="aanvullendepersoonsinformaties" />
-    </AssociationSet>
-    <AssociationSet Name="fk_relatieId" Association="Self.fk_relatieId">
-      <End Role="relatie" EntitySet="relaties" />
-      <End Role="aanvullenderelatieinformatie" EntitySet="aanvullenderelatieinformaties" />
-    </AssociationSet>
-    <AssociationSet Name="fk_relatieinformatieType" Association="Self.fk_relatieinformatieType">
-      <End Role="relatieinformatietype" EntitySet="relatieinformatietypes" />
-      <End Role="aanvullenderelatieinformatie" EntitySet="aanvullenderelatieinformaties" />
-    </AssociationSet>
-    <AssociationSet Name="fk_accountIdStamboomtoegang" Association="Self.fk_accountIdStamboomtoegang">
-      <End Role="account" EntitySet="accounts" />
-      <End Role="stamboomtoegang" EntitySet="stamboomtoegangs" />
-    </AssociationSet>
-    <AssociationSet Name="fk_namenStamboom" Association="Self.fk_namenStamboom">
-      <End Role="stamboom" EntitySet="stambooms" />
-      <End Role="meestvoorkomendenamen" EntitySet="meestvoorkomendenamen" />
-    </AssociationSet>
-    <AssociationSet Name="fk_personenInStamboom" Association="Self.fk_personenInStamboom">
-      <End Role="persoon" EntitySet="persoons" />
-      <End Role="personeninstamboom" EntitySet="personeninstambooms" />
-    </AssociationSet>
-    <AssociationSet Name="fk_stamboomPersonen" Association="Self.fk_stamboomPersonen">
-      <End Role="stamboom" EntitySet="stambooms" />
-      <End Role="personeninstamboom" EntitySet="personeninstambooms" />
-    </AssociationSet>
-    <AssociationSet Name="fk_persoonIdPersoonhistorie" Association="Self.fk_persoonIdPersoonhistorie">
-      <End Role="persoon" EntitySet="persoons" />
-      <End Role="persoonhistorie" EntitySet="persoonhistories" />
-    </AssociationSet>
-    <AssociationSet Name="fk_relatie_persoon1" Association="Self.fk_relatie_persoon1">
-      <End Role="persoon" EntitySet="persoons" />
-      <End Role="relatie" EntitySet="relaties" />
-    </AssociationSet>
-    <AssociationSet Name="fk_relatie_persoon2" Association="Self.fk_relatie_persoon2">
-      <End Role="persoon" EntitySet="persoons" />
-      <End Role="relatie" EntitySet="relaties" />
-    </AssociationSet>
-    <AssociationSet Name="fk_relatieIdRelatiehistory" Association="Self.fk_relatieIdRelatiehistory">
-      <End Role="relatie" EntitySet="relaties" />
-      <End Role="relatiehistorie" EntitySet="relatiehistories" />
-    </AssociationSet>
-    <AssociationSet Name="fk_relatietypeRelatie" Association="Self.fk_relatietypeRelatie">
-      <End Role="relatietype" EntitySet="relatietypes" />
-      <End Role="relatie" EntitySet="relaties" />
-    </AssociationSet>
-    <AssociationSet Name="fk_stamboomIdStamboomToegang" Association="Self.fk_stamboomIdStamboomToegang">
-      <End Role="stamboom" EntitySet="stambooms" />
-      <End Role="stamboomtoegang" EntitySet="stamboomtoegangs" />
-    </AssociationSet>
-  </EntityContainer>
 </Schema>
