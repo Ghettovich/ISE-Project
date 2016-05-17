@@ -11,6 +11,7 @@ namespace AbInitio.Web.DAL
 {
     public class StamboomDAL
     {
+        public IDataReader reader { get; private set; }
 
         public void PersoonToevoegen(NieuwPersoonModel p)
         {
@@ -65,11 +66,7 @@ namespace AbInitio.Web.DAL
             } return stambomen;
         }
         
-        /// <summary>
-        /// Haalt een stamboom met een stamboom id
-        /// </summary>
-        /// <param name="stamboomid"></param>
-        /// <returns></returns>
+
         public static stamboom GetStamboom(int stamboomid)
         {
             stamboom stam = null;
@@ -111,7 +108,76 @@ namespace AbInitio.Web.DAL
             } return stam;
         }
 
+        public List<PersoonInStamboom> getPersonenInStamboom(int stamboomId, int aanvragerId)
+        {
+            try
+            {
+                using (DataConfig dbdc = new DataConfig())
+                {
+                    dbdc.Open();
+                    using (IDbCommand cmd = dbdc.CreateCommand())
+                    {
 
+                        cmd.CommandText = "dbo.ophalenStamboom";
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        IDataParameter pm = cmd.CreateParameter();
+                        pm.Direction = ParameterDirection.Input;
+
+                        pm.ParameterName = "@opvrager";
+                        pm.Value = aanvragerId;
+                        cmd.Parameters.Add(pm);
+                        pm = cmd.CreateParameter();
+                        pm.ParameterName = "@stamboomid";
+                        pm.Value = stamboomId;
+                        cmd.Parameters.Add(pm);
+
+                        reader = cmd.ExecuteReader();
+
+                        List<PersoonInStamboom> personeninstamboom = new List<PersoonInStamboom>();
+                        PersoonInStamboom persooninstamboom;
+
+                        while (reader.Read())
+                        {
+                            persooninstamboom = new PersoonInStamboom();
+                            persooninstamboom.persoonInStamboomId = reader["persooninstamboomid"].ToString();
+                            persooninstamboom.familieNaam = reader["familieNaam"].ToString();
+                            persooninstamboom.persoonId = reader["persoonid"].ToString();
+                            persooninstamboom.kekuleId = reader["kekulenummer"].ToString();
+                            persooninstamboom.voornaam = reader["voornaam"].ToString();
+                            persooninstamboom.tussenvoegsel = reader["tussenvoegsel"].ToString();
+                            persooninstamboom.achternaam = reader["achternaam"].ToString();
+                            persooninstamboom.geboortePrecisie = reader["geboorteprecisie"].ToString();
+                            if (Convert.IsDBNull(reader["geboortedatum"]))
+                            {
+                                persooninstamboom.geboortedatum = null;
+                            }
+                            else
+                            {
+                                persooninstamboom.geboortedatum = (DateTime)reader["geboortedatum"];
+                            }
+                            if (Convert.IsDBNull(reader["geboortedatum2"]))
+                            {
+                                persooninstamboom.geboortedatum2 = null;
+                            }
+                            else
+                            {
+                                persooninstamboom.geboortedatum2 = (DateTime)reader["geboortedatum2"];
+                            }
+                            persooninstamboom.trouwdatum = reader["trouwdatum"].ToString();
+                            persooninstamboom.overlijdingsdatum = reader["overlijdingsdatum"].ToString();
+                            personeninstamboom.Add(persooninstamboom);
+                        }
+
+                        return personeninstamboom;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
 
 
     }
