@@ -37,5 +37,16 @@ namespace AbInitio.Web.DbContexts
             }
         }
 
+        public string geefStatus
+        {
+            get
+            {
+                if (status == "1")
+                {
+                    return "Levend";
+                } return "Overleden";
+            }
+        }
+
     }
 }
