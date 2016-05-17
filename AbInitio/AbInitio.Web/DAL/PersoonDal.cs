@@ -1,5 +1,6 @@
 ﻿using AbInitio.Web.App_Start;
 using AbInitio.Web.DbContexts;
+using AbInitio.Web.Models;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -52,6 +53,24 @@ namespace AbInitio.Web.DAL
             }
 
         }
+        /// <summary>
+        /// Dient alleen ff om de 
+        /// </summary>
+        public static List<SelectListItem> PersonenLijst()
+        {
+            List<PersoonPartial> personen = AllePersonen();
+            List<SelectListItem> listitems = new List<SelectListItem>();
+
+            foreach (var item in personen)
+            {
+                SelectListItem listitem = new SelectListItem();
+                listitem.Selected = false;
+                listitem.Text = item.GeefVolledigeNaam;
+                listitem.Value = item.persoonid.ToString();
+                listitems.Add(listitem);
+            } return listitems;
+        }
+
 
         /// <summary>
         /// Haalt de personen op en de relatie types tot deze persoon
@@ -70,9 +89,9 @@ namespace AbInitio.Web.DAL
                     using (IDbCommand cmd = dbdc.CreateCommand())
                     {
                         cmd.CommandText = "SELECT p.persoonid, p.voornaam, p.tussenvoegsel, p.achternaam, r.relatieid, rt.relatietype ";
-                        cmd.CommandText += "FROM dbo.persoon p INNER JOIN dbo.relatie r ON r.persoonid2 = p.persoonid ";
-                        cmd.CommandText += "INNER JOIN dbo.relatietype rt ON rt.relatietypeid = r.relatietypeid ";
-                        cmd.CommandText += "WHERE EXISTS ( SELECT 1 FROM dbo.relatie r2 WHERE r2.persoonid1 = @persoonid AND r2.persoonid2 = r.persoonid2);";
+                        cmd.CommandText += "FROM persoon p INNER JOIN relatie r ON p.persoonid = r.persoonid2 ";
+                        cmd.CommandText += "INNER JOIN relatietype rt ON r.relatietypeid = rt.relatietypeid ";
+                        cmd.CommandText += "WHERE r.persoonid1 = @persoonid;";
 
                         IDataParameter dp;
                         dp = cmd.CreateParameter();
@@ -322,12 +341,9 @@ namespace AbInitio.Web.DAL
             }
             catch (Exception)
             {
-
                 throw;
             }
-
         }
-
 
         public static void PersonenInRelatie(int relatieid, out int persoon1, out int persoon2)
         {
@@ -361,8 +377,95 @@ namespace AbInitio.Web.DAL
             {
                 throw;
             }
+        }
 
+        public static List<aanvullenderelatieinformatie> AanvullendeRelatieInfo(int relatieid)
+        {
+            try
+            {
+                List<aanvullenderelatieinformatie> avr = new List<aanvullenderelatieinformatie>();
+                using (DataConfig dbdc = new DataConfig())
+                {
+                    using (IDbCommand cmd = dbdc.CreateCommand())
+                    {
+                        cmd.CommandText = "SELECT avr.relatieid, avr.relatieinformatie ";
+                        cmd.CommandText += "FROM aanvullenderelatieinformatie avr INNER JOIN relatie r ON avr.relatieid = r.relatieid ";
+                        cmd.CommandText += "INNER JOIN relatietype rt ON avr.relatieinformatietypeid = rt.relatietypeid ";
+                        cmd.CommandText += "WHERE avr.relatieid = @relatieid;";
 
+                        IDataParameter dp = cmd.CreateParameter();
+                        dp.ParameterName = "@relatieid";
+                        dp.Value = relatieid;
+                        cmd.Parameters.Add(dp);
+
+                        dbdc.Open();
+                        using (IDataReader reader = dbdc.CreateSqlReader())
+                        {
+                            object[] results = new object[reader.FieldCount];
+
+                            while (reader.Read())
+                            {
+                                avr.Add(new aanvullenderelatieinformatie
+                                {
+                                    relatieid = (int)reader.GetValue(0),
+                                    relatieinformatie = reader.GetValue(1).ToString()
+                                });
+                            }
+                        }
+                    } return avr;
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+        }
+
+        public static void WijzigRelatie(RelatieModel model, out string error)
+        {
+            try
+            {
+                error = string.Empty;
+                using (DataConfig dbdc = new DataConfig())
+                {
+                    dbdc.Open();
+                    using (IDbCommand cmd = dbdc.CreateCommand())
+                    {
+                        cmd.CommandText = "dbo.WijzigRelatie";
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        IDataParameter pm = cmd.CreateParameter();
+                        pm.Direction = ParameterDirection.Input;
+
+                        pm.ParameterName = "@relatieid";
+                        pm.Value = model.relatieid;
+                        cmd.Parameters.Add(pm);
+
+                        pm = cmd.CreateParameter();
+                        pm.ParameterName = "@persoonid1";
+                        pm.Value = model.persoonid1;
+                        cmd.Parameters.Add(pm);
+
+                        pm = cmd.CreateParameter();
+                        pm.ParameterName = "@persoonid2";
+                        pm.Value = model.persoonid2;
+                        cmd.Parameters.Add(pm);
+
+                        pm = cmd.CreateParameter();
+                        pm.ParameterName = "@relatietypeid";
+                        pm.Value = model.relatietypeid;
+                        cmd.Parameters.Add(pm);
+
+                        cmd.ExecuteReader();
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                error = e.Message;
+            }
         }
 
         /// <summary>

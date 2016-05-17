@@ -17,14 +17,21 @@ namespace AbInitio.Web.Models
         [Key]
         [Required]
         public int persoonid2 { get; set; }
-        
+
+        [Key]
+        [Required]
+        public int relatieid { get; set; }
+
+        [Key]
         [Required]
         public int relatietypeid { get; set; }
 
-        public List<SelectListItem> relatietypes { get; set; }
-
         public PersoonPartial persoon1 { get; set; }
         public PersoonPartial persoon2 { get; set; }
+
+        public List<PersoonPartial> PersoonLijst { get; set; }
+        public List<SelectListItem> relatietypes { get; set; }
+        public List<aanvullenderelatieinformatie> AvrLijst { get; set; }
 
 
     }
