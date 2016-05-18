@@ -1,0 +1,14 @@
+﻿@model AbInitio.Web.ViewModels.BeheerViewModel
+@using(Ajax.BeginForm("Zoeken", "Home", FormMethod.Post,
+        new AjaxOptions
+        {
+            InsertionMode = InsertionMode.Replace,
+            HttpMethod = "POST",
+            UpdateTargetId = "search-results"
+         }))
+{
+<div>
+    @Html.TextBox("query")
+    <input type = "submit" value="Search" />
+</div>      
+}
