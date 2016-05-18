@@ -4,9 +4,9 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="30a3e1db9cf54057b9e839c47b121719" Name="Diagram1" ZoomLevel="55">
-        <EntityTypeShape EntityType="AbInitioModel.aanvullendepersooninformatie" Width="1.5" PointX="3" PointY="9.625" />
-        <EntityTypeShape EntityType="AbInitioModel.aanvullenderelatieinformatie" Width="1.5" PointX="8.25" PointY="8.625" />
+      <Diagram DiagramId="30a3e1db9cf54057b9e839c47b121719" Name="Diagram1" ZoomLevel="101">
+        <EntityTypeShape EntityType="AbInitioModel.aanvullendepersooninformatie" Width="2.125" PointX="3" PointY="9.625" />
+        <EntityTypeShape EntityType="AbInitioModel.aanvullenderelatieinformatie" Width="2.375" PointX="8.25" PointY="8.625" />
         <EntityTypeShape EntityType="AbInitioModel.account" Width="1.5" PointX="3.75" PointY="0.75" />
         <EntityTypeShape EntityType="AbInitioModel.meestvoorkomendenaman" Width="1.5" PointX="3" PointY="3.625" />
         <EntityTypeShape EntityType="AbInitioModel.personeninstamboom" Width="1.5" PointX="3" PointY="6.625" />
