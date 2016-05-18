@@ -4,8 +4,11 @@ using AbInitio.Web.Models;
 using AbInitio.Web.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
 
@@ -146,14 +149,62 @@ namespace AbInitio.Web.Controllers
             model.achtervoegsel = p.achtervoegsel;
             model.geboortenaam = p.geboortenaam;
             model.geslacht = p.geslacht;
-            model.status = p.geefStatus;
+            model.status = p.status;
             model.geboortedatum = p.geboortedatum.ToString();
             model.geboorteprecisie = p.geboorteprecisie;
             model.geboortedatum2 = p.geboortedatum2.ToString();
+            model.statussen = PersoonDal.statussen();
             model.geboortePrecisies = PersoonDal.geboortePrecisies();
             
             return View(model);
         }
-                
+    
+
+        [HttpPost]
+        public ActionResult WijzigPersoon()
+        {
+            PersoonModel model = new PersoonModel();
+            NameValueCollection nvc = Request.Form;
+            
+
+            model.persoonid = Int32.Parse(nvc["persoonId"]);
+            model.voornaam = nvc["voornaam"];
+            model.overigenamen = nvc["overigenamen"];
+            model.tussenvoegsel = nvc["tussenvoegsel"];
+            model.achternaam = nvc["achternaam"];
+            model.achtervoegsel = nvc["achtervoegsel"];
+            model.geboortenaam = nvc["geboortenaam"];
+            model.geslacht = nvc["geslacht"];
+            if(nvc["status"].Equals("True"))
+            {
+                model.status = "1";
+            } else
+            {
+                model.status = "0";
+            }
+            if (!string.IsNullOrEmpty(nvc["geboortedatum"]))
+            {
+                DateTime d = DateTime.Parse(nvc["geboortedatum"]);
+                model.geboortedatum = d.ToString("yyyy-MM-dd");
+            }
+            else
+            {
+                model.geboortedatum = nvc["geboortedatum"];
+            }
+            model.geboorteprecisie = nvc["geboorteprecisie"];
+            if (!string.IsNullOrEmpty(nvc["geboortedatum2"]))
+            {
+                DateTime d2 = DateTime.Parse(nvc["geboortedatum2"]);
+                model.geboortedatum2 = d2.ToString("yyyy-MM-dd");
+            } else
+            {
+                model.geboortedatum2 = nvc["geboortedatum2"];
+            }
+            
+
+            PersoonDal.wijzigPersoonInDatabase(model);
+
+            return Redirect("../Beheer/Personen");
+        }
     }
 }
