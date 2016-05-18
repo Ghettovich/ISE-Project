@@ -1,9 +1,11 @@
 ﻿using AbInitio.Web.App_Start;
 using AbInitio.Web.DbContexts;
+using AbInitio.Web.ViewModels;
 using AbInitio.Web.Models;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -12,6 +14,8 @@ namespace AbInitio.Web.DAL
 {
     public class PersoonDal
     {
+        private static IDataReader reader;
+
         /// <summary>
         /// Selectlist kun je gemakkelijk een dropdown meemaken op de view, 
         /// je zet er de Value (e.g. relatietypeid) zodat deze weer met de view kan worden meegestuurd
@@ -143,6 +147,49 @@ namespace AbInitio.Web.DAL
                 throw;
             }
 
+        }
+
+        public static List<SelectListItem> statussen()
+        {
+            try
+            {
+                List<SelectListItem> geboortePrecisies = new List<SelectListItem>();
+                using (DataConfig dbdc = new DataConfig())
+                {
+                    dbdc.Open();
+                    using (IDbCommand cmd = dbdc.CreateCommand())
+                    {
+                        cmd.CommandText = "SELECT DISTINCT status FROM persoon WHERE status IS NOT NULL ORDER BY status";
+                        using (IDataReader reader = dbdc.CreateSqlReader())
+                        {
+                            while (reader.Read())
+                            {
+                                object[] test = new object[reader.FieldCount];
+                                reader.GetValues(test);
+                                SelectListItem item = new SelectListItem();
+                                item.Selected = false;
+                                item.Value = test.GetValue(0).ToString();
+                                if (item.Value.ToString().Equals("False"))
+                                {
+                                    item.Text = "Overleden";
+                                }
+                                else
+                                {
+                                    item.Text = "Levend";
+                                }
+
+                                geboortePrecisies.Add(item);
+                            }
+                        }
+                    }
+                }
+                return geboortePrecisies;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
         /// <summary>
@@ -671,7 +718,7 @@ namespace AbInitio.Web.DAL
                 {
                     using (IDbCommand cmd = dbdc.CreateCommand())
                     {
-                        int limit = 25;
+                        int limit = 0;
                         int count = 0;
                         cmd.CommandText = "SELECT * FROM persoon";
                         dbdc.Open();
@@ -709,6 +756,142 @@ namespace AbInitio.Web.DAL
             }
         }
 
+
+
+        public static List<PersoonPartial> zoekenPersonen(string voornaam = null, string achternaam = null, string geslacht = null, string geboortedatum = null)
+        {
+            List<PersoonPartial> persoon_list = new List<PersoonPartial>();
+            try
+            {
+                int accounttype = 1;
+                using (DataConfig dbdc = new DataConfig())
+                {
+                    dbdc.Open();
+                    using (IDbCommand cmd = dbdc.CreateCommand())
+                    {
+                        cmd.CommandText = "dbo.persoonZoekenInStamboom";
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        IDataParameter pm = cmd.CreateParameter();
+                        pm.Direction = ParameterDirection.Input;
+
+                        //cmd.Parameters.Add(new SqlParameter("@voornaam", string.IsNullOrEmpty(model.Persoon.voornaam)
+                        //    ? (object)DBNull.Value : model.Persoon.voornaam));
+
+                        //cmd.Parameters.Add(new SqlParameter("@achternaam", string.IsNullOrEmpty(model.Persoon.achternaam)
+                        //    ? (object)DBNull.Value : model.Persoon.achternaam));
+
+                        //cmd.Parameters.Add(new SqlParameter("@geslacht", string.IsNullOrEmpty(model.Persoon.geslacht)
+                        //    ? (object)DBNull.Value : model.Persoon.geslacht));
+
+                        //cmd.Parameters.Add(new SqlParameter("@geboortedatum", string.IsNullOrEmpty(model.Persoon.geboortedatum)
+                        //    ? (object)DBNull.Value : model.Persoon.geboortedatum));
+
+
+                       pm.ParameterName = "@voornaam";
+                       pm.Value = voornaam;
+                       cmd.Parameters.Add(pm);
+
+                       pm = cmd.CreateParameter();
+                       pm.ParameterName = "@achternaam";
+                       pm.Value = achternaam;
+                       cmd.Parameters.Add(pm);
+
+                       pm = cmd.CreateParameter();
+                       pm.ParameterName = "@geboortedatum";
+                       pm.Value = geboortedatum;
+                       cmd.Parameters.Add(pm);
+
+                       pm = cmd.CreateParameter();
+                       pm.ParameterName = "@geslacht";
+                       pm.Value = geslacht;
+                       cmd.Parameters.Add(pm);
+
+                        pm = cmd.CreateParameter();
+                        pm.ParameterName = "@account";
+                        pm.Value = accounttype;
+                        cmd.Parameters.Add(pm);
+
+                        reader = cmd.ExecuteReader();
+                        while (reader.Read())
+                        {
+                            object[] results = new object[reader.FieldCount];
+                            reader.GetValues(results);
+                            persoon_list.Add(new PersoonPartial
+                            {
+                                persoonid = (int)results.GetValue(0),
+                                voornaam = (results.GetValue(1) != null ? results.GetValue(1).ToString() : string.Empty),
+                                overigenamen = (results.GetValue(2) != null ? results.GetValue(2).ToString() : string.Empty),
+                                tussenvoegsel = (results.GetValue(3) != null ? results.GetValue(3).ToString() : string.Empty),
+                                achternaam = (results.GetValue(4) != null ? results.GetValue(4).ToString() : string.Empty),
+                                achtervoegsel = (results.GetValue(5) != null ? results.GetValue(5).ToString() : string.Empty),
+                                geboortenaam = (results.GetValue(6) != null ? results.GetValue(6).ToString() : string.Empty),
+                                geslacht = (results.GetValue(7) != null ? results.GetValue(7).ToString() : string.Empty),
+                                status = (results.GetValue(8) != null ? results.GetValue(8).ToString() : string.Empty),
+                                geboortedatum = (results.GetValue(9) != null ? results.GetValue(9).ToString() : string.Empty),
+                                geboorteprecisie = (results.GetValue(10) != null ? results.GetValue(10).ToString() : string.Empty),
+                                geboortedatum2 = (results.GetValue(11) != null ? results.GetValue(11).ToString() : string.Empty)
+                            });
+                        }
+
+                    }
+                }
+                return persoon_list;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public static void wijzigPersoonInDatabase(PersoonModel model)
+        {
+            try
+            {
+                using (DataConfig dbdc = new DataConfig())
+                {
+                    dbdc.Open();
+                    using (IDbCommand cmd = dbdc.CreateCommand())
+                    {
+                        cmd.CommandText = "dbo.spd_VeranderPersoon";
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        IDataParameter pm = cmd.CreateParameter();
+                        pm.Direction = ParameterDirection.Input;
+
+                        cmd.Parameters.Add(new SqlParameter("@persoonid", model.persoonid));
+                        cmd.Parameters.Add(new SqlParameter("@voornaam", string.IsNullOrEmpty(model.voornaam)
+                            ? (object)DBNull.Value : model.voornaam));
+                        cmd.Parameters.Add(new SqlParameter("@tussenvoegsel", string.IsNullOrEmpty(model.tussenvoegsel)
+                            ? (object)DBNull.Value : model.tussenvoegsel));
+                        cmd.Parameters.Add(new SqlParameter("@achternaam", string.IsNullOrEmpty(model.achternaam)
+                            ? (object)DBNull.Value : model.achternaam));
+                        cmd.Parameters.Add(new SqlParameter("@achtervoegsel", string.IsNullOrEmpty(model.achtervoegsel)
+                            ? (object)DBNull.Value : model.achtervoegsel));
+                        cmd.Parameters.Add(new SqlParameter("@overigenamen", string.IsNullOrEmpty(model.overigenamen)
+                            ? (object)DBNull.Value : model.overigenamen));
+                        cmd.Parameters.Add(new SqlParameter("@geboortenaam", string.IsNullOrEmpty(model.geboortenaam)
+                            ? (object)DBNull.Value : model.geboortenaam));
+                        cmd.Parameters.Add(new SqlParameter("@geslacht", string.IsNullOrEmpty(model.geslacht)
+                            ? (object)DBNull.Value : model.geslacht));
+                        cmd.Parameters.Add(new SqlParameter("@status", string.IsNullOrEmpty(model.status)
+                            ? (object)DBNull.Value : model.status));
+                        cmd.Parameters.Add(new SqlParameter("@geboortedatum", string.IsNullOrEmpty(model.geboortedatum)
+                            ? (object)DBNull.Value : model.geboortedatum));
+                        cmd.Parameters.Add(new SqlParameter("@geboorteprecisie", string.IsNullOrEmpty(model.geboorteprecisie)
+                            ? (object)DBNull.Value : model.geboorteprecisie));
+                        cmd.Parameters.Add(new SqlParameter("@geboortedatum2", string.IsNullOrEmpty(model.geboortedatum2)
+                            ? (object)DBNull.Value : model.geboortedatum2));
+
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
 
     }
 }

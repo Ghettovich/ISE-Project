@@ -193,7 +193,7 @@ namespace AbInitio.Web.Controllers
                 viewmodel.AvrTypes = PersoonDal.AvrTypes();
                 return View(viewmodel);
             } return HttpNotFound("Personen in relatie niet gevonden.");            
-        } 
+        }
 
         [HttpGet]
         public ActionResult WijzigPersoon(int id)
