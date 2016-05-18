@@ -1,0 +1,112 @@
+﻿@model AbInitio.Web.Models.PersoonModel
+
+@{
+    ViewBag.Title = "WijzigRelatie";
+}
+
+<h2>WijzigRelatie</h2>
+
+@using (Html.BeginForm("WijzigPerson", "Beheer", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Persoon</h4>
+        <hr />
+
+        <div class="form-group">
+            @Html.Label("Voornaam", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <input type="text" class="form-control" name="name" value="@Model.voornaam" readonly />
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("Tussenvoegsel", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <input type="text" class="form-control" name="name" value="@Model.tussenvoegsel" readonly />
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("Achternaam", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <input type="text" class="form-control" name="name" value="@Model.achternaam" readonly />
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("Geboortenaam", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <input type="text" class="form-control" name="name" value="@Model.geboortenaam" readonly />
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("Geslacht", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @{
+                    if (Model.geslacht == "M")
+                    {
+                        <label for="Man">Man</label>
+                        <input type="radio" class="form-control" name="gender" id="Man" value="M" checked />
+                        <label for="Vrouw">Vrouw</label>
+                        <input type="radio" class="form-control" name="gender" id="Vrouw" value="V" />
+                    }
+                    else if (Model.geslacht == "V")
+                    {
+                        <label for="Man">Man</label>
+                        <input type="radio" class="form-control" name="gender" id="Man" value="M"  />
+                        <label for="Vrouw">Vrouw</label>
+                        <input type="radio" class="form-control" name="gender" id="Vrouw" value="V" checked/>
+                    }
+                    else
+                    {
+                        <label for="Man">Man</label>
+                        <input type="radio" class="form-control" name="gender" id="Man" value="M" />
+                        <label for="Vrouw">Vrouw</label>
+                        <input type="radio" class="form-control" name="gender" id="Vrouw" value="V" />
+                    }
+                }
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("Status", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <input type="text" class="form-control" name="name" value="@Model.status" readonly />
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("Geboortedatum", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <input type="text" class="form-control" name="name" value="@Model.geboortedatum" readonly />
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("Geboorte precisie", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                 @Html.DropDownList("geboortePrecisie", Model.geboortePrecisies, Model.geboorteprecisie, new { @class = "form-control" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("geboortedatum2", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <input type="text" class="form-control" name="name" value="@Model.geboortedatum2" readonly />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>

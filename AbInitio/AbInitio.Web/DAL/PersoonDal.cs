@@ -72,6 +72,42 @@ namespace AbInitio.Web.DAL
         }
 
 
+        public static List<SelectListItem> geboortePrecisies()
+        {
+            try
+            {
+                List<SelectListItem> geboortePrecisies = new List<SelectListItem>();
+                using (DataConfig dbdc = new DataConfig())
+                {
+                    dbdc.Open();
+                    using (IDbCommand cmd = dbdc.CreateCommand())
+                    {
+                        cmd.CommandText = "SELECT DISTINCT geboorteprecisie FROM persoon WHERE geboorteprecisie IS NOT NULL";
+                        using (IDataReader reader = dbdc.CreateSqlReader())
+                        {
+                            while (reader.Read())
+                            {
+                                object[] test = new object[reader.FieldCount];
+                                reader.GetValues(test);
+                                SelectListItem item = new SelectListItem();
+                                item.Selected = false;
+                                item.Value = test.GetValue(0).ToString();
+                                item.Text = test.GetValue(0).ToString();
+                                geboortePrecisies.Add(item);
+                            }
+                        }
+                    }
+                }
+                return geboortePrecisies;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+        }
+
         /// <summary>
         /// Haalt de personen op en de relatie types tot deze persoon
         /// </summary>

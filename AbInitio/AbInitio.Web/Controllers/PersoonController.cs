@@ -1,8 +1,10 @@
 ﻿using AbInitio.Web.DAL;
+using AbInitio.Web.DbContexts;
 using AbInitio.Web.Models;
 using AbInitio.Web.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -131,7 +133,26 @@ namespace AbInitio.Web.Controllers
         [HttpGet]
         public ActionResult WijzigPersoon(int id)
         {
-            return View();
+            PersoonPartial p = new PersoonPartial();
+            p = PersoonDal.GetPersoon(id);
+
+            PersoonModel model = new PersoonModel();
+
+            model.persoonid = p.persoonid;
+            model.voornaam = p.voornaam;
+            model.overigenamen = p.overigenamen;
+            model.tussenvoegsel = p.tussenvoegsel;
+            model.achternaam = p.achternaam;
+            model.achtervoegsel = p.achtervoegsel;
+            model.geboortenaam = p.geboortenaam;
+            model.geslacht = p.geslacht;
+            model.status = p.geefStatus;
+            model.geboortedatum = p.geboortedatum.ToString();
+            model.geboorteprecisie = p.geboorteprecisie;
+            model.geboortedatum2 = p.geboortedatum2.ToString();
+            model.geboortePrecisies = PersoonDal.geboortePrecisies();
+            
+            return View(model);
         }
                 
     }
