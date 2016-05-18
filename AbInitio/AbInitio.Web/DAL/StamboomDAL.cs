@@ -108,6 +108,85 @@ namespace AbInitio.Web.DAL
             } return stam;
         }
 
+        public void maakStamboom(int accountId, string familieNaam)
+        {
+            try
+            {
+                using (DataConfig dbdc = new DataConfig())
+                {
+                    dbdc.Open();
+                    using (IDbCommand cmd = dbdc.CreateCommand())
+                    {
+                        cmd.CommandText = "dbo.aanmakenStamboom";
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        IDataParameter pm = cmd.CreateParameter();
+                        pm.Direction = ParameterDirection.Input;
+
+                        pm.ParameterName = "@accountId";
+                        pm.Value = accountId;
+                        cmd.Parameters.Add(pm);
+                        pm = cmd.CreateParameter();
+                        pm.ParameterName = "@familienaam";
+                        pm.Value = familieNaam;
+                        cmd.Parameters.Add(pm);
+
+                        cmd.ExecuteReader();
+                    }
+                }
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public List<StamboomModel> getStambomen(int accountId, string familieNaam)
+        {
+            try
+            {
+                using (DataConfig dbdc = new DataConfig())
+                {
+                    dbdc.Open();
+                    using (IDbCommand cmd = dbdc.CreateCommand())
+                    {
+                        cmd.CommandText = "dbo.zoekenStambomen";
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        IDataParameter pm = cmd.CreateParameter();
+                        pm.Direction = ParameterDirection.Input;
+
+                        pm.ParameterName = "@opvrager";
+                        pm.Value = accountId;
+                        cmd.Parameters.Add(pm);
+                        pm = cmd.CreateParameter();
+                        pm.ParameterName = "@familienaam";
+                        pm.Value = "%" + familieNaam + "%";
+                        cmd.Parameters.Add(pm);
+
+                        reader = cmd.ExecuteReader();
+
+                        List<StamboomModel> stambomen = new List<StamboomModel>();
+                        StamboomModel stamboom;
+
+                        while (reader.Read())
+                        {
+                            stamboom = new StamboomModel();
+                            stamboom.stamboomId = (int)reader["stamboomid"];
+                            stamboom.accountId = (int)reader["accountid"];
+                            stamboom.familieNaam = reader["familienaam"].ToString();
+                            stambomen.Add(stamboom);
+                        }
+                        return stambomen;
+                    }
+                }
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
         public List<PersoonInStamboom> getPersonenInStamboom(int stamboomId, int aanvragerId)
         {
             try

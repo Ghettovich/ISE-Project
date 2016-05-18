@@ -31,31 +31,35 @@
             Overlijdingsdatum
         </th>
     </tr>
-    @foreach (var item in Model.personen)
+    @if (Model.personen != null)
     {
-        <tr>
-            <td>
-                @item.kekuleId
-            </td>
-            <td>
-                @item.voornaam
-            </td>
-            <td>
-                @item.tussenvoegsel
-            </td>
-            <td>
-                @item.achternaam
-            </td>
-            <td>
-                @item.geboortePrecisie @item.geboortedatum @if(@item.geboortedatum2 != null) { <span> en @item.geboortedatum2 </span>}
-            </td>
-            <td>
-                @item.trouwdatum
-            </td>
-            <td>
-                @item.overlijdingsdatum
-            </td>
-        </tr>
+        foreach (var item in Model.personen)
+        {
+            <tr>
+                <td>
+                    @item.kekuleId
+                </td>
+                <td>
+                    @item.voornaam
+                </td>
+                <td>
+                    @item.tussenvoegsel
+                </td>
+                <td>
+                    @item.achternaam
+                </td>
+                <td>
+                    @item.geboortePrecisie @item.geboortedatum @if (@item.geboortedatum2 != null)
+                    { <span> en @item.geboortedatum2 </span>}
+                </td>
+                <td>
+                    @item.trouwdatum
+                </td>
+                <td>
+                    @item.overlijdingsdatum
+                </td>
+            </tr>
+        }
     }
  </table>
 

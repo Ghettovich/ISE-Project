@@ -1,0 +1,53 @@
+﻿@model System.Collections.Generic.List<AbInitio.Web.Models.StamboomModel>
+
+@{
+    ViewBag.Title = "OverzichtStambomen";
+}
+
+<h2>OverzichtStambomen</h2>
+
+@using (Html.BeginForm())
+{
+    <fieldset>
+        <div class="editor-label">
+            @Html.Label("Zoeken")
+        </div>
+        <div>
+            <input type="text" name="familieNaam" required />
+        </div>
+
+        <div>
+            @Html.Label("account")
+        </div>
+        <div>
+            <input type="text" name="accountId" required />
+        </div>
+        <br />
+        <input type="submit" class="btn btn-primary" value="Zoeken" />
+    </fieldset>
+}
+
+<table class="table table-striped">
+    <tr>
+        <th>
+            Id stamboom
+        </th>
+        <th>
+            familienaam
+        </th>
+    </tr>
+    @if (Model != null)
+    {
+        foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.stamboomId
+                </td>
+                <td>
+                    @Html.ActionLink(item.familieNaam, "Stamboom", new { stamboomId = item.stamboomId, accountId = item.accountId } )
+                </td>
+            </tr>
+        }
+    }
+</table>

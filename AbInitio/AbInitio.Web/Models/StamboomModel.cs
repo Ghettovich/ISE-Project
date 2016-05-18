@@ -48,4 +48,11 @@ namespace AbInitio.Web.Models
         
 
     }
+
+    public class StamboomModel
+    {
+        public int accountId { get; set; }
+        public int stamboomId { get; set; }
+        public string familieNaam { get; set; }
+    }
 }
