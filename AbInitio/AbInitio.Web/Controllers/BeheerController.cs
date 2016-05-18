@@ -27,7 +27,6 @@ namespace AbInitio.Web.Controllers
         }
 
         public ActionResult Personen(string zoekterm = null)
-        {
             BeheerViewModel viewmodel = new BeheerViewModel();
             viewmodel.PersoonLijst = PersoonDal.AllePersonen();
 
