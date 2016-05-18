@@ -14,12 +14,19 @@
         <h4>relatie</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <input type="hidden" name="name" value="@Model.relatietypeid" />
-
+        <input type="hidden" name="relatieid" value="@Model.relatieid" />
+        <input type="hidden" name="persoonid1" value="@Model.persoonid1" />
+        <input type="hidden" name="persoonid2" value="@Model.persoonid2" />
         <div class="form-group">
             @Html.Label("Persoon1", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 <input type="text" class="form-control" name="name" value="@Model.persoon1.GeefVolledigeNaam" readonly/>
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.Label("Persoon2", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <input type="text" class="form-control" name="name" value="@Model.persoon2.GeefVolledigeNaam" readonly />
             </div>
         </div>
 
@@ -30,12 +37,16 @@
             </div>
         </div>
 
-        <div class="form-group">
-            @Html.Label("Persoon2", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                <input type="text" class="form-control" name="name" value="@Model.persoon2.GeefVolledigeNaam" readonly />
+        @foreach (var item in Model.AvrLijst)
+        {
+            
+            <div class="form-group">
+                @Html.Label("Aanvullende relaties", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    <textarea>@item.relatieinformatie</textarea>
+                </div>
             </div>
-        </div>
+        }
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
