@@ -1,10 +1,7 @@
 ﻿using AbInitio.Web.App_Start;
 using AbInitio.Web.DbContexts;
-<<<<<<< HEAD
 using AbInitio.Web.ViewModels;
-=======
 using AbInitio.Web.Models;
->>>>>>> origin/master
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -113,6 +110,49 @@ namespace AbInitio.Web.DAL
                 throw;
             }
 
+        }
+
+        public static List<SelectListItem> statussen()
+        {
+            try
+            {
+                List<SelectListItem> geboortePrecisies = new List<SelectListItem>();
+                using (DataConfig dbdc = new DataConfig())
+                {
+                    dbdc.Open();
+                    using (IDbCommand cmd = dbdc.CreateCommand())
+                    {
+                        cmd.CommandText = "SELECT DISTINCT status FROM persoon WHERE status IS NOT NULL ORDER BY status";
+                        using (IDataReader reader = dbdc.CreateSqlReader())
+                        {
+                            while (reader.Read())
+                            {
+                                object[] test = new object[reader.FieldCount];
+                                reader.GetValues(test);
+                                SelectListItem item = new SelectListItem();
+                                item.Selected = false;
+                                item.Value = test.GetValue(0).ToString();
+                                if (item.Value.ToString().Equals("False"))
+                                {
+                                    item.Text = "Overleden";
+                                }
+                                else
+                                {
+                                    item.Text = "Levend";
+                                }
+
+                                geboortePrecisies.Add(item);
+                            }
+                        }
+                    }
+                }
+                return geboortePrecisies;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
         /// <summary>
@@ -650,6 +690,54 @@ namespace AbInitio.Web.DAL
             }
         }
 
+        public static void wijzigPersoonInDatabase(PersoonModel model)
+        {
+            try
+            {
+                using (DataConfig dbdc = new DataConfig())
+                {
+                    dbdc.Open();
+                    using (IDbCommand cmd = dbdc.CreateCommand())
+                    {
+                        cmd.CommandText = "dbo.spd_VeranderPersoon";
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        IDataParameter pm = cmd.CreateParameter();
+                        pm.Direction = ParameterDirection.Input;
+
+                        cmd.Parameters.Add(new SqlParameter("@persoonid", model.persoonid));
+                        cmd.Parameters.Add(new SqlParameter("@voornaam", string.IsNullOrEmpty(model.voornaam)
+                            ? (object)DBNull.Value : model.voornaam));
+                        cmd.Parameters.Add(new SqlParameter("@tussenvoegsel", string.IsNullOrEmpty(model.tussenvoegsel)
+                            ? (object)DBNull.Value : model.tussenvoegsel));
+                        cmd.Parameters.Add(new SqlParameter("@achternaam", string.IsNullOrEmpty(model.achternaam)
+                            ? (object)DBNull.Value : model.achternaam));
+                        cmd.Parameters.Add(new SqlParameter("@achtervoegsel", string.IsNullOrEmpty(model.achtervoegsel)
+                            ? (object)DBNull.Value : model.achtervoegsel));
+                        cmd.Parameters.Add(new SqlParameter("@overigenamen", string.IsNullOrEmpty(model.overigenamen)
+                            ? (object)DBNull.Value : model.overigenamen));
+                        cmd.Parameters.Add(new SqlParameter("@geboortenaam", string.IsNullOrEmpty(model.geboortenaam)
+                            ? (object)DBNull.Value : model.geboortenaam));
+                        cmd.Parameters.Add(new SqlParameter("@geslacht", string.IsNullOrEmpty(model.geslacht)
+                            ? (object)DBNull.Value : model.geslacht));
+                        cmd.Parameters.Add(new SqlParameter("@status", string.IsNullOrEmpty(model.status)
+                            ? (object)DBNull.Value : model.status));
+                        cmd.Parameters.Add(new SqlParameter("@geboortedatum", string.IsNullOrEmpty(model.geboortedatum)
+                            ? (object)DBNull.Value : model.geboortedatum));
+                        cmd.Parameters.Add(new SqlParameter("@geboorteprecisie", string.IsNullOrEmpty(model.geboorteprecisie)
+                            ? (object)DBNull.Value : model.geboorteprecisie));
+                        cmd.Parameters.Add(new SqlParameter("@geboortedatum2", string.IsNullOrEmpty(model.geboortedatum2)
+                            ? (object)DBNull.Value : model.geboortedatum2));
+
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
 
     }
 }
