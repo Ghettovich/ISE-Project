@@ -13,6 +13,8 @@ namespace AbInitio.Web.Controllers
     
     public class BeheerController : Controller
     {
+        int hc_persoonid = 1;
+
         // GET: Beheer
         public ActionResult Index(string zoekterm = null)
         {
@@ -74,8 +76,7 @@ namespace AbInitio.Web.Controllers
                 viewmodel.persoon2 = PersoonDal.GetPersoon(persoonid2);
                 viewmodel.persoonid1 = viewmodel.persoon1.persoonid;
                 viewmodel.persoonid2 = viewmodel.persoon2.persoonid;                
-                viewmodel.AvrLijst = PersoonDal.AanvullendeRelatieInfo(relatieid);
-                viewmodel.relatietypes = PersoonDal.RelatieTypes();
+                viewmodel.Relatietypes = PersoonDal.RelatieTypes();
                 return View(viewmodel);
             } return HttpNotFound("Relatie ID niet gevonden");
         }
@@ -83,7 +84,6 @@ namespace AbInitio.Web.Controllers
         [HttpPost]
         public ActionResult WijzigRelatie(RelatieModel model)
         {
-            
             if (ModelState.IsValid)
             {
                 string errors;
@@ -101,37 +101,101 @@ namespace AbInitio.Web.Controllers
                     model.persoon2 = PersoonDal.GetPersoon(model.persoonid2);
                     model.persoonid1 = model.persoon1.persoonid;
                     model.persoonid2 = model.persoon2.persoonid;
-                    model.LijstAvr = PersoonDal.AanvullendeRelatieInfo(model.relatieid);
-                    model.relatietypes = PersoonDal.RelatieTypes();
-
+                    model.Relatietypes = PersoonDal.RelatieTypes();
                     ModelState.AddModelError("", errors);
                 }
             } return View(model);
         }
 
+
+        //PersoonID word nog handmatig gezet omdat personen in een stambomen worden toegevoegd
         [HttpGet]
-        public ActionResult ToevoegenRelatie(int persoonid)
+        public ActionResult ToevoegenRelatie()
         {
             RelatieModel viewmodel = new RelatieModel();
-
-            viewmodel.persoon1 = PersoonDal.GetPersoon(persoonid);
+            viewmodel.persoon1 = PersoonDal.GetPersoon(hc_persoonid);
             viewmodel.persoonid1 = viewmodel.persoon1.persoonid;
-            viewmodel.relatietypes = PersoonDal.RelatieTypes();
-            viewmodel.PersoonLijst = PersoonDal.AllePersonen();
-
-
-            return View();
+            viewmodel.Relatietypes = PersoonDal.RelatieTypes();
+            viewmodel.Personen = PersoonDal.PersonenLijst();
+            return View(viewmodel);
         }
 
         [HttpPost]
         public ActionResult ToevoegenRelatie(RelatieModel model)
         {
+            if (ModelState.IsValid)
+            {
+                string error = string.Empty;
+                PersoonDal.ToevoegenRelatie(model, out error);
 
-
-
-            return View();
+                if (string.IsNullOrEmpty(error))
+                {
+                    return RedirectToAction("PersoonDetails", "Beheer", new { persoonid = model.persoonid1 });
+                }
+                else
+                {
+                    ModelState.AddModelError("", error);
+                }
+            }
+            else
+            {
+                model.persoon1 = PersoonDal.GetPersoon(hc_persoonid);
+                model.persoonid1 = model.persoon1.persoonid;
+                model.Relatietypes = PersoonDal.RelatieTypes();
+                model.Personen = PersoonDal.PersonenLijst();
+            } return View(model);
         }
 
+        [HttpGet]
+        public ActionResult ToevoegenAvr(int relatieid)
+        {
+            RelatieModel viewmodel = new RelatieModel();
+            int persoonid1, persoonid2;
+
+            PersoonDal.PersonenInRelatie(relatieid, out persoonid1, out persoonid2);
+            if (persoonid1 > 0 && persoonid2 > 0)
+            {
+                viewmodel.relatieid = relatieid;
+                viewmodel.persoon1 = PersoonDal.GetPersoon(persoonid1);
+                viewmodel.persoon2 = PersoonDal.GetPersoon(persoonid2);
+                viewmodel.Relatie = PersoonDal.GetRelatieInfo(relatieid);
+                viewmodel.AvrTypes = PersoonDal.AvrTypes();
+                return View(viewmodel);
+
+            } return HttpNotFound("Relatie niet gevonden");
+        }
+
+        [HttpPost]
+        public ActionResult ToevoegenAvr(RelatieModel viewmodel)
+        {
+            if (ModelState.IsValid)
+            {
+                string error = string.Empty;
+                PersoonDal.ToevoegenAvr(viewmodel, out error);
+                if (string.IsNullOrEmpty(error))
+                {
+                    return RedirectToAction("PersoonDetails", "Beheer", new { persoonid = viewmodel.persoonid1 });
+                }
+                else
+                {
+                    ModelState.AddModelError("", error);
+                }
+            }
+
+            int persoonid1, persoonid2;
+            PersoonDal.PersonenInRelatie(viewmodel.relatieid, out persoonid1, out persoonid2);
+            if (persoonid1 > 0 && persoonid2 > 0)
+            {
+                viewmodel.relatieid = viewmodel.relatieid;
+                viewmodel.persoon1 = PersoonDal.GetPersoon(persoonid1);
+                viewmodel.persoon2 = PersoonDal.GetPersoon(persoonid2);
+                viewmodel.Relatie = PersoonDal.GetRelatieInfo(viewmodel.relatieid);
+                viewmodel.AvrTypes = PersoonDal.AvrTypes();
+                return View(viewmodel);
+            } return HttpNotFound("Personen in relatie niet gevonden.");            
+        } 
+
+        [HttpGet]
         public ActionResult WijzigPersoon(int id)
         {
             BeheerViewModel viewmodel = new BeheerViewModel();          

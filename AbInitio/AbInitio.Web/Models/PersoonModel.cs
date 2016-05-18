@@ -9,6 +9,7 @@ namespace AbInitio.Web.Models
 {
     public class PersoonModel
     {
+        
         public int persoonid { get; set; }
         public string voornaam { get; set; }
         public string overigenamen { get; set; }

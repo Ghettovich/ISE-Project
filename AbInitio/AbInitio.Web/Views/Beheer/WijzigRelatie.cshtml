@@ -29,25 +29,12 @@
                 <input type="text" class="form-control" name="name" value="@Model.persoon2.GeefVolledigeNaam" readonly />
             </div>
         </div>
-
         <div class="form-group">
             @Html.Label("Relatietypes", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("relatietypeid", Model.relatietypes, new { @class = "form-control" })
+                @Html.DropDownList("relatietypeid", Model.Relatietypes, new { @class = "form-control" })
             </div>
         </div>
-
-        @foreach (var item in Model.AvrLijst)
-        {
-            
-            <div class="form-group">
-                @Html.Label("Aanvullende relaties", htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    <textarea>@item.relatieinformatie</textarea>
-                </div>
-            </div>
-        }
-
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Save" class="btn btn-default" />

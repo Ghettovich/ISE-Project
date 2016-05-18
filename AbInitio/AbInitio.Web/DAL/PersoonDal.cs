@@ -54,7 +54,7 @@ namespace AbInitio.Web.DAL
 
         }
         /// <summary>
-        /// Dient alleen ff om de 
+        /// Dient alleen ff om de personen in een dropdown te krijgen voor toevoegen relaties
         /// </summary>
         public static List<SelectListItem> PersonenLijst()
         {
@@ -70,8 +70,45 @@ namespace AbInitio.Web.DAL
                 listitems.Add(listitem);
             } return listitems;
         }
+        
+        public static List<SelectListItem> AvrTypes()
+        {
+            try
+            {
+                List<SelectListItem> avr = new List<SelectListItem>();
+                using (DataConfig dbdc = new DataConfig())
+                {
+                    dbdc.Open();
+                    using (IDbCommand cmd = dbdc.CreateCommand())
+                    {
+                        cmd.CommandText = "SELECT rit.relatieinformatietypeid, rit.relatieinformatietype FROM relatieinformatietype rit";
+                        using (IDataReader reader = dbdc.CreateSqlReader())
+                        {
+                            while (reader.Read())
+                            {
+                                object[] test = new object[reader.FieldCount];
+                                reader.GetValues(test);
+                                SelectListItem item = new SelectListItem();
+                                item.Selected = false;
+                                item.Value = test.GetValue(0).ToString();
+                                item.Text = test.GetValue(1).ToString();
+                                avr.Add(item);
+                            }
+                        }
+                    }
+                } return avr;
+            }
+            catch (Exception)
+            {
 
+                throw;
+            }
+        }
 
+        /// <summary>
+        /// Haalt de verschillende geboorteprecisies op
+        /// </summary>
+        /// <returns>List met selectlistitems</returns>
         public static List<SelectListItem> geboortePrecisies()
         {
             try
@@ -165,7 +202,7 @@ namespace AbInitio.Web.DAL
 
 
         }
-
+        
         /// <summary>
         /// Vind een persoon in de persoon tabel middels de id
         /// </summary>
@@ -415,6 +452,38 @@ namespace AbInitio.Web.DAL
             }
         }
 
+        public static RelatiePartial GetRelatieInfo(int relatieid)
+        {
+            try
+            {
+                RelatiePartial rp = new RelatiePartial();
+                using (DataConfig dbdc = new DataConfig())
+                {
+                    using (IDbCommand cmd = dbdc.CreateCommand())
+                    {
+                        cmd.CommandText = "SELECT rt2.relatietype FROM relatie r INNER JOIN relatieinformatietype rt ON r.relatietypeid = rt.relatieinformatietypeid ";
+                        cmd.CommandText += "INNER JOIN relatietype rt2 ON r.relatietypeid = rt2.relatietypeid ";
+                        cmd.CommandText += "WHERE r.relatieid = @relatieid";
+                        IDataParameter dp = cmd.CreateParameter();
+                        dp.ParameterName = "@relatieid";
+                        dp.Value = relatieid;
+                        cmd.Parameters.Add(dp);
+                        dbdc.Open();
+                        using (IDataReader reader = dbdc.CreateSqlReader())
+                        {
+                            object[] results = new object[reader.FieldCount];
+                            reader.Read();
+                            rp.RelatieType = reader.GetValue(0).ToString();
+                        }
+                    }
+                } return rp;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
         public static List<aanvullenderelatieinformatie> AanvullendeRelatieInfo(int relatieid)
         {
             try
@@ -469,7 +538,7 @@ namespace AbInitio.Web.DAL
                     dbdc.Open();
                     using (IDbCommand cmd = dbdc.CreateCommand())
                     {
-                        cmd.CommandText = "dbo.WijzigRelatie";
+                        cmd.CommandText = "dbo.SP_WijzigRelatie";
                         cmd.CommandType = CommandType.StoredProcedure;
 
                         IDataParameter pm = cmd.CreateParameter();
@@ -502,6 +571,91 @@ namespace AbInitio.Web.DAL
             {
                 error = e.Message;
             }
+        }
+        public static void ToevoegenRelatie(RelatieModel model, out string error)
+        {
+            try
+            {
+                error = string.Empty;
+                using (DataConfig dbdc = new DataConfig())
+                {
+                    dbdc.Open();
+                    using (IDbCommand cmd = dbdc.CreateCommand())
+                    {
+                        cmd.CommandText = "dbo.SP_ToevoegenRelatie";
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        IDataParameter pm = cmd.CreateParameter();
+                        pm.Direction = ParameterDirection.Input;
+                        
+                        pm = cmd.CreateParameter();
+                        pm.ParameterName = "@persoonid1";
+                        pm.Value = model.persoonid1;
+                        cmd.Parameters.Add(pm);
+
+                        pm = cmd.CreateParameter();
+                        pm.ParameterName = "@persoonid2";
+                        pm.Value = model.persoonid2;
+                        cmd.Parameters.Add(pm);
+
+                        pm = cmd.CreateParameter();
+                        pm.ParameterName = "@relatietypeid";
+                        pm.Value = model.relatietypeid;
+                        cmd.Parameters.Add(pm);
+
+                        cmd.ExecuteReader();
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                error = e.Message;
+            }
+        }
+        public static void ToevoegenAvr(RelatieModel model, out string error)
+        {
+            try
+            {
+                error = string.Empty;
+                using (DataConfig dbdc = new DataConfig())
+                {
+                    dbdc.Open();
+                    using (IDbCommand cmd = dbdc.CreateCommand())
+                    {
+                        cmd.CommandText = "dbo.SP_ToevoegenAvr";
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        IDataParameter pm = cmd.CreateParameter();
+                        pm.Direction = ParameterDirection.Input;
+
+                        pm = cmd.CreateParameter();
+                        pm.ParameterName = "@relatieid";
+                        pm.Value = model.relatieid;
+                        cmd.Parameters.Add(pm);
+
+                        pm = cmd.CreateParameter();
+                        pm.ParameterName = "@relatieinformatietypeid";
+                        pm.Value = model.AvRelatieID;
+                        cmd.Parameters.Add(pm);
+
+                        pm = cmd.CreateParameter();
+                        pm.ParameterName = "@relatieinformatie";
+                        pm.Value = model.relatieinformatie;
+                        cmd.Parameters.Add(pm);
+
+                        cmd.ExecuteReader();
+                    }
+                }
+
+            }
+            catch (Exception e)
+            {
+                error = e.Message;
+            }
+
+
+
+
         }
 
         /// <summary>

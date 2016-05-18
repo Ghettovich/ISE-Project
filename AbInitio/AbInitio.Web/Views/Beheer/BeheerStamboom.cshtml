@@ -57,8 +57,8 @@
     </div>
     <hr />
     
-    <a href="@(Url.Action("PersoonToevoegen", "Persoon", new { stamboomid = Model.stamboomid }))">Nieuw persoon</a>
-    <a href="@(Url.Action("RelatieToevoegen", "Persoon", new { stamboomid = Model.stamboomid }))">Nieuwe relatie</a>
+    <a href="@(Url.Action("PersoonToevoegen", "Beheer"))">Nieuw persoon</a>
+    <a href="@(Url.Action("ToevoegenRelatie", "Beheer"))">Nieuwe relatie</a>
 
     @Html.Partial("_BeheerStamboom", Model)
 </div>

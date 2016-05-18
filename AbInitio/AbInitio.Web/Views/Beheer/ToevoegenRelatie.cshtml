@@ -5,39 +5,38 @@
 
 <h2>ToevoegenRelatie</h2>
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm("ToevoegenRelatie", "Beheer", FormMethod.Post)) 
 {
-    @Html.AntiForgeryToken()
-    
+    @Html.AntiForgeryToken()    
+    <input type="hidden" value="@Model.persoonid1" name="persoonid1" />
     <div class="form-horizontal">
         <h4>relatie</h4>
         <hr />
-        <h3>Random shit toegevoeged zodat ik hopelijk kan committen...</h3>
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
-            @Html.LabelFor(model => model.persoonid1, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.Label("Persoon1", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.persoonid1, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.persoonid1, "", new { @class = "text-danger" })
+                <input type="text" class="form-control" name="name" value="@Model.persoon1.GeefVolledigeNaam" readonly />
             </div>
         </div>
-
         <div class="form-group">
-            @Html.LabelFor(model => model.relatietypeid, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.Label("Relatietypes", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.relatietypeid, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.relatietypeid, "", new { @class = "text-danger" })
+                @Html.DropDownList("relatietypeid", Model.relatietypes, new { @class = "form-control" })
             </div>
         </div>
-
         <div class="form-group">
-            @Html.LabelFor(model => model.persoonid2, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.Label("Personen", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.persoonid2, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.persoonid2, "", new { @class = "text-danger" })
+                @Html.DropDownList("persoonid2", Model.personen, new { @class = "form-control" })
             </div>
         </div>
-
+        <div class="form-group">
+            @Html.Label("Aanvullende info", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <textarea name="relatieinformatie" placeholder="Aanvullende info"></textarea>
+            </div>
+        </div>
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Create" class="btn btn-default" />

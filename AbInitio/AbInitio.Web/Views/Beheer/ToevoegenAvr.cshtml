@@ -1,0 +1,47 @@
+﻿@model AbInitio.Web.Models.RelatieModel
+
+@{
+    ViewBag.Title = "ToevoegenAvr";
+}
+
+<h2>ToevoegenAvr</h2>
+
+@using (Html.BeginForm("ToevoegenAvr", "Beheer", FormMethod.Post)) 
+{
+    @Html.AntiForgeryToken()
+    <input type="hidden" name="relatieid" value="@Model.relatieid"/>
+    <input type="hidden" name="persoonid1" value="@Model.persoon1.persoonid" />
+    <input type="hidden" name="persoonid2" value="@Model.persoon2.persoonid" />
+    <div class="form-horizontal">
+        <h4>aanvullenderelatieinformatie</h4>
+        <hr />
+        <p>Relatie tussen:</p>
+        <p>@Model.persoon1.GeefVolledigeNaam</p>
+        <p>Relatietype: @Model.Relatie.RelatieType</p>
+        <p>@Model.persoon2.GeefVolledigeNaam</p>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.Label("Relatie informatie type", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("AvRelatieID", Model.AvrTypes, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.Label("Aanvullende informatie", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <textarea cols="10" rows="10" name="relatieinformatie" required></textarea>
+                @Html.ValidationMessageFor(model => model.relatieinformatie, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
