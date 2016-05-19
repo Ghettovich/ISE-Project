@@ -659,6 +659,7 @@ namespace AbInitio.Web.DAL
                 error = e.Message;
             }
         }
+
         public static void ToevoegenAvr(RelatieModel model, out string error)
         {
             try
@@ -699,10 +700,6 @@ namespace AbInitio.Web.DAL
             {
                 error = e.Message;
             }
-
-
-
-
         }
 
         /// <summary>
@@ -718,7 +715,7 @@ namespace AbInitio.Web.DAL
                 {
                     using (IDbCommand cmd = dbdc.CreateCommand())
                     {
-                        int limit = 0;
+                        int limit = 30;
                         int count = 0;
                         cmd.CommandText = "SELECT * FROM persoon";
                         dbdc.Open();
@@ -844,6 +841,54 @@ namespace AbInitio.Web.DAL
             }
         }
 
+        public static void nieuwPersoonInDatabase(PersoonModel model)
+        {
+            try
+            {
+                using (DataConfig dbdc = new DataConfig())
+                {
+                    dbdc.Open();
+                    using (IDbCommand cmd = dbdc.CreateCommand())
+                    {
+                        cmd.CommandText = "dbo.spd_MaakPersoon";
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        IDataParameter pm = cmd.CreateParameter();
+                        pm.Direction = ParameterDirection.Input;
+
+                        cmd.Parameters.Add(new SqlParameter("@voornaam", string.IsNullOrEmpty(model.voornaam)
+                            ? (object)DBNull.Value : model.voornaam));
+                        cmd.Parameters.Add(new SqlParameter("@tussenvoegsel", string.IsNullOrEmpty(model.tussenvoegsel)
+                            ? (object)DBNull.Value : model.tussenvoegsel));
+                        cmd.Parameters.Add(new SqlParameter("@achternaam", string.IsNullOrEmpty(model.achternaam)
+                            ? (object)DBNull.Value : model.achternaam));
+                        cmd.Parameters.Add(new SqlParameter("@achtervoegsel", string.IsNullOrEmpty(model.achtervoegsel)
+                            ? (object)DBNull.Value : model.achtervoegsel));
+                        cmd.Parameters.Add(new SqlParameter("@overigenamen", string.IsNullOrEmpty(model.overigenamen)
+                            ? (object)DBNull.Value : model.overigenamen));
+                        cmd.Parameters.Add(new SqlParameter("@geboortenaam", string.IsNullOrEmpty(model.geboortenaam)
+                            ? (object)DBNull.Value : model.geboortenaam));
+                        cmd.Parameters.Add(new SqlParameter("@geslacht", string.IsNullOrEmpty(model.geslacht)
+                            ? (object)DBNull.Value : model.geslacht));
+                        cmd.Parameters.Add(new SqlParameter("@status", string.IsNullOrEmpty(model.status)
+                            ? (object)DBNull.Value : model.status));
+                        cmd.Parameters.Add(new SqlParameter("@geboortedatum", string.IsNullOrEmpty(model.geboortedatum)
+                            ? (object)DBNull.Value : model.geboortedatum));
+                        cmd.Parameters.Add(new SqlParameter("@geboorteprecisie", string.IsNullOrEmpty(model.geboorteprecisie)
+                            ? (object)DBNull.Value : model.geboorteprecisie));
+                        cmd.Parameters.Add(new SqlParameter("@geboortedatum2", string.IsNullOrEmpty(model.geboortedatum2)
+                            ? (object)DBNull.Value : model.geboortedatum2));
+
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
         public static void wijzigPersoonInDatabase(PersoonModel model)
         {
             try
@@ -882,6 +927,33 @@ namespace AbInitio.Web.DAL
                             ? (object)DBNull.Value : model.geboorteprecisie));
                         cmd.Parameters.Add(new SqlParameter("@geboortedatum2", string.IsNullOrEmpty(model.geboortedatum2)
                             ? (object)DBNull.Value : model.geboortedatum2));
+
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public static void verwijderPersoonInDatabase(int id)
+        {
+            try
+            {
+                using (DataConfig dbdc = new DataConfig())
+                {
+                    dbdc.Open();
+                    using (IDbCommand cmd = dbdc.CreateCommand())
+                    {
+                        cmd.CommandText = "dbo.spd_VerwijderPersoon";
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        IDataParameter pm = cmd.CreateParameter();
+                        pm.Direction = ParameterDirection.Input;
+
+                        cmd.Parameters.Add(new SqlParameter("@persoonid", id));
 
                         cmd.ExecuteNonQuery();
                     }
