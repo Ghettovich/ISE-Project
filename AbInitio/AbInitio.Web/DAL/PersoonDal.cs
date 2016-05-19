@@ -22,7 +22,7 @@ namespace AbInitio.Web.DAL
         /// Text is voor de items die in de dropdown te zien zijn
         /// </summary>
         /// <returns></returns>
-        public static List<SelectListItem> RelatieTypes()
+        public static List<SelectListItem> RelatieTypes(int relatietypeid)
         {
             try
             {
@@ -40,10 +40,19 @@ namespace AbInitio.Web.DAL
                                 object[] test = new object[reader.FieldCount];
                                 reader.GetValues(test);
                                 SelectListItem item = new SelectListItem();
-                                item.Selected = false;
+                                
                                 item.Value = test.GetValue(0).ToString();
                                 item.Text = test.GetValue(1).ToString();
                                 relaties.Add(item);
+
+                                if (relatietypeid > 0 && relatietypeid == (int)test.GetValue(0))
+                                {
+                                    item.Selected = true;
+                                }
+                                else
+                                {
+                                    item.Selected = false;
+                                }
                             }
                         }
                     }
@@ -60,9 +69,9 @@ namespace AbInitio.Web.DAL
         /// <summary>
         /// Dient alleen ff om de personen in een dropdown te krijgen voor toevoegen relaties
         /// </summary>
-        public static List<SelectListItem> PersonenLijst()
+        public static List<SelectListItem> PersonenLijst(int stamboomid)
         {
-            List<PersoonPartial> personen = AllePersonen();
+            List<PersoonPartial> personen = PersonenInStamboom(stamboomid);
             List<SelectListItem> listitems = new List<SelectListItem>();
 
             foreach (var item in personen)
@@ -465,18 +474,19 @@ namespace AbInitio.Web.DAL
             }
         }
 
-        public static void PersonenInRelatie(int relatieid, out int persoon1, out int persoon2)
+        public static void PersonenInRelatie(int relatieid, out int persoon1, out int persoon2, out int relatietypeid)
         {
             try
             {
                 persoon1 = 0;
                 persoon2 = 0;
+                relatietypeid = 0;
                 using (DataConfig dbdc = new DataConfig())
                 {
                     using (IDbCommand cmd = dbdc.CreateCommand())
                     {
 
-                        cmd.CommandText = "SELECT r.persoonid1, r.persoonid2 FROM relatie r WHERE r.relatieid = @relatieid";
+                        cmd.CommandText = "SELECT r.persoonid1, r.persoonid2, r.relatietypeid FROM relatie r WHERE r.relatieid = @relatieid";
                         IDataParameter dp = cmd.CreateParameter();
                         dp.ParameterName = "@relatieid";
                         dp.Value = relatieid;
@@ -489,6 +499,7 @@ namespace AbInitio.Web.DAL
                             reader.Read();
                             persoon1 = (int)reader.GetValue(0);
                             persoon2 = (int)reader.GetValue(1);
+                            relatietypeid = (int)reader.GetValue(2);
                         }
                     }
                 }
@@ -508,9 +519,9 @@ namespace AbInitio.Web.DAL
                 {
                     using (IDbCommand cmd = dbdc.CreateCommand())
                     {
-                        cmd.CommandText = "SELECT rt2.relatietype FROM relatie r INNER JOIN relatieinformatietype rt ON r.relatietypeid = rt.relatieinformatietypeid ";
-                        cmd.CommandText += "INNER JOIN relatietype rt2 ON r.relatietypeid = rt2.relatietypeid ";
-                        cmd.CommandText += "WHERE r.relatieid = @relatieid";
+                        cmd.CommandText = "SELECT rt.relatietype FROM relatie r INNER JOIN relatietype rt ON r.relatietypeid = rt.relatietypeid ";
+                        cmd.CommandText += "WHERE r.relatieid = @relatieid ";
+
                         IDataParameter dp = cmd.CreateParameter();
                         dp.ParameterName = "@relatieid";
                         dp.Value = relatieid;
@@ -531,19 +542,18 @@ namespace AbInitio.Web.DAL
             }
         }
 
-        public static List<aanvullenderelatieinformatie> AanvullendeRelatieInfo(int relatieid)
+        public static List<RelatiePartial> AanvullendeRelatieInfo(int relatieid)
         {
             try
             {
-                List<aanvullenderelatieinformatie> avr = new List<aanvullenderelatieinformatie>();
+                List<RelatiePartial> avr = new List<RelatiePartial>();
                 using (DataConfig dbdc = new DataConfig())
                 {
                     using (IDbCommand cmd = dbdc.CreateCommand())
                     {
-                        cmd.CommandText = "SELECT avr.relatieid, avr.relatieinformatie ";
-                        cmd.CommandText += "FROM aanvullenderelatieinformatie avr INNER JOIN relatie r ON avr.relatieid = r.relatieid ";
-                        cmd.CommandText += "INNER JOIN relatietype rt ON avr.relatieinformatietypeid = rt.relatietypeid ";
-                        cmd.CommandText += "WHERE avr.relatieid = @relatieid;";
+                        cmd.CommandText = "SELECT avr.aanvullenderelatieinformatieid, rit.relatieinformatietype, avr.relatieinformatie ";
+                        cmd.CommandText += "FROM aanvullenderelatieinformatie avr INNER JOIN relatieinformatietype rit ON avr.relatieinformatietypeid = rit.relatieinformatietypeid ";
+                        cmd.CommandText += "WHERE avr.relatieid = @relatieid";
 
                         IDataParameter dp = cmd.CreateParameter();
                         dp.ParameterName = "@relatieid";
@@ -557,10 +567,11 @@ namespace AbInitio.Web.DAL
 
                             while (reader.Read())
                             {
-                                avr.Add(new aanvullenderelatieinformatie
+                                avr.Add(new RelatiePartial
                                 {
-                                    relatieid = (int)reader.GetValue(0),
-                                    relatieinformatie = reader.GetValue(1).ToString()
+                                    AvrRelatieID = (int)reader.GetValue(0),
+                                    RelatieType = reader.GetValue(1).ToString(),
+                                    RelatieInformatie = reader.GetValue(2).ToString()
                                 });
                             }
                         }
@@ -705,6 +716,8 @@ namespace AbInitio.Web.DAL
 
         }
 
+        
+
         /// <summary>
         /// Alleen voor beheer
         /// </summary>
@@ -718,7 +731,7 @@ namespace AbInitio.Web.DAL
                 {
                     using (IDbCommand cmd = dbdc.CreateCommand())
                     {
-                        int limit = 0;
+                        int limit = 25;
                         int count = 0;
                         cmd.CommandText = "SELECT * FROM persoon";
                         dbdc.Open();

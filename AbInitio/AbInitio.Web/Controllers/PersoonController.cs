@@ -92,7 +92,7 @@ namespace AbInitio.Web.Controllers
 
             persoonid = 1;
             RelatieModel viewmodel = new RelatieModel();
-            viewmodel.Relatietypes = PersoonDal.RelatieTypes();
+            viewmodel.Relatietypes = PersoonDal.RelatieTypes(0);
             viewmodel.persoon1 = PersoonDal.GetPersoon(persoonid);
 
 

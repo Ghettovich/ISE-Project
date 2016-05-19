@@ -8,8 +8,7 @@
 
 @using (Html.BeginForm("WijzigRelatie", "Beheer", FormMethod.Post))
 {
-    @Html.AntiForgeryToken()
-    
+    @Html.AntiForgeryToken()    
     <div class="form-horizontal">
         <h4>relatie</h4>
         <hr />
@@ -42,6 +41,11 @@
         </div>
     </div>
 }
+<hr />
+
+<a class="avr_link" href="@(Url.Action("ToevoegenAvr", "Beheer", new { relatieid = Model.relatieid }))">
+    <span class="glyphicon glyphicon-plus"></span>
+</a>
 
 <div>
     @Html.ActionLink("Back to List", "Index")
