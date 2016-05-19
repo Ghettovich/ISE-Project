@@ -8,7 +8,6 @@
 @using (Html.BeginForm("ToevoegenRelatie", "Beheer", FormMethod.Post)) 
 {
     @Html.AntiForgeryToken()
-    @*<input type="hidden" value="@Model.persoonid1" name="persoonid1" />*@
     <input type="hidden" value="@Model.StamboomdID" name="StamboomdID" />
     <div class="form-horizontal">
         <h4>relatie</h4>
@@ -17,7 +16,7 @@
         <div class="form-group">
             @Html.Label("Personen", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("persoonid2", Model.Personen, new { @class = "form-control" })
+                @Html.DropDownList("persoonid1", Model.Personen, new { @class = "form-control" })
             </div>
         </div>
         <div class="form-group">

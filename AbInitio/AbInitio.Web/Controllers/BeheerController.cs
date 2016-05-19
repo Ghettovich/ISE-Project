@@ -121,16 +121,16 @@ namespace AbInitio.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult ToevoegenRelatie(RelatieModel model)
+        public ActionResult ToevoegenRelatie(RelatieModel viewmodel)
         {
             if (ModelState.IsValid)
             {
                 string error = string.Empty;
-                PersoonDal.ToevoegenRelatie(model, out error);
+                PersoonDal.ToevoegenRelatie(viewmodel, out error);
 
                 if (string.IsNullOrEmpty(error))
                 {
-                    return RedirectToAction("PersoonDetails", "Beheer", new { persoonid = model.persoonid1 });
+                    return RedirectToAction("PersoonDetails", "Beheer", new { persoonid = viewmodel.persoonid1 });
                 }
                 else
                 {
@@ -139,11 +139,10 @@ namespace AbInitio.Web.Controllers
             }
             else
             {
-                model.persoon1 = PersoonDal.GetPersoon(hc_persoonid);
-                model.persoonid1 = model.persoon1.persoonid;
-                model.Relatietypes = PersoonDal.RelatieTypes(model.relatietypeid);
-                model.Personen = PersoonDal.PersonenLijst(model.StamboomdID);
-            } return View(model);
+                viewmodel.Relatietypes = PersoonDal.RelatieTypes(0);
+                viewmodel.Personen = PersoonDal.PersonenLijst(viewmodel.StamboomdID);
+                viewmodel.StamboomdID = viewmodel.StamboomdID;
+            } return View(viewmodel);
         }
 
         [HttpGet]
