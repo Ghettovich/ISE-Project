@@ -57,10 +57,10 @@
                     @item.geboorteprecisie
                 </td>
                 <td class="actions">
-                    <a class="wijzig_persoon" href="@(Url.Action("WijzigPersoon", "Beheer", new { persoonid = item.persoonid }))">
+                    <a class="wijzig_persoon" href="@(Url.Action("WijzigPersoon", "Persoon", new { persoonid = item.persoonid }))">
                         <span class="glyphicon glyphicon-pencil"></span>
                     </a>
-                    <a class="delete_persoon" href="@(Url.Action("VerwijderPersoon", "Beheer", new { persoonid = item.persoonid }))">
+                    <a class="delete_persoon" href="@(Url.Action("VerwijderPersoon", "Persoon", new { persoonid = item.persoonid }))">
                         <span class="glyphicon glyphicon-remove"></span>
                     </a>
                 </td>
