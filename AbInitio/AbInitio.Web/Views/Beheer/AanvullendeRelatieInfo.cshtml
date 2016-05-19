@@ -1,0 +1,44 @@
+﻿@model AbInitio.Web.Models.RelatieModel
+@{
+    ViewBag.Title = "AanvullendeRelatieInfo";
+}
+
+<h2>AanvullendeRelatieInfo</h2>
+
+<p>Relatie tussen:</p>
+<p>@(Model.persoon1.GeefVolledigeNaam + " " + Model.persoon1.geboortedatum)</p>
+<p>@(Model.persoon2.GeefVolledigeNaam + " " + Model.persoon2.geboortedatum)</p>
+<p>Relatietype: @(Model.Relatie.RelatieType)</p>
+<hr />
+
+<p>
+    @Html.ActionLink("Toevoegen aanvullende info", "ToevoegenAvr",  new { relatieid= Model.relatieid })
+</p>
+<table class="table">
+    <tr>
+        <th>
+            Relatietype
+        </th>
+        <th>
+            Relatieinformatie
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model.AvrLijst) {
+    <tr>
+        <td>
+            @item.RelatieType
+        </td>
+        <td>
+            @item.RelatieInformatie
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.AvrRelatieID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.AvrRelatieID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.AvrRelatieID })
+        </td>
+    </tr>
+}
+
+</table>

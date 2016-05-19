@@ -30,7 +30,7 @@
         <div class="form-group">
             @Html.Label("Aanvullende informatie", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                <textarea cols="10" rows="10" name="relatieinformatie" required></textarea>
+                <textarea cols="25" rows="10" name="relatieinformatie" required></textarea>
                 @Html.ValidationMessageFor(model => model.relatieinformatie, "", new { @class = "text-danger" })
             </div>
         </div>
