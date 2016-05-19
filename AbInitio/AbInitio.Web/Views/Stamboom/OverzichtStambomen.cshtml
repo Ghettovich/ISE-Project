@@ -16,12 +16,6 @@
             <input type="text" name="familieNaam" required />
         </div>
 
-        <div>
-            @Html.Label("account")
-        </div>
-        <div>
-            <input type="text" name="accountId" required />
-        </div>
         <br />
         <input type="submit" class="btn btn-primary" value="Zoeken" />
     </fieldset>
@@ -45,7 +39,7 @@
                     @item.stamboomId
                 </td>
                 <td>
-                    @Html.ActionLink(item.familieNaam, "Stamboom", new { stamboomId = item.stamboomId, accountId = item.accountId } )
+                    @Html.ActionLink(item.familieNaam, "Stamboom", new { stamboomId = item.stamboomId} )
                 </td>
             </tr>
         }

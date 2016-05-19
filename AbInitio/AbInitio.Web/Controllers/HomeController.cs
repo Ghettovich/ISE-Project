@@ -26,5 +26,12 @@ namespace AbInitio.Web.Controllers
 
             return View();
         }
+        
+        [HttpGet]
+        public ActionResult logIn(int accountId)
+        {
+            System.Web.HttpContext.Current.Session["account"] = accountId;
+            return Redirect("/Home");
+        }
     }
 }

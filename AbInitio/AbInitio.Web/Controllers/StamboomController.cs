@@ -27,9 +27,9 @@ namespace AbInitio.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult maakStamboom(string familienaam, int accountId)
+        public ActionResult maakStamboom(string familienaam)
         {
-            stamboomDAL.maakStamboom(accountId, familienaam);
+            stamboomDAL.maakStamboom((int)Session["account"], familienaam);
             return Redirect("overzichtStambomen");
         }
 
@@ -40,21 +40,21 @@ namespace AbInitio.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult overzichtStambomen(int accountId, string familieNaam)
+        public ActionResult overzichtStambomen(string familieNaam)
         {
             if (familieNaam.Length < 1 ) { return View(); }
-            List<StamboomModel> stambomen = stamboomDAL.getStambomen(accountId, familieNaam);
+            List<StamboomModel> stambomen = stamboomDAL.getStambomen((int)Session["account"], familieNaam);
             return View(stambomen);
         }
 
         [HttpGet]
-        public ActionResult Stamboom(int stamboomId, int accountId)
+        public ActionResult Stamboom(int stamboomId)
         {
             StamboomViewModel viewModel = new StamboomViewModel();
             try
             {
                 viewModel.stamboom = StamboomDAL.GetStamboom(stamboomId);
-                viewModel.personen = stamboomDAL.getPersonenInStamboom(stamboomId, accountId);
+                viewModel.personen = stamboomDAL.getPersonenInStamboom(stamboomId, (int)Session["account"]);
 
                 return View(viewModel);
             }
