@@ -23,21 +23,21 @@ namespace AbInitio.Web.Controllers
 
 
         [HttpPost]
-        public ActionResult Zoek(string voornaam = null, string achternaam = null, string geslacht = null, string geboortedatum = null)
+        public ActionResult Zoek(string voornaam, string achternaam, string geslacht, string geboortedatum)
         {
             PersoonDal zoeken = new PersoonDal();
+            PersoonModel model = new PersoonModel();
+            model.voornaam = voornaam;
+            model.achternaam = achternaam;
+            model.geslacht = geslacht;
+            model.geboortedatum = geboortedatum;
 
             BeheerViewModel viewmodel = new BeheerViewModel();
 
-            viewmodel.PersoonLijst = PersoonDal.zoekenPersonen(voornaam, achternaam,geslacht, geboortedatum);
-
-            return View(viewmodel);
-            
-
-            //List<ZoekenViewModel> personen = new List<ZoekenViewModel>();
-            //    personen = zoeken.zoekenPersonen(voornaam, achternaam, geboortedatum, geslacht);
-            //    return PartialView("_ZoekResultatenPartial",personen);
+                viewmodel.PersoonLijst = PersoonDal.zoekenPersonen(model);
+                return View("_ZoekResultatenPartial", viewmodel);
+     
         }
-            
+
     }
 }

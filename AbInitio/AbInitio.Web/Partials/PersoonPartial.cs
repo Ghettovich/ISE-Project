@@ -10,6 +10,7 @@ namespace AbInitio.Web.DbContexts
         public new string status { get; set; }
         public new string geboortedatum { get; set; }
         public new string geboortedatum2 { get; set; }
+        public int stamboomid { get; set; }
 
         public string RelatieType { get; set; }
         public int RelatieID { get; set; }

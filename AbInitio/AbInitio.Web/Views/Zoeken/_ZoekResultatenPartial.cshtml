@@ -1,59 +1,45 @@
-﻿@model AbInitio.Web.ViewModels.ZoekenViewModel
+﻿@model AbInitio.Web.ViewModels.BeheerViewModel
 
+<h3>ZoekResultaten</h3>
+<br />
+<h6>Klik op een rij om naar de stamboom te gaan.</h6>
+<h6>Klik op het potlood voor persoon details.</h6>
 <div class="beheertab_content">
     <table class="table table-striped">
-        <tr>
-            <th>
-                Voornaam
-            </th>
-            <th>
-                Tussenvoegsel
-            </th>
-            <th>
-                Achternaam
-            </th>
-            <th>
-                Geboortenaam
-            </th>
-            <th>
-                Geslacht
-            </th>
-            <th>
-                Status
-            </th>
-            <th>
-                Geboortedatum
-            </th>
-            <th>
-                Geboorteprecisie
-            </th>
-            <th></th>
-        </tr>
-        @foreach (var item in ViewBag.MyList)
-        {
-            <tr class="persoon_row" data-href="@Url.Action("PersoonDetails", "Beheer", new { id = item.persoonid })">
-                <td>
-                    @item.voornaam
-                </td>
-                <td>
-                    @item.tussenvoegsel
-                </td>
-                <td>
-                    @item.achternaam
-                </td>
-                <td>
-                    @item.geboortenaam
-                </td>
-                <td>
-                    @item.geslacht
-                </td>
-                <td>
-                    @item.geboortedatum
-                </td>
-                <td>
-                    @item.geboorteprecisie
-                </td>
+        <thead>
+            <tr>
+                <th>Voornaam</th>
+                <th>Tussenvoegsel</th>
+                <th>Achternaam</th>
+                <th>Geboortenaam</th>
+                <th>Geboortedatum</th>
+                <th>Geboorteprecisie</th>
+                <th>Geboortedatum2</th>
+                <th></th>
             </tr>
-        }
+        </thead>
+        <tbody>
+            @foreach (var item in Model.PersoonLijst)
+            {
+                <tr class="stamboom_row" data-href="@Url.Action("Stamboom", "Stamboom", new  { stamboomId = item.stamboomid })">
+                    <td>@(item.voornaam)</td>
+                    <td>@(item.tussenvoegsel)</td>
+                    <td>@(item.achternaam)</td>
+                    <td>@(item.geboortenaam)</td>
+                    <td>@(item.geboortedatum)</td>
+                    <td>@(item.geboorteprecisie)</td>
+                    <td>@(item.geboortedatum2)</td>
+                    <td class="actions">
+                        <a href="@(Url.Action("PersoonDetails", "Beheer", new { persoonid = item.persoonid }))">
+                            <span class="glyphicon glyphicon-pencil"></span>
+                        </a>
+                    </td>
+                </tr>
+            }
+
+        </tbody>
     </table>
+</div>
+<div>
+    @Html.ActionLink("Terug naar zoeken", "Zoek")
 </div>

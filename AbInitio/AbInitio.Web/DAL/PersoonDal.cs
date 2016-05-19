@@ -758,12 +758,11 @@ namespace AbInitio.Web.DAL
 
 
 
-        public static List<PersoonPartial> zoekenPersonen(string voornaam = null, string achternaam = null, string geslacht = null, string geboortedatum = null)
+        public static List<PersoonPartial> zoekenPersonen(PersoonModel model)
         {
             List<PersoonPartial> persoon_list = new List<PersoonPartial>();
             try
             {
-                int accounttype = 1;
                 using (DataConfig dbdc = new DataConfig())
                 {
                     dbdc.Open();
@@ -775,42 +774,17 @@ namespace AbInitio.Web.DAL
                         IDataParameter pm = cmd.CreateParameter();
                         pm.Direction = ParameterDirection.Input;
 
-                        //cmd.Parameters.Add(new SqlParameter("@voornaam", string.IsNullOrEmpty(model.Persoon.voornaam)
-                        //    ? (object)DBNull.Value : model.Persoon.voornaam));
+                        cmd.Parameters.Add(new SqlParameter("@voornaam", string.IsNullOrEmpty(model.voornaam)
+                            ? (object)DBNull.Value : model.voornaam));
 
-                        //cmd.Parameters.Add(new SqlParameter("@achternaam", string.IsNullOrEmpty(model.Persoon.achternaam)
-                        //    ? (object)DBNull.Value : model.Persoon.achternaam));
+                        cmd.Parameters.Add(new SqlParameter("@achternaam", string.IsNullOrEmpty(model.achternaam)
+                            ? (object)DBNull.Value : model.achternaam));
 
-                        //cmd.Parameters.Add(new SqlParameter("@geslacht", string.IsNullOrEmpty(model.Persoon.geslacht)
-                        //    ? (object)DBNull.Value : model.Persoon.geslacht));
+                        cmd.Parameters.Add(new SqlParameter("@geslacht", string.IsNullOrEmpty(model.geslacht)
+                            ? (object)DBNull.Value : model.geslacht));
 
-                        //cmd.Parameters.Add(new SqlParameter("@geboortedatum", string.IsNullOrEmpty(model.Persoon.geboortedatum)
-                        //    ? (object)DBNull.Value : model.Persoon.geboortedatum));
-
-
-                       pm.ParameterName = "@voornaam";
-                       pm.Value = voornaam;
-                       cmd.Parameters.Add(pm);
-
-                       pm = cmd.CreateParameter();
-                       pm.ParameterName = "@achternaam";
-                       pm.Value = achternaam;
-                       cmd.Parameters.Add(pm);
-
-                       pm = cmd.CreateParameter();
-                       pm.ParameterName = "@geboortedatum";
-                       pm.Value = geboortedatum;
-                       cmd.Parameters.Add(pm);
-
-                       pm = cmd.CreateParameter();
-                       pm.ParameterName = "@geslacht";
-                       pm.Value = geslacht;
-                       cmd.Parameters.Add(pm);
-
-                        pm = cmd.CreateParameter();
-                        pm.ParameterName = "@account";
-                        pm.Value = accounttype;
-                        cmd.Parameters.Add(pm);
+                        cmd.Parameters.Add(new SqlParameter("@geboortedatum", string.IsNullOrEmpty(model.geboortedatum)
+                            ? (object)DBNull.Value : model.geboortedatum));
 
                         reader = cmd.ExecuteReader();
                         while (reader.Read())
@@ -820,17 +794,19 @@ namespace AbInitio.Web.DAL
                             persoon_list.Add(new PersoonPartial
                             {
                                 persoonid = (int)results.GetValue(0),
+                                stamboomid = (int)results.GetValue(12),
                                 voornaam = (results.GetValue(1) != null ? results.GetValue(1).ToString() : string.Empty),
-                                overigenamen = (results.GetValue(2) != null ? results.GetValue(2).ToString() : string.Empty),
-                                tussenvoegsel = (results.GetValue(3) != null ? results.GetValue(3).ToString() : string.Empty),
-                                achternaam = (results.GetValue(4) != null ? results.GetValue(4).ToString() : string.Empty),
-                                achtervoegsel = (results.GetValue(5) != null ? results.GetValue(5).ToString() : string.Empty),
-                                geboortenaam = (results.GetValue(6) != null ? results.GetValue(6).ToString() : string.Empty),
-                                geslacht = (results.GetValue(7) != null ? results.GetValue(7).ToString() : string.Empty),
-                                status = (results.GetValue(8) != null ? results.GetValue(8).ToString() : string.Empty),
-                                geboortedatum = (results.GetValue(9) != null ? results.GetValue(9).ToString() : string.Empty),
-                                geboorteprecisie = (results.GetValue(10) != null ? results.GetValue(10).ToString() : string.Empty),
-                                geboortedatum2 = (results.GetValue(11) != null ? results.GetValue(11).ToString() : string.Empty)
+                                overigenamen = (results.GetValue(10) != null ? results.GetValue(10).ToString() : string.Empty),
+                                tussenvoegsel = (results.GetValue(2) != null ? results.GetValue(2).ToString() : string.Empty),
+                                achternaam = (results.GetValue(3) != null ? results.GetValue(3).ToString() : string.Empty),
+                                achtervoegsel = (results.GetValue(11) != null ? results.GetValue(11).ToString() : string.Empty),
+                                geboortenaam = (results.GetValue(4) != null ? results.GetValue(4).ToString() : string.Empty),
+                                geslacht = (results.GetValue(8) != null ? results.GetValue(8).ToString() : string.Empty),
+                                status = (results.GetValue(9) != null ? results.GetValue(9).ToString() : string.Empty),
+                                geboortedatum = (results.GetValue(5) != null ? results.GetValue(5).ToString() : string.Empty),
+                                geboorteprecisie = (results.GetValue(6) != null ? results.GetValue(6).ToString() : string.Empty),
+                                geboortedatum2 = (results.GetValue(7) != null ? results.GetValue(7).ToString() : string.Empty)
+
                             });
                         }
 
