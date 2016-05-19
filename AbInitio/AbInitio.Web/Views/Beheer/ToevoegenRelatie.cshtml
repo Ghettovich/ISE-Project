@@ -8,33 +8,28 @@
 @using (Html.BeginForm("ToevoegenRelatie", "Beheer", FormMethod.Post)) 
 {
     @Html.AntiForgeryToken()
-    <input type="hidden" value="@Model.persoonid1" name="persoonid1" />
+    @*<input type="hidden" value="@Model.persoonid1" name="persoonid1" />*@
+    <input type="hidden" value="@Model.StamboomdID" name="StamboomdID" />
     <div class="form-horizontal">
         <h4>relatie</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
-            @Html.Label("Persoon1", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.Label("Personen", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                <input type="text" class="form-control" name="name" value="@Model.persoon1.GeefVolledigeNaam" readonly />
+                @Html.DropDownList("persoonid2", Model.Personen, new { @class = "form-control" })
             </div>
         </div>
         <div class="form-group">
             @Html.Label("Relatietypes", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("relatietypeid", Model.relatietypes, new { @class = "form-control" })
+                @Html.DropDownList("relatietypeid", Model.Relatietypes, new { @class = "form-control" })
             </div>
         </div>
         <div class="form-group">
             @Html.Label("Personen", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("persoonid2", Model.personen, new { @class = "form-control" })
-            </div>
-        </div>
-        <div class="form-group">
-            @Html.Label("Aanvullende info", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                <textarea name="relatieinformatie" placeholder="Aanvullende info"></textarea>
+                @Html.DropDownList("persoonid2", Model.Personen, new { @class = "form-control" })
             </div>
         </div>
         <div class="form-group">

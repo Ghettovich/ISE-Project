@@ -21,6 +21,9 @@
                     @item.RelatieType
                 </td>                
                 <td class="actions">
+                    <a class="relatie_link" href="@(Url.Action("AanvullendeRelatieInfo", "Beheer", new { relatieid = item.RelatieID }))">
+                        <span class="glyphicon glyphicon-book"></span>
+                    </a>
                     <a class="avr_link" href="@(Url.Action("ToevoegenAvr", "Beheer", new { relatieid = item.RelatieID }))">
                         <span class="glyphicon glyphicon-plus"></span>
                     </a>
