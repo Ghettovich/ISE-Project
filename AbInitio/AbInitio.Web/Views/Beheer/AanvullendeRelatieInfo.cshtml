@@ -12,7 +12,7 @@
 <hr />
 
 <p>
-    @Html.ActionLink("Toevoegen aanvullende info", "ToevoegenAvr",  new { relatieid= Model.relatieid })
+    <a href="@Url.Action("ToevoegenAvr", "Beheer", new { relatieid = Model.relatieid })">Toevoegen aanvullende relatie</a>
 </p>
 <table class="table">
     <tr>
@@ -24,21 +24,21 @@
         </th>
         <th></th>
     </tr>
+    @foreach (var item in Model.AvrLijst) {
+        <tr>
+            <td>
+                @item.RelatieType
+            </td>
+            <td>
+                @item.RelatieInformatie
+            </td>
+            <td>
 
-@foreach (var item in Model.AvrLijst) {
-    <tr>
-        <td>
-            @item.RelatieType
-        </td>
-        <td>
-            @item.RelatieInformatie
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.AvrRelatieID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.AvrRelatieID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.AvrRelatieID })
-        </td>
-    </tr>
-}
+                @Html.ActionLink("Edit", "Edit", new { id=item.AvrRelatieID }) |
+                @Html.ActionLink("Details", "Details", new { id=item.AvrRelatieID }) |
+                @Html.ActionLink("Delete", "Delete", new { id=item.AvrRelatieID })
+            </td>
+        </tr>
+    }
 
 </table>

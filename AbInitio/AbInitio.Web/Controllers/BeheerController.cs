@@ -13,7 +13,7 @@ namespace AbInitio.Web.Controllers
     
     public class BeheerController : Controller
     {
-        int hc_persoonid = 648;
+        //int hc_persoonid = 648;
 
         // GET: Beheer
         public ActionResult Index(string zoekterm = null)
@@ -112,8 +112,8 @@ namespace AbInitio.Web.Controllers
         public ActionResult ToevoegenRelatie(int stamboomid)
         {
             RelatieModel viewmodel = new RelatieModel();
-            viewmodel.persoon1 = PersoonDal.GetPersoon(hc_persoonid);
-            viewmodel.persoonid1 = viewmodel.persoon1.persoonid;
+            //viewmodel.persoon1 = PersoonDal.GetPersoon(hc_persoonid);
+            //viewmodel.persoonid1 = viewmodel.persoon1.persoonid;
             viewmodel.Relatietypes = PersoonDal.RelatieTypes(0);
             viewmodel.Personen = PersoonDal.PersonenLijst(stamboomid);
             viewmodel.StamboomdID = stamboomid;
@@ -127,7 +127,6 @@ namespace AbInitio.Web.Controllers
             {
                 string error = string.Empty;
                 PersoonDal.ToevoegenRelatie(viewmodel, out error);
-
                 if (string.IsNullOrEmpty(error))
                 {
                     return RedirectToAction("PersoonDetails", "Beheer", new { persoonid = viewmodel.persoonid1 });
@@ -214,6 +213,16 @@ namespace AbInitio.Web.Controllers
             return HttpNotFound("Relatie niet gevonden");
         }
 
+        [HttpGet]
+        public ActionResult VerwijderRelatie(int relatieid, int persoonid)
+        {
+            string error;
+            RelatieDAL.VerwijderRelatie(relatieid, out error);
+            if (string.IsNullOrEmpty(error))
+            {
+                return RedirectToAction("PersoonDetails", new { persoonid = persoonid });
+            } return HttpNotFound(error);
+        }
 
         [HttpGet]
         public ActionResult WijzigPersoon(int id)
