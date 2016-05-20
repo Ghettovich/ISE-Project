@@ -23,7 +23,8 @@
                     <li>@Html.ActionLink("Gebruiker1", "logIn", "Home",new { accountId = 1}, null)</li>
                     <li>@Html.ActionLink("Gebruiker2", "logIn", "Home",new { accountId = 2}, null)</li>
                     <li>@Html.ActionLink("Betaalde gebruiker", "BetaaldeGebruiker", "Personen")</li>
-                    <li>@Html.ActionLink("Beheer", "Index", "Beheer")</li>                  
+                    <li>@Html.ActionLink("Beheer", "Index", "Beheer")</li>   
+                    <li>@Html.ActionLink("Log uit", "logIn", "Home", new { accountId = 0 }, null)</li>               
                 </ul>
             </div>
         </div>

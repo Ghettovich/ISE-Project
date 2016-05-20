@@ -60,29 +60,7 @@
         <div class="form-group">
             @Html.Label("Geslacht", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @{
-                    if (Model.geslacht == "M")
-                    {
-                        <label for="Man">Man</label>
-                        <input type="radio" class="form-control" name="geslacht" id="Man" value="M" checked />
-                        <label for="Vrouw">Vrouw</label>
-                        <input type="radio" class="form-control" name="geslacht" id="Vrouw" value="V" />
-                    }
-                    else if (Model.geslacht == "V")
-                    {
-                        <label for="Man">Man</label>
-                        <input type="radio" class="form-control" name="geslacht" id="Man" value="M"  />
-                        <label for="Vrouw">Vrouw</label>
-                        <input type="radio" class="form-control" name="geslacht" id="Vrouw" value="V" checked/>
-                    }
-                    else
-                    {
-                        <label for="Man">Man</label>
-                        <input type="radio" class="form-control" name="geslacht" id="Man" value="M" />
-                        <label for="Vrouw">Vrouw</label>
-                        <input type="radio" class="form-control" name="geslacht" id="Vrouw" value="V" />
-                    }
-                }
+                @Html.DropDownList("geslacht", Model.geslachtOpties, "", new { @class = "form-control" })
             </div>
         </div>
 
@@ -90,39 +68,37 @@
             @Html.Label("Status", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.DropDownList("status", Model.statussen, "", new { @class = "form-control" })
-                
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.Label("Geboortedatum", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                <input type="text" class="form-control" name="geboortedatum" value="@Model.geboortedatum"  />
             </div>
         </div>
 
         <div class="form-group">
             @Html.Label("Geboorte precisie", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                 @Html.DropDownList("geboortePrecisie", Model.geboortePrecisies, "", new { @class = "form-control" })
+            <div class="col-md-10 precisie">
+                @Html.DropDownList("geboortePrecisie", Model.geboortePrecisies, "", new { @class = "form-control" })
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="form-group geboortedatum">
+            @Html.Label("Geboortedatum", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <input type="text" class="form-control" id="geboortedatumText" name="geboortedatum" value="@Model.geboortedatum"  />
+            </div>
+        </div>
+
+        <div class="form-group geboortedatum2">
             @Html.Label("geboortedatum2", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                <input type="text" class="form-control" name="geboortedatum2" value="@Model.geboortedatum2"  />
+                <input type="text" class="form-control" id="geboortedatum2Text" name="geboortedatum2" value="@Model.geboortedatum2"  />
             </div>
         </div>
 
         <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
+            <div class="col-md-2">
+                <button type="button" class="btn btn-default" onclick="location.href = '../../Beheer/Personen'">Terug naar lijst</button>
+            </div>
+            <div class="col-md-2">
                 <input type="submit" value="Save" class="btn btn-default" />
             </div>
         </div>
     </div>
 }
-
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>

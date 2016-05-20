@@ -62,7 +62,7 @@
         </dt>
 
         <dd>
-            @(Model.Persoon.geslacht != null ? @Model.Persoon.geslacht : "Onbekend")
+            @(Model.Persoon.GeefGeslacht)
         </dd>
 
         <dt>
@@ -70,7 +70,7 @@
         </dt>
 
         <dd>
-            @Model.Persoon.status
+            @Model.Persoon.geefStatus
         </dd>
 
         <dt>
@@ -100,8 +100,7 @@
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Persoon.persoonid }) |
-    @Html.ActionLink("Back to List", "Personen")
+    <a class="btn btn-default" href="@Url.Action("WijzigPersoon", "Persoon", new { persoonId = Model.Persoon.persoonid })">Wijzig persoon</a>
 </p>
 <div class="row">
     <div class="col-md-2">
@@ -121,6 +120,20 @@
         </form>
     </div>
     @Html.Partial("_RelatiesTotPersoon", Model)
-
 </div>
-
+<div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                Verwijder relatie
+            </div>
+            <div class="modal-body">
+                Wil je deze relatie zeker weten verwijderen?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <a class="btn btn-danger delete_relatie">Delete</a>
+            </div>
+        </div>
+    </div>
+</div>

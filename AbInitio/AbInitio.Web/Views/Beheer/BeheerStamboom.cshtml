@@ -56,9 +56,9 @@
         </form>
     </div>
     <hr />
-    
-    <a href="@(Url.Action("PersoonToevoegen", "Beheer"))">Nieuw persoon</a>
-    <a href="@(Url.Action("ToevoegenRelatie", "Beheer", new { Model.Stamboom.stamboomid }))">Nieuwe relatie</a>
+        
+    <a class="btn btn-primary" href="@(Url.Action("NieuwPersoon", "Persoon"))">Nieuw persoon</a>
+    <a class="btn btn-primary" href="@(Url.Action("ToevoegenRelatie", "Beheer", new { Model.Stamboom.stamboomid }))">Nieuwe relatie</a>
 
     @Html.Partial("_BeheerStamboom", Model)
 </div>

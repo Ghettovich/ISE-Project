@@ -29,6 +29,10 @@ namespace AbInitio.Web.Controllers
         [HttpPost]
         public ActionResult maakStamboom(string familienaam)
         {
+            if(Session["account"] != null)
+            {
+                return Redirect("/Home");
+            }
             stamboomDAL.maakStamboom((int)Session["account"], familienaam);
             return Redirect("overzichtStambomen");
         }
@@ -42,6 +46,10 @@ namespace AbInitio.Web.Controllers
         [HttpPost]
         public ActionResult overzichtStambomen(string familieNaam)
         {
+            if (Session["account"] == null)
+            {
+                return Redirect("/Home");
+            }
             if (familieNaam.Length < 1 ) { return View(); }
             List<StamboomModel> stambomen = stamboomDAL.getStambomen((int)Session["account"], familieNaam);
             return View(stambomen);
@@ -53,8 +61,16 @@ namespace AbInitio.Web.Controllers
             StamboomViewModel viewModel = new StamboomViewModel();
             try
             {
+                int accountId;
                 viewModel.stamboom = StamboomDAL.GetStamboom(stamboomId);
-                viewModel.personen = stamboomDAL.getPersonenInStamboom(stamboomId, (int)Session["account"]);
+                if (Session["account"] != null) {
+                    accountId = (int)Session["account"];
+                }
+                else
+                {
+                    accountId = 0;
+                }
+                viewModel.personen = stamboomDAL.getPersonenInStamboom(stamboomId,accountId );
 
                 return View(viewModel);
             }
