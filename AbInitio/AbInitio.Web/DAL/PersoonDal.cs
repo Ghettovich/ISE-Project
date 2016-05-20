@@ -717,7 +717,7 @@ namespace AbInitio.Web.DAL
                     {
                         int limit = 30;
                         int count = 0;
-                        cmd.CommandText = "SELECT * FROM persoon";
+                        cmd.CommandText = "SELECT * FROM persoon ORDER BY persoonid DESC";
                         dbdc.Open();
                         using (IDataReader dr = dbdc.CreateSqlReader())
                         {
