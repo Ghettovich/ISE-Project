@@ -201,6 +201,22 @@ namespace AbInitio.Web.DAL
             }
         }
 
+        public static List<SelectListItem> geslachtOptiesOphalen()
+        {
+            List<SelectListItem> geslachtOpties = new List<SelectListItem>();
+            SelectListItem item = new SelectListItem();
+            SelectListItem item2 = new SelectListItem();
+            item.Selected = false;
+            item.Value = "M";
+            item.Text = "Man";
+            geslachtOpties.Add(item);
+            item2.Value = "V";
+            item2.Text = "Vrouw";
+            geslachtOpties.Add(item2);
+
+            return geslachtOpties;
+        }
+
         /// <summary>
         /// Haalt de personen op en de relatie types tot deze persoon
         /// </summary>

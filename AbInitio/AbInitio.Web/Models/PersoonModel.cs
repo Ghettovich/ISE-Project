@@ -24,6 +24,7 @@ namespace AbInitio.Web.Models
         public string geboortedatum2 { get; set; }
 
         public List<SelectListItem> geboortePrecisies { get; set; }
+        public List<SelectListItem> geslachtOpties { get; set; }
         public List<SelectListItem> statussen { get; set; }
     }
 
