@@ -829,7 +829,7 @@ namespace AbInitio.Web.DAL
                                 geboortenaam = (results.GetValue(4) != null ? results.GetValue(4).ToString() : string.Empty),
                                 geslacht = (results.GetValue(8) != null ? results.GetValue(8).ToString() : string.Empty),
                                 status = (results.GetValue(9) != null ? results.GetValue(9).ToString() : string.Empty),
-                                geboortedatum = (results.GetValue(5) != null ? results.GetValue(5).ToString() : string.Empty),
+                                geboortedatum = (results.GetValue(5) != null ? string.Format("{MM-dd-yy}",  results.GetValue(5)) : string.Empty),
                                 geboorteprecisie = (results.GetValue(6) != null ? results.GetValue(6).ToString() : string.Empty),
                                 geboortedatum2 = (results.GetValue(7) != null ? results.GetValue(7).ToString() : string.Empty)
 

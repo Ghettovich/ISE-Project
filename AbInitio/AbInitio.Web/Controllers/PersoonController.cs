@@ -199,11 +199,10 @@ namespace AbInitio.Web.Controllers
         }
 
         [HttpGet]
-        public ActionResult VerwijderPersoon(int persoonId)
+        public ActionResult VerwijderPersoon(int persoonid)
         {
-            PersoonDal.verwijderPersoonInDatabase(persoonId);
-
-            return Redirect("../Beheer/Personen");
+            PersoonDal.verwijderPersoonInDatabase(persoonid);
+            return RedirectToAction("PersoonDetails", "Beheer", new { persoonid = persoonid });
         }
     }
 }
