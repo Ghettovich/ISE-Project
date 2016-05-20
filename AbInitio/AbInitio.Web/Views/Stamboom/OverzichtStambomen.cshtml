@@ -9,19 +9,16 @@
 @using (Html.BeginForm())
 {
     <fieldset>
-        <div class="editor-label">
-            @Html.Label("Zoeken")
+        <div class="form-group">
+            <input type="text" class="form-control" name="familieNaam" id="familieNaam" placeholder="Familinaam" />
         </div>
-        <div>
-            <input type="text" name="familieNaam" required />
-        </div>
+        <button type="submit" class="btn btn-default">Zoek</button>
 
-        <br />
-        <input type="submit" class="btn btn-primary" value="Zoeken" />
     </fieldset>
 }
 
 <table class="table table-striped">
+    <br />
     <tr>
         <th>
             Id stamboom

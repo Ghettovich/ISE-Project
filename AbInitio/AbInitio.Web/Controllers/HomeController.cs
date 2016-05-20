@@ -30,6 +30,11 @@ namespace AbInitio.Web.Controllers
         [HttpGet]
         public ActionResult logIn(int accountId)
         {
+            if (accountId == 0)
+            {
+                Session.Remove("account");
+                return Redirect("/Home");
+            }
             System.Web.HttpContext.Current.Session["account"] = accountId;
             return Redirect("/Home");
         }
