@@ -9,6 +9,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Globalization;
 
 namespace AbInitio.Web.DAL
 {
@@ -819,6 +820,7 @@ namespace AbInitio.Web.DAL
                             reader.GetValues(results);
                             persoon_list.Add(new PersoonPartial
                             {
+               
                                 persoonid = (int)results.GetValue(0),
                                 stamboomid = (int)results.GetValue(12),
                                 voornaam = (results.GetValue(1) != null ? results.GetValue(1).ToString() : string.Empty),
@@ -829,9 +831,10 @@ namespace AbInitio.Web.DAL
                                 geboortenaam = (results.GetValue(4) != null ? results.GetValue(4).ToString() : string.Empty),
                                 geslacht = (results.GetValue(8) != null ? results.GetValue(8).ToString() : string.Empty),
                                 status = (results.GetValue(9) != null ? results.GetValue(9).ToString() : string.Empty),
-                                geboortedatum = (results.GetValue(5) != null ? string.Format("{MM-dd-yy}",  results.GetValue(5)) : string.Empty),
+                                geboortedatum = (results.GetValue(5) != null  ? results.GetValue(5).ToString().Substring(0,9) : string.Empty),
                                 geboorteprecisie = (results.GetValue(6) != null ? results.GetValue(6).ToString() : string.Empty),
-                                geboortedatum2 = (results.GetValue(7) != null ? results.GetValue(7).ToString() : string.Empty)
+                                geboortedatum2 = (results.GetValue(7) != null && results.GetValue(7).ToString().Length > 0 ? results.GetValue(7).ToString().Substring(0,9) : string.Empty),
+
 
                             });
                         }
