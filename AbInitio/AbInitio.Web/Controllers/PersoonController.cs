@@ -64,6 +64,7 @@ namespace AbInitio.Web.Controllers
         {
             PersoonModel model = new PersoonModel();
 
+            model.geslachtOpties = PersoonDal.geslachtOptiesOphalen();
             model.statussen = PersoonDal.statussen();
             model.geboortePrecisies = PersoonDal.geboortePrecisies();
 
@@ -141,6 +142,7 @@ namespace AbInitio.Web.Controllers
             model.geboortedatum = p.geboortedatum.ToString();
             model.geboorteprecisie = p.geboorteprecisie;
             model.geboortedatum2 = p.geboortedatum2.ToString();
+            model.geslachtOpties = PersoonDal.geslachtOptiesOphalen();
             model.statussen = PersoonDal.statussen();
             model.geboortePrecisies = PersoonDal.geboortePrecisies();
             
