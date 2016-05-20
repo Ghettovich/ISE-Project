@@ -5,15 +5,15 @@
 
 <h1>Zoeken naar persoon</h1>
 <br />
-<h5>Attentie! : Levende personen en personen met levende kinderen worden niet getoond!</h5>
-<h6>Bij geen zoekwaardes invullen, wordt alles getoond!</h6>
-
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
     <div class="form-horizontal">
         <hr />
         <div class="form-group">
+            <h5>Attentie! : Levende personen en personen met levende kinderen worden niet getoond!</h5>
+            <h6>Bij geen zoekwaardes invullen, wordt alles getoond!</h6>
+            <br />
             @Html.Label("Voornaam", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 <input type="text" name="voornaam" class="form-control" />
@@ -30,7 +30,7 @@
         <div class="form-group">
             @Html.Label("Geboortedatum", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                <input type="text" name="geboortedatum" class="form-control"/>
+                <input type="text" name="geboortedatum" placeholder="YY-MM-DD" class="form-control"/>
             </div>
         </div>
 
