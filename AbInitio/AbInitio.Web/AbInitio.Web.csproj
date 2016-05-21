@@ -135,8 +135,10 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PersoonController.cs" />
     <Compile Include="Controllers\StamboomController.cs" />
+    <Compile Include="Controllers\ZoekenController.cs" />
     <Compile Include="DAL\AccountDAL.cs" />
     <Compile Include="DAL\PersoonDal.cs" />
+    <Compile Include="DAL\RelatieDAL.cs" />
     <Compile Include="DAL\StamboomDAL.cs" />
     <Compile Include="DbContexts\aanvullendepersooninformatie.cs">
       <DependentUpon>AbInitioModel.tt</DependentUpon>
@@ -199,9 +201,11 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountModel.cs" />
+    <Compile Include="Models\PersoonModel.cs" />
     <Compile Include="Models\RelatieModel.cs" />
     <Compile Include="Models\StamboomModel.cs" />
     <Compile Include="Partials\PersoonPartial.cs" />
+    <Compile Include="Partials\RelatiePartial.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\BeheerViewModel.cs" />
     <Compile Include="ViewModels\StamboomViewModel.cs" />
@@ -280,7 +284,6 @@
     <Content Include="Views\Stamboom\Index.cshtml" />
     <Content Include="Views\Persoon\Gebruiker1.cshtml" />
     <Content Include="Views\Persoon\Gebruiker2.cshtml" />
-    <Content Include="Views\Forms\NieuwPersoon.cshtml" />
     <Content Include="Views\Persoon\Create.cshtml" />
     <Content Include="Views\Persoon\RelatieToevoegen.cshtml" />
     <Content Include="Views\Persoon\_PersonenInStamboom.cshtml" />
@@ -293,6 +296,17 @@
     <Content Include="Views\Beheer\_BeheerStamboom.cshtml" />
     <Content Include="Views\Beheer\_RelatiesTotPersoon.cshtml" />
     <Content Include="Views\Beheer\WijzigRelatie.cshtml" />
+    <Content Include="Views\Beheer\AanvullendeRelatieInfo.cshtml" />
+    <Content Include="Views\Beheer\ToevoegenAvr.cshtml" />
+    <Content Include="Views\Beheer\ToevoegenRelatie.cshtml" />
+    <Content Include="Views\Stamboom\MaakStamboom.cshtml" />
+    <Content Include="Views\Stamboom\OverzichtStambomen.cshtml" />
+    <Content Include="Views\Stamboom\Stamboom.cshtml" />
+    <Content Include="Views\Zoeken\Zoek.cshtml" />
+    <Content Include="Views\Zoeken\_ZoekFormPartial.cshtml" />
+    <Content Include="Views\Zoeken\_ZoekResultatenPartial.cshtml" />
+    <Content Include="Views\Persoon\NieuwPersoon.cshtml" />
+    <Content Include="Views\Persoon\WijzigPersoon.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
