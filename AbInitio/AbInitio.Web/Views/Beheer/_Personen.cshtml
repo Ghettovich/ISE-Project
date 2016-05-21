@@ -1,6 +1,6 @@
 ﻿@model AbInitio.Web.ViewModels.BeheerViewModel
 
-<div class="beheertab_content">
+<div class="beheertab_content" id="beheertab_personen">
     <table class="table table-striped">
         <tr>
             <th>
@@ -28,7 +28,7 @@
         </tr>
         @foreach (var item in Model.PersoonLijst)
         {
-            <tr class="persoon_row" data-href="@Url.Action("PersoonDetails", "Beheer", new { id = item.persoonid })">
+            <tr class="persoon_row" data-href="@Url.Action("PersoonDetails", "Beheer", new { persoonid = item.persoonid })">
                 <td>
                     @item.voornaam
                 </td>
@@ -42,18 +42,7 @@
                     @item.geboortenaam
                 </td>
                 <td>
-                    @{ 
-                        if(@item.geslacht == "M")
-                        {
-                            <p>Man</p>
-                        } else if(@item.geslacht == "V")
-                        {
-                            <p>Vrouw</p>
-                        } else
-                        {
-
-                        }
-                    }
+                    @item.GeefGeslacht
                 </td>
                 <td>
                     @{ 
