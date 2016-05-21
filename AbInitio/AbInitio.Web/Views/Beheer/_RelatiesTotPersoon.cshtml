@@ -21,10 +21,16 @@
                     @item.RelatieType
                 </td>                
                 <td class="actions">
+                    <a class="relatie_link" href="@(Url.Action("AanvullendeRelatieInfo", "Beheer", new { relatieid = item.RelatieID }))">
+                        <span class="glyphicon glyphicon-book"></span>
+                    </a>
+                    <a class="avr_link" href="@(Url.Action("ToevoegenAvr", "Beheer", new { relatieid = item.RelatieID }))">
+                        <span class="glyphicon glyphicon-plus"></span>
+                    </a>
                     <a class="wijzig_link" href="@(Url.Action("WijzigRelatie", "Beheer", new { relatieid = item.RelatieID }))">
                         <span class="glyphicon glyphicon-pencil"></span>
                     </a>
-                    <a class="delete_link" href="@(Url.Action("WijzigRelatie", "Beheer", new { relatieid = item.RelatieID }))">
+                    <a class="delete_link" href="#" data-href="@(Url.Action("VerwijderRelatie", "Beheer", new { relatieid = item.RelatieID, persoonid = Model.Persoon.persoonid }))" data-toggle="modal" data-target="#confirm-delete">
                         <span class="glyphicon glyphicon-remove"></span>
                     </a>
                 </td>

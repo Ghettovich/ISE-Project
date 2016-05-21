@@ -1,13 +1,10 @@
-﻿
-@model AbInitio.Web.ViewModels.BeheerViewModel
-
+﻿@model AbInitio.Web.ViewModels.BeheerViewModel
 @{
     ViewBag.Title = "Personen";
 }
 
 <h2>Beheer - Ab Initio</h2>
 <p>Personen</p>
-
 <div class="row">
     <ul class="nav nav-tabs beheer_tabs">
         <li role="presentation" class="beheertab"><a href="@(Url.Action("Index"))">Stambomen</a></li>
@@ -18,5 +15,23 @@
     </ul>
     @Html.Partial("_Personen", Model)
 </div>
+
+<div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <p>Verwijder persoon</p>
+            </div>
+            <div class="modal-body">
+                <p>Persoon verwijderen?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <a class="btn btn-danger delete_relatie">Delete</a>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 

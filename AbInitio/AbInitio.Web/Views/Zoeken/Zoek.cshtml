@@ -1,0 +1,63 @@
+﻿@model AbInitio.Web.ViewModels.BeheerViewModel
+@{
+    ViewBag.Title = "Zoeken";
+}
+
+<h1>Zoeken naar persoon</h1>
+<br />
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="form-horizontal">
+        <hr />
+        <div class="form-group">
+            <h5>Attentie! : Levende personen en personen met levende kinderen worden niet getoond!</h5>
+            <h6>Bij geen zoekwaardes invullen, wordt alles getoond!</h6>
+            <br />
+            @Html.Label("Voornaam", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <input type="text" name="voornaam" class="form-control" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("Achternaam", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <input type="text" name="achternaam" class="form-control"/>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("Geboortedatum", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <input type="text" name="geboortedatum" placeholder="YY-MM-DD" class="form-control"/>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("Geslacht", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <input type="radio" name="geslacht" value="M"> Man<br>
+                <input type="radio" name="geslacht" value="V"> Vrouw<br>
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Zoeken" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+
+
+<div>
+    @Html.ActionLink("Terug naar home pagina", "Index")
+</div>
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+

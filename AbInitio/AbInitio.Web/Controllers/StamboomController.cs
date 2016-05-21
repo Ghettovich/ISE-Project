@@ -1,20 +1,91 @@
-﻿using AbInitio.Web.Models;
+﻿using AbInitio.Web.DAL;
+using AbInitio.Web.Models;
+using AbInitio.Web.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
 namespace AbInitio.Web.Controllers
 {
-    [Authorize(Roles = "1,2,3")]
     public class StamboomController : Controller
     {
+        StamboomDAL stamboomDAL = new StamboomDAL();
         // GET: Stamboom
         [HttpGet]
         public ActionResult Index()
         {
             return View();
+        }
+
+        [HttpGet]
+        public ActionResult maakStamboom()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult maakStamboom(string familienaam)
+        {
+            if(Session["account"] != null)
+            {
+                return Redirect("/Home");
+            }
+            stamboomDAL.maakStamboom((int)Session["account"], familienaam);
+            return Redirect("overzichtStambomen");
+        }
+
+        [HttpGet]
+        public ActionResult overzichtStambomen()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult overzichtStambomen(string familieNaam)
+        {
+            if (Session["account"] == null)
+            {
+                return Redirect("/Home");
+            }
+            if (familieNaam.Length < 1 ) { return View(); }
+            List<StamboomModel> stambomen = stamboomDAL.getStambomen((int)Session["account"], familieNaam);
+            return View(stambomen);
+        }
+
+        [HttpGet]
+        public ActionResult Stamboom(int stamboomId)
+        {
+            StamboomViewModel viewModel = new StamboomViewModel();
+            try
+            {
+                int accountId;
+                viewModel.stamboom = StamboomDAL.GetStamboom(stamboomId);
+                if (Session["account"] != null) {
+                    accountId = (int)Session["account"];
+                }
+                else
+                {
+                    accountId = 0;
+                }
+                viewModel.personen = stamboomDAL.getPersonenInStamboom(stamboomId,accountId );
+
+                return View(viewModel);
+            }
+            catch (Exception ex)
+            {
+                if (ex is System.Data.SqlClient.SqlException)
+                {
+                    return View(viewModel);
+                }
+                else
+                {
+                    throw ex;
+                }
+
+            }
         }
 
 

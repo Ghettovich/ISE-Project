@@ -1,0 +1,104 @@
+﻿@model AbInitio.Web.Models.PersoonModel
+
+@{
+    ViewBag.Title = "Wijzig Persoon";
+}
+
+<h2>Wijzig Persoon</h2>
+
+@using (Html.BeginForm("WijzigPersoon", "Persoon", FormMethod.Post))
+{
+
+    <div class="form-horizontal">
+        <h4>Persoon</h4>
+        <hr />
+
+        <input type="hidden" name="persoonId" value="@Model.persoonid" />
+
+        <div class="form-group">
+            @Html.Label("Voornaam", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <input type="text" class="form-control" name="voornaam" value="@Model.voornaam"  />
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("Tussenvoegsel", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <input type="text" class="form-control" name="tussenvoegsel" value="@Model.tussenvoegsel"  />
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("Achternaam", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <input type="text" class="form-control" name="achternaam" value="@Model.achternaam"  />
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("Achtervoegsel", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <input type="text" class="form-control" name="achtervoegsel" value="@Model.achtervoegsel" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("Geboortenaam", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <input type="text" class="form-control" name="geboortenaam" value="@Model.geboortenaam"  />
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("Overige namen", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <input type="text" class="form-control" name="overigenamen" value="@Model.overigenamen" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("Geslacht", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("geslacht", Model.geslachtOpties, "", new { @class = "form-control" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("Status", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("status", Model.statussen, "", new { @class = "form-control" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("Geboorte precisie", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10 precisie">
+                @Html.DropDownList("geboortePrecisie", Model.geboortePrecisies, "", new { @class = "form-control" })
+            </div>
+        </div>
+
+        <div class="form-group geboortedatum">
+            @Html.Label("Geboortedatum", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <input type="text" class="form-control" id="geboortedatumText" name="geboortedatum" value="@Model.geboortedatum"  />
+            </div>
+        </div>
+
+        <div class="form-group geboortedatum2">
+            @Html.Label("geboortedatum2", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <input type="text" class="form-control" id="geboortedatum2Text" name="geboortedatum2" value="@Model.geboortedatum2"  />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-2">
+                <button type="button" class="btn btn-default" onclick="location.href = '../../Beheer/Personen'">Terug naar lijst</button>
+            </div>
+            <div class="col-md-2">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
