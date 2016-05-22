@@ -124,16 +124,21 @@
 <div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
-                Verwijder relatie
-            </div>
-            <div class="modal-body">
-                Wil je deze relatie zeker weten verwijderen?
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                <a class="btn btn-danger delete_relatie">Delete</a>
-            </div>
+            <form action="@Url.Action("VerwijderRelatie", "Beheer")" method="post">
+                @Html.AntiForgeryToken()
+                <input type="hidden" value="@Model.Persoon.persoonid" id="persoonid" name="persoonid" />
+                <input type="hidden" id="relatieid" name="relatieid" />
+                <div class="modal-header">
+                    <p class="text-info">Relatie verwijderen</p>                    
+                </div>
+                <div class="modal-body">
+                    <p class="text-danger">Wil je deze relatie zeker weten verwijderen?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <input type="submit" class="btn btn-danger" value="Verwijderen" />
+                </div>
+            </form>
         </div>
     </div>
 </div>

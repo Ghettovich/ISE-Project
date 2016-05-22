@@ -4,6 +4,7 @@ using AbInitio.Web.Models;
 using AbInitio.Web.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -221,9 +222,14 @@ namespace AbInitio.Web.Controllers
             return HttpNotFound("Relatie niet gevonden");
         }
 
-        [HttpGet]
-        public ActionResult VerwijderRelatie(int relatieid, int persoonid)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult VerwijderRelatie()
         {
+            NameValueCollection nvc = Request.Form;
+            int persoonid = Int32.Parse(nvc["persoonid"]);
+            int relatieid = Int32.Parse(nvc["relatieid"]);
+
             string error;
             RelatieDAL.VerwijderRelatie(relatieid, out error);
             if (string.IsNullOrEmpty(error))
