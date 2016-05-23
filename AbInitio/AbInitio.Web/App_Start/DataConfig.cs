@@ -85,8 +85,7 @@ namespace AbInitio.Web.App_Start
         }
 
         public IDbCommand CreateCommand()
-        {
-            
+        {            
             return sqlCommand = sqlConnection.CreateCommand();            
         }
 
@@ -98,7 +97,6 @@ namespace AbInitio.Web.App_Start
 
         public IDataReader CreateSqlReader()
         {
-            
             sqlDataReader = sqlCommand.ExecuteReader();
             return sqlDataReader;
         }
@@ -117,9 +115,9 @@ namespace AbInitio.Web.App_Start
         {
             sqlConnection.Open();
             
-        }
+        }     
     }
-
+    
     public class MyIdentity : IIdentity
     {
         string[] roles = { "0", "1", "2", "3" };

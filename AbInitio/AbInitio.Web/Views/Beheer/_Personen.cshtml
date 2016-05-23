@@ -1,6 +1,6 @@
 ﻿@model AbInitio.Web.ViewModels.BeheerViewModel
 
-<div class="beheertab_content">
+<div class="beheertab_content" id="beheertab_personen">
     <table class="table table-striped">
         <tr>
             <th>
@@ -28,61 +28,51 @@
         </tr>
         @foreach (var item in Model.PersoonLijst)
         {
-            <tr class="persoon_row" data-href="@Url.Action("PersoonDetails", "Beheer", new { id = item.persoonid })">
-                <td>
+            <tr class="persoon_row" data-href="@Url.Action("PersoonDetails", "Beheer", new { persoonid = item.persoonid })">
+                <td class="details">
                     @item.voornaam
                 </td>
-                <td>
+                <td class="details">
                     @item.tussenvoegsel
                 </td>
-                <td>
+                <td class="details">
                     @item.achternaam
                 </td>
-                <td>
+                <td class="details">
                     @item.geboortenaam
                 </td>
-                <td>
-                    @{ 
-                        if(@item.geslacht == "M")
-                        {
-                            <p>Man</p>
-                        } else if(@item.geslacht == "V")
-                        {
-                            <p>Vrouw</p>
-                        } else
-                        {
-
-                        }
-                    }
+                <td class="details">
+                    @item.GeefGeslacht
                 </td>
-                <td>
-                    @{ 
-                        if(@item.status == "True")
+                <td class="details">
+                    @{
+                        if (@item.status == "True")
                         {
                             <p>Levend</p>
-                        } else
+                        }
+                        else
                         {
                             <p>Overleden</p>
                         }
                     }
                 </td>
-                <td>
-                    @{ 
-                        if(@item.geboorteprecisie == "tussen")
+                <td class="details">
+                    @{
+                        if (@item.geboorteprecisie == "tussen")
                         {
                             <p>@item.geboorteprecisie  @item.geboortedatum en @item.geboortedatum2</p>
-                        } else
+                        }
+                        else
                         {
                             <p>@item.geboorteprecisie @item.geboortedatum</p>
                         }
                     }
-                    
                 </td>
                 <td class="actions">
                     <a class="wijzig_persoon" href="@(Url.Action("WijzigPersoon", "Persoon", new { persoonid = item.persoonid }))">
                         <span class="glyphicon glyphicon-pencil"></span>
                     </a>
-                    <a class="delete_link" href="#" data-href="@(Url.Action("VerwijderPersoon", "Persoon", new { persoonid = item.persoonid }))" data-toggle="modal" data-target="#confirm-delete">
+                    <a class="delete_link" href="#" data-persoonid="@item.persoonid" data-toggle="modal" data-target="#confirm-delete">
                         <span class="glyphicon glyphicon-remove"></span>
                     </a>
                 </td>

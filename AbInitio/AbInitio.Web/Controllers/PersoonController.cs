@@ -198,11 +198,16 @@ namespace AbInitio.Web.Controllers
             return Redirect("../Beheer/Personen");
         }
 
-        [HttpGet]
-        public ActionResult VerwijderPersoon(int persoonid)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult VerwijderPersoon()
         {
+            NameValueCollection nvc = Request.Form;
+            int persoonid = Int32.Parse(nvc["persoonid"]);
             PersoonDal.verwijderPersoonInDatabase(persoonid);
-            return RedirectToAction("PersoonDetails", "Beheer", new { persoonid = persoonid });
+
+
+            return RedirectToAction("Personen", "Beheer");
         }
     }
 }
