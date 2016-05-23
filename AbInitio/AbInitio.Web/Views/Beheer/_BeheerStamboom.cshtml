@@ -20,7 +20,7 @@
     <tbody>
     @foreach (var item in Model.PersoonLijst)
         {
-        <tr class="persoon_row" data-href="@Url.Action("PersoonDetails", "Beheer", new { persoonid = item.persoonid })">
+        <tr class="stamboom_row" data-href="@Url.Action("PersoonDetails", "Beheer", new { persoonid = item.persoonid })">
             <td>@(item.GeefVolledigeNaam)</td>
             <td>@(item.overigenamen)</td>
             <td>@(item.achtervoegsel)</td>

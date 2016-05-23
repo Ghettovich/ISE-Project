@@ -773,15 +773,11 @@ namespace AbInitio.Web.DAL
                     using (IDbCommand cmd = dbdc.CreateCommand())
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.CommandText = "dbo.AllePersonen";
+                        cmd.CommandText = "dbo.spd_AllePersonen";
 
                         IDataParameter voornaam_dp = cmd.CreateParameter();
                         voornaam_dp.Direction = ParameterDirection.Input;
-                        voornaam_dp.ParameterName = "@voornaam";
-                        voornaam_dp.Value = (string.IsNullOrEmpty(namen) ? (object)DBNull.Value : namen);
-                        cmd.Parameters.Add(voornaam_dp);
 
-                        dbdc.Open();
                         using (IDataReader dr = dbdc.CreateSqlReader())
                         {
                             object[] results;
@@ -800,9 +796,9 @@ namespace AbInitio.Web.DAL
                                     geboortenaam = (results.GetValue(6) != null ? results.GetValue(6).ToString() : string.Empty),
                                     geslacht = (results.GetValue(7) != null ? results.GetValue(7).ToString() : string.Empty),
                                     status = (results.GetValue(8) != null ? results.GetValue(8).ToString() : string.Empty),
-                                geboortedatum = (results.GetValue(9) != null ? results.GetValue(9).ToString() : string.Empty),
+                                    geboortedatum = (results.GetValue(9) != null ? results.GetValue(9).ToString() : string.Empty),
                                     geboorteprecisie = (results.GetValue(10) != null ? results.GetValue(10).ToString() : string.Empty),
-                                geboortedatum2 = (results.GetValue(11) != null ? results.GetValue(11).ToString() : string.Empty)
+                                    geboortedatum2 = (results.GetValue(11) != null ? results.GetValue(11).ToString() : string.Empty)
 
                                 });
                             }

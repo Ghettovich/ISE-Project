@@ -28,7 +28,7 @@
         </tr>
         @foreach (var item in Model.PersoonLijst)
         {
-            <tr class="persoon_row" data-href="@Url.Action("PersoonDetails", "Beheer", new { id = item.persoonid })">
+            <tr>
                 <td>
                     @item.voornaam
                 </td>
@@ -82,10 +82,13 @@
                     
                 </td>
                 <td class="actions">
+                    <a class="detail-persoon" href="@(Url.Action("PersoonDetails", "Beheer", new  { persoonid = item.persoonid }))">
+                        <span class="glyphicon glyphicon-book"></span>
+                    </a>
                     <a class="wijzig_persoon" href="@(Url.Action("WijzigPersoon", "Persoon", new { persoonid = item.persoonid }))">
                         <span class="glyphicon glyphicon-pencil"></span>
                     </a>
-                    <a class="delete_link" href="#" data-href="@(Url.Action("VerwijderPersoon", "Persoon", new { persoonid = item.persoonid }))" data-toggle="modal" data-target="#confirm-delete">
+                    <a class="delete_link" href="#" data-persoonid="@item.persoonid" data-toggle="modal" data-target="#confirm-delete">
                         <span class="glyphicon glyphicon-remove"></span>
                     </a>
                 </td>
