@@ -13,6 +13,10 @@
           <Property Name="persoonid" Type="int" Nullable="false" />
           <Property Name="persooninformatietypeid" Type="int" Nullable="false" />
           <Property Name="persooninformatie" Type="varchar" MaxLength="256" Nullable="false" />
+          <Property Name="van" Type="date" />
+          <Property Name="tot" Type="date" />
+          <Property Name="datumPrecisie" Type="varchar" MaxLength="6" />
+          <Property Name="gewijzigdOp" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="aanvullenderelatieinformatie">
           <Key>
@@ -22,6 +26,10 @@
           <Property Name="relatieid" Type="int" Nullable="false" />
           <Property Name="relatieinformatietypeid" Type="int" Nullable="false" />
           <Property Name="relatieinformatie" Type="varchar" MaxLength="256" Nullable="false" />
+          <Property Name="van" Type="date" />
+          <Property Name="tot" Type="date" />
+          <Property Name="datumPrecisie" Type="varchar" MaxLength="6" />
+          <Property Name="gewijzigdOp" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="account">
           <Key>
@@ -63,9 +71,10 @@
           <Property Name="geboortenaam" Type="varchar" MaxLength="50" />
           <Property Name="geslacht" Type="char" MaxLength="1" />
           <Property Name="status" Type="bit" />
-          <Property Name="geboortedatum" Type="datetime" />
+          <Property Name="geboortedatum" Type="date" />
           <Property Name="geboorteprecisie" Type="varchar" MaxLength="6" />
-          <Property Name="geboortedatum2" Type="datetime" />
+          <Property Name="geboortedatum2" Type="date" />
+          <Property Name="gewijzigdOp" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="persoonhistorie">
           <Key>
@@ -82,9 +91,9 @@
           <Property Name="geboortenaam" Type="varchar" MaxLength="50" />
           <Property Name="geslacht" Type="char" MaxLength="1" />
           <Property Name="status" Type="bit" />
-          <Property Name="geboortedatum" Type="datetime" />
+          <Property Name="geboortedatum" Type="date" />
           <Property Name="geboorteprecisie" Type="varchar" MaxLength="6" />
-          <Property Name="geboortedatum2" Type="datetime" />
+          <Property Name="geboortedatum2" Type="date" />
           <Property Name="geboorteplaats" Type="varchar" MaxLength="50" />
           <Property Name="adres" Type="varchar" MaxLength="50" />
           <Property Name="beroep" Type="varchar" MaxLength="50" />
@@ -104,6 +113,7 @@
           <Property Name="persoonid1" Type="int" Nullable="false" />
           <Property Name="relatietypeid" Type="int" Nullable="false" />
           <Property Name="persoonid2" Type="int" Nullable="false" />
+          <Property Name="gewijzigdOp" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="relatiehistorie">
           <Key>
@@ -144,6 +154,8 @@
           <Property Name="jongstlevendevrouw" Type="int" />
           <Property Name="gemiddeldaantalkinderen" Type="int" />
           <Property Name="gemiddeldaantalgeboortes" Type="int" />
+          <Property Name="afgeschermd" Type="bit" Nullable="false" />
+          <Property Name="gewijzigdOp" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="stamboomtoegang">
           <Key>
@@ -267,18 +279,6 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="fk_relatie_rel_perso_persoon1">
-          <End Role="persoon" Type="Self.persoon" Multiplicity="1" />
-          <End Role="relatie" Type="Self.relatie" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="persoon">
-              <PropertyRef Name="persoonid" />
-            </Principal>
-            <Dependent Role="relatie">
-              <PropertyRef Name="persoonid2" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="fk_relatie_rel_perso_persoon2">
           <End Role="persoon" Type="Self.persoon" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -289,6 +289,18 @@
             </Principal>
             <Dependent Role="relatie">
               <PropertyRef Name="persoonid1" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_relatie_rel_perso_persoon2">
+          <End Role="persoon" Type="Self.persoon" Multiplicity="1" />
+          <End Role="relatie" Type="Self.relatie" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="persoon">
+              <PropertyRef Name="persoonid" />
+            </Principal>
+            <Dependent Role="relatie">
+              <PropertyRef Name="persoonid2" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -506,6 +518,10 @@
           <Property Name="persooninformatie" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="persoon" Relationship="AbInitioModel.fk_aanvulle_rel_aanvu_persoon" FromRole="aanvullendepersooninformatie" ToRole="persoon" />
           <NavigationProperty Name="persooninformatietype" Relationship="AbInitioModel.fk_aanvulle_rel_perso_persooni" FromRole="aanvullendepersooninformatie" ToRole="persooninformatietype" />
+          <Property Name="van" Type="DateTime" Precision="0" />
+          <Property Name="tot" Type="DateTime" Precision="0" />
+          <Property Name="datumPrecisie" Type="String" MaxLength="6" FixedLength="false" Unicode="false" />
+          <Property Name="gewijzigdOp" Type="DateTime" Nullable="false" Precision="3" />
         </EntityType>
         <EntityType Name="aanvullenderelatieinformatie">
           <Key>
@@ -517,6 +533,10 @@
           <Property Name="relatieinformatie" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="relatie" Relationship="AbInitioModel.fk_aanvulle_rel_aanvu_relatie" FromRole="aanvullenderelatieinformatie" ToRole="relatie" />
           <NavigationProperty Name="relatieinformatietype" Relationship="AbInitioModel.fk_aanvulle_rel_relat_relatiei" FromRole="aanvullenderelatieinformatie" ToRole="relatieinformatietype" />
+          <Property Name="van" Type="DateTime" Precision="0" />
+          <Property Name="tot" Type="DateTime" Precision="0" />
+          <Property Name="datumPrecisie" Type="String" MaxLength="6" FixedLength="false" Unicode="false" />
+          <Property Name="gewijzigdOp" Type="DateTime" Nullable="false" Precision="3" />
         </EntityType>
         <EntityType Name="account">
           <Key>
@@ -562,14 +582,15 @@
           <Property Name="geboortenaam" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="geslacht" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
           <Property Name="status" Type="Boolean" />
-          <Property Name="geboortedatum" Type="DateTime" Precision="3" />
+          <Property Name="geboortedatum" Type="DateTime" Precision="0" />
           <Property Name="geboorteprecisie" Type="String" MaxLength="6" FixedLength="false" Unicode="false" />
-          <Property Name="geboortedatum2" Type="DateTime" Precision="3" />
+          <Property Name="geboortedatum2" Type="DateTime" Precision="0" />
           <NavigationProperty Name="aanvullendepersooninformaties" Relationship="AbInitioModel.fk_aanvulle_rel_aanvu_persoon" FromRole="persoon" ToRole="aanvullendepersooninformatie" />
           <NavigationProperty Name="personeninstambooms" Relationship="AbInitioModel.fk_personen_rel_perso_persoon" FromRole="persoon" ToRole="personeninstamboom" />
           <NavigationProperty Name="persoonhistories" Relationship="AbInitioModel.fk_persoonh_rel_perso_persoon" FromRole="persoon" ToRole="persoonhistorie" />
           <NavigationProperty Name="relaties" Relationship="AbInitioModel.fk_relatie_rel_perso_persoon1" FromRole="persoon" ToRole="relatie" />
           <NavigationProperty Name="relaties1" Relationship="AbInitioModel.fk_relatie_rel_perso_persoon2" FromRole="persoon" ToRole="relatie" />
+          <Property Name="gewijzigdOp" Type="DateTime" Nullable="false" Precision="3" />
         </EntityType>
         <EntityType Name="persoonhistorie">
           <Key>
@@ -586,9 +607,9 @@
           <Property Name="geboortenaam" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="geslacht" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
           <Property Name="status" Type="Boolean" />
-          <Property Name="geboortedatum" Type="DateTime" Precision="3" />
+          <Property Name="geboortedatum" Type="DateTime" Precision="0" />
           <Property Name="geboorteprecisie" Type="String" MaxLength="6" FixedLength="false" Unicode="false" />
-          <Property Name="geboortedatum2" Type="DateTime" Precision="3" />
+          <Property Name="geboortedatum2" Type="DateTime" Precision="0" />
           <Property Name="geboorteplaats" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="adres" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="beroep" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
@@ -615,6 +636,7 @@
           <NavigationProperty Name="persoon1" Relationship="AbInitioModel.fk_relatie_rel_perso_persoon2" FromRole="relatie" ToRole="persoon" />
           <NavigationProperty Name="relatietype" Relationship="AbInitioModel.fk_relatie_rel_relat_relatiet" FromRole="relatie" ToRole="relatietype" />
           <NavigationProperty Name="relatiehistories" Relationship="AbInitioModel.fk_relatieh_rel_relat_relatie" FromRole="relatie" ToRole="relatiehistorie" />
+          <Property Name="gewijzigdOp" Type="DateTime" Nullable="false" Precision="3" />
         </EntityType>
         <EntityType Name="relatiehistorie">
           <Key>
@@ -661,6 +683,8 @@
           <NavigationProperty Name="meestvoorkomendenamen" Relationship="AbInitioModel.fk_meestvoo_reference_stamboom" FromRole="stamboom" ToRole="meestvoorkomendenaman" />
           <NavigationProperty Name="personeninstambooms" Relationship="AbInitioModel.fk_personen_rel_stamb_stamboom" FromRole="stamboom" ToRole="personeninstamboom" />
           <NavigationProperty Name="stamboomtoegangs" Relationship="AbInitioModel.fk_stamboom_rel_stamb_stamboom" FromRole="stamboom" ToRole="stamboomtoegang" />
+          <Property Name="afgeschermd" Type="Boolean" Nullable="false" />
+          <Property Name="gewijzigdOp" Type="DateTime" Nullable="false" Precision="3" />
         </EntityType>
         <EntityType Name="stamboomtoegang">
           <Key>
@@ -876,6 +900,10 @@
           <EntitySetMapping Name="aanvullendepersooninformaties">
             <EntityTypeMapping TypeName="AbInitioModel.aanvullendepersooninformatie">
               <MappingFragment StoreEntitySet="aanvullendepersooninformatie">
+                <ScalarProperty Name="gewijzigdOp" ColumnName="gewijzigdOp" />
+                <ScalarProperty Name="datumPrecisie" ColumnName="datumPrecisie" />
+                <ScalarProperty Name="tot" ColumnName="tot" />
+                <ScalarProperty Name="van" ColumnName="van" />
                 <ScalarProperty Name="persooninformatie" ColumnName="persooninformatie" />
                 <ScalarProperty Name="persooninformatietypeid" ColumnName="persooninformatietypeid" />
                 <ScalarProperty Name="persoonid" ColumnName="persoonid" />
@@ -886,6 +914,10 @@
           <EntitySetMapping Name="aanvullenderelatieinformaties">
             <EntityTypeMapping TypeName="AbInitioModel.aanvullenderelatieinformatie">
               <MappingFragment StoreEntitySet="aanvullenderelatieinformatie">
+                <ScalarProperty Name="gewijzigdOp" ColumnName="gewijzigdOp" />
+                <ScalarProperty Name="datumPrecisie" ColumnName="datumPrecisie" />
+                <ScalarProperty Name="tot" ColumnName="tot" />
+                <ScalarProperty Name="van" ColumnName="van" />
                 <ScalarProperty Name="relatieinformatie" ColumnName="relatieinformatie" />
                 <ScalarProperty Name="relatieinformatietypeid" ColumnName="relatieinformatietypeid" />
                 <ScalarProperty Name="relatieid" ColumnName="relatieid" />
@@ -926,6 +958,7 @@
           <EntitySetMapping Name="persoons">
             <EntityTypeMapping TypeName="AbInitioModel.persoon">
               <MappingFragment StoreEntitySet="persoon">
+                <ScalarProperty Name="gewijzigdOp" ColumnName="gewijzigdOp" />
                 <ScalarProperty Name="geboortedatum2" ColumnName="geboortedatum2" />
                 <ScalarProperty Name="geboorteprecisie" ColumnName="geboorteprecisie" />
                 <ScalarProperty Name="geboortedatum" ColumnName="geboortedatum" />
@@ -975,6 +1008,7 @@
           <EntitySetMapping Name="relaties">
             <EntityTypeMapping TypeName="AbInitioModel.relatie">
               <MappingFragment StoreEntitySet="relatie">
+                <ScalarProperty Name="gewijzigdOp" ColumnName="gewijzigdOp" />
                 <ScalarProperty Name="persoonid2" ColumnName="persoonid2" />
                 <ScalarProperty Name="relatietypeid" ColumnName="relatietypeid" />
                 <ScalarProperty Name="persoonid1" ColumnName="persoonid1" />
@@ -1013,6 +1047,8 @@
           <EntitySetMapping Name="stambooms">
             <EntityTypeMapping TypeName="AbInitioModel.stamboom">
               <MappingFragment StoreEntitySet="stamboom">
+                <ScalarProperty Name="gewijzigdOp" ColumnName="gewijzigdOp" />
+                <ScalarProperty Name="afgeschermd" ColumnName="afgeschermd" />
                 <ScalarProperty Name="gemiddeldaantalgeboortes" ColumnName="gemiddeldaantalgeboortes" />
                 <ScalarProperty Name="gemiddeldaantalkinderen" ColumnName="gemiddeldaantalkinderen" />
                 <ScalarProperty Name="jongstlevendevrouw" ColumnName="jongstlevendevrouw" />

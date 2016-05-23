@@ -25,6 +25,7 @@ namespace AbInitio.Web.DbContexts
         public int persoonid1 { get; set; }
         public int relatietypeid { get; set; }
         public int persoonid2 { get; set; }
+        public System.DateTime gewijzigdOp { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<aanvullenderelatieinformatie> aanvullenderelatieinformaties { get; set; }

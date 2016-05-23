@@ -36,6 +36,7 @@ namespace AbInitio.Web.DbContexts
         public Nullable<System.DateTime> geboortedatum { get; set; }
         public string geboorteprecisie { get; set; }
         public Nullable<System.DateTime> geboortedatum2 { get; set; }
+        public System.DateTime gewijzigdOp { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<aanvullendepersooninformatie> aanvullendepersooninformaties { get; set; }

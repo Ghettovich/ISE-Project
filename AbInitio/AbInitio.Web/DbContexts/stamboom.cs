@@ -32,6 +32,8 @@ namespace AbInitio.Web.DbContexts
         public Nullable<int> jongstlevendevrouw { get; set; }
         public Nullable<int> gemiddeldaantalkinderen { get; set; }
         public Nullable<int> gemiddeldaantalgeboortes { get; set; }
+        public bool afgeschermd { get; set; }
+        public System.DateTime gewijzigdOp { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<meestvoorkomendenaman> meestvoorkomendenamen { get; set; }

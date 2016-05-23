@@ -18,6 +18,10 @@ namespace AbInitio.Web.DbContexts
         public int relatieid { get; set; }
         public int relatieinformatietypeid { get; set; }
         public string relatieinformatie { get; set; }
+        public Nullable<System.DateTime> van { get; set; }
+        public Nullable<System.DateTime> tot { get; set; }
+        public string datumPrecisie { get; set; }
+        public System.DateTime gewijzigdOp { get; set; }
     
         public virtual relatie relatie { get; set; }
         public virtual relatieinformatietype relatieinformatietype { get; set; }
