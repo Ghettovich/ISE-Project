@@ -6,7 +6,7 @@
 
 <h2>Wijzig Persoon</h2>
 
-@using (Html.BeginForm("WijzigPersoon", "Persoon", FormMethod.Post))
+@using (Html.BeginForm("WijzigPersoon", "Persoon", FormMethod.Post, htmlAttributes: new { onsubmit = "return confirm('Weet je zeker dat je de wijzigingen wilt oplsaan?');" }))
 {
 
     <div class="form-horizontal">
@@ -78,14 +78,14 @@
             </div>
         </div>
 
-        <div class="form-group geboortedatum">
+        <div class="form-group geboortedatum style="display:none"">
             @Html.Label("Geboortedatum", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 <input type="text" class="form-control" id="geboortedatumText" name="geboortedatum" value="@Model.geboortedatum"  />
             </div>
         </div>
 
-        <div class="form-group geboortedatum2">
+        <div class="form-group geboortedatum2 style="display:none"">
             @Html.Label("geboortedatum2", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 <input type="text" class="form-control" id="geboortedatum2Text" name="geboortedatum2" value="@Model.geboortedatum2"  />
@@ -97,7 +97,7 @@
                 <button type="button" class="btn btn-default" onclick="location.href = '../../Beheer/Personen'">Terug naar lijst</button>
             </div>
             <div class="col-md-2">
-                <input type="submit" value="Save" class="btn btn-default" />
+                <input type="submit" value="Opslaan" class="btn btn-default"/>
             </div>
         </div>
     </div>

@@ -60,9 +60,12 @@
                         if(@item.status == "True")
                         {
                             <p>Levend</p>
-                        } else
+                        } else if(@item.status == "False")
                         {
                             <p>Overleden</p>
+                        } else
+                        {
+
                         }
                     }
                 </td>
@@ -70,10 +73,10 @@
                     @{ 
                         if(@item.geboorteprecisie == "tussen")
                         {
-                            <p>@item.geboorteprecisie  @item.geboortedatum en @item.geboortedatum2</p>
+                            <p>@item.geboorteprecisie  @item.geefDatum en @item.geefDatum2</p>
                         } else
                         {
-                            <p>@item.geboorteprecisie @item.geboortedatum</p>
+                            <p>@item.geboorteprecisie @item.geefDatum</p>
                         }
                     }
                     

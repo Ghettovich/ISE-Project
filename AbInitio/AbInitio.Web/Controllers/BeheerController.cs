@@ -123,6 +123,10 @@ namespace AbInitio.Web.Controllers
         [HttpPost]
         public ActionResult ToevoegenRelatie(RelatieModel viewmodel)
         {
+            viewmodel.Relatietypes = PersoonDal.RelatieTypes(0);
+            viewmodel.Personen = PersoonDal.PersonenLijst(viewmodel.StamboomdID);
+            viewmodel.StamboomdID = viewmodel.StamboomdID;
+
             if (ModelState.IsValid)
             {
                 string error = string.Empty;
@@ -136,12 +140,7 @@ namespace AbInitio.Web.Controllers
                     ModelState.AddModelError("", error);
                 }
             }
-            else
-            {
-                viewmodel.Relatietypes = PersoonDal.RelatieTypes(0);
-                viewmodel.Personen = PersoonDal.PersonenLijst(viewmodel.StamboomdID);
-                viewmodel.StamboomdID = viewmodel.StamboomdID;
-            } return View(viewmodel);
+            return View(viewmodel);
         }
 
         [HttpGet]

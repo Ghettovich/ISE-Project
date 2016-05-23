@@ -742,36 +742,38 @@ namespace AbInitio.Web.DAL
             {
                 using (DataConfig dbdc = new DataConfig())
                 {
+                    dbdc.Open();
                     using (IDbCommand cmd = dbdc.CreateCommand())
                     {
-                        int limit = 25;
-                        int count = 0;
-                        cmd.CommandText = "SELECT * FROM persoon";
-                        dbdc.Open();
-                        using (IDataReader dr = dbdc.CreateSqlReader())
+                        cmd.CommandText = "dbo.spd_AllePersonen";
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        IDataParameter pm = cmd.CreateParameter();
+                        pm.Direction = ParameterDirection.Input;
+
+                        reader = cmd.ExecuteReader();
+                        while (reader.Read())
                         {
-                            while (dr.Read() && count < limit)
+                            object[] results = new object[reader.FieldCount];
+                            reader.GetValues(results);
+                            persoon_list.Add(new PersoonPartial
                             {
-                                object[] results = new object[dr.FieldCount];
-                                dr.GetValues(results);
-                                persoon_list.Add(new PersoonPartial
-                                {
-                                    persoonid = (int)results.GetValue(0),
-                                    voornaam = (results.GetValue(1) != null ? results.GetValue(1).ToString() : string.Empty),
-                                    overigenamen = (results.GetValue(2) != null ? results.GetValue(2).ToString() : string.Empty),
-                                    tussenvoegsel = (results.GetValue(3) != null ? results.GetValue(3).ToString() : string.Empty),
-                                    achternaam = (results.GetValue(4) != null ? results.GetValue(4).ToString() : string.Empty),
-                                    achtervoegsel = (results.GetValue(5) != null ? results.GetValue(5).ToString() : string.Empty),
-                                    geboortenaam = (results.GetValue(6) != null ? results.GetValue(6).ToString() : string.Empty),
-                                    geslacht = (results.GetValue(7) != null ? results.GetValue(7).ToString() : string.Empty),
-                                    status = (results.GetValue(8) != null ? results.GetValue(8).ToString() : string.Empty),
-                                    geboortedatum = (results.GetValue(9) != null ? results.GetValue(9).ToString() : string.Empty),
-                                    geboorteprecisie = (results.GetValue(10) != null ? results.GetValue(10).ToString() : string.Empty),
-                                    geboortedatum2 = (results.GetValue(11) != null ? results.GetValue(11).ToString() : string.Empty)
-                                });
-                                count++;
-                            }
+                                persoonid = (int)results.GetValue(0),
+                                voornaam = (results.GetValue(1) != null ? results.GetValue(1).ToString() : string.Empty),
+                                overigenamen = (results.GetValue(2) != null ? results.GetValue(2).ToString() : string.Empty),
+                                tussenvoegsel = (results.GetValue(3) != null ? results.GetValue(3).ToString() : string.Empty),
+                                achternaam = (results.GetValue(4) != null ? results.GetValue(4).ToString() : string.Empty),
+                                achtervoegsel = (results.GetValue(5) != null ? results.GetValue(5).ToString() : string.Empty),
+                                geboortenaam = (results.GetValue(6) != null ? results.GetValue(6).ToString() : string.Empty),
+                                geslacht = (results.GetValue(7) != null ? results.GetValue(7).ToString() : string.Empty),
+                                status = (results.GetValue(8) != null ? results.GetValue(8).ToString() : string.Empty),
+                                geboortedatum = (results.GetValue(9) != null ? results.GetValue(9).ToString() : string.Empty),
+                                geboorteprecisie = (results.GetValue(10) != null ? results.GetValue(10).ToString() : string.Empty),
+                                geboortedatum2 = (results.GetValue(11) != null ? results.GetValue(11).ToString() : string.Empty)
+
+                            });
                         }
+
                     }
                 }
                 return persoon_list;
@@ -781,8 +783,6 @@ namespace AbInitio.Web.DAL
                 throw;
             }
         }
-
-
 
         public static List<PersoonPartial> zoekenPersonen(PersoonModel model)
         {
