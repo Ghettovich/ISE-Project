@@ -85,7 +85,7 @@
                     <a class="wijzig_persoon" href="@(Url.Action("WijzigPersoon", "Persoon", new { persoonid = item.persoonid }))">
                         <span class="glyphicon glyphicon-pencil"></span>
                     </a>
-                    <a class="delete_persoon" href="@(Url.Action("VerwijderPersoon", "Persoon", new { persoonid = item.persoonid }))">
+                    <a class="delete_link" href="#" data-href="@(Url.Action("VerwijderPersoon", "Persoon", new { persoonid = item.persoonid }))" data-toggle="modal" data-target="#confirm-delete">
                         <span class="glyphicon glyphicon-remove"></span>
                     </a>
                 </td>

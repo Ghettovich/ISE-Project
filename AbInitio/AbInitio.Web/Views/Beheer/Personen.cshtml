@@ -16,4 +16,22 @@
     @Html.Partial("_Personen", Model)
 </div>
 
+<div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <p>Verwijder persoon</p>
+            </div>
+            <div class="modal-body">
+                <p>Persoon verwijderen?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <a class="btn btn-danger delete_relatie">Delete</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 
