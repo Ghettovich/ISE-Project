@@ -13,6 +13,7 @@
             <th>Geboortenaam</th>
             <th>Geboortedatum</th>
             <th>Geboorteprecisie</th>
+            <th>Geboortedatum2</th>
             <th></th>
         </tr>
     </thead>
@@ -25,8 +26,9 @@
             <td>@(item.achtervoegsel)</td>
             <td>@(item.GeefGeslacht)</td>
             <td>@(item.geboortenaam)</td>
-            <td>@(item.geboortedatum)</td>
+            <td>@(item.geefDatum)</td>
             <td>@(item.geboorteprecisie)</td>
+            <td>@(item.geefDatum2)</td>
             <td>
                 <a class="wijzig_persoon" href="@(Url.Action("WijzigPersoon", "Beheer", new { persoonid = item.persoonid }))">
                     <span class="glyphicon glyphicon-pencil"></span>

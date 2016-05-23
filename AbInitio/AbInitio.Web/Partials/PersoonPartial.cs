@@ -49,5 +49,39 @@ namespace AbInitio.Web.DbContexts
             }
         }
 
+        public string geefDatum
+        {
+            get 
+            {
+                if(geboortedatum != null && geboortedatum != "")
+                {
+                    DateTime d = DateTime.Parse(geboortedatum);
+                    return d.ToString("dd-MM-yyyy");
+                } else
+                {
+                    return "";
+                }
+                
+            }
+            
+        }
+
+        public string geefDatum2
+        {
+            get
+            {
+                if(geboortedatum2 != null && geboortedatum2 != "")
+                {
+                    DateTime d = DateTime.Parse(geboortedatum2);
+                    return d.ToString("dd-MM-yyyy");
+                } else
+                {
+                    return "";
+                }
+                
+            }
+
+        }
+
     }
 }

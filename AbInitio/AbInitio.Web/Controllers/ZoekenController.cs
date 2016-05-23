@@ -27,19 +27,16 @@ namespace AbInitio.Web.Controllers
         {
             PersoonDal zoeken = new PersoonDal();
             PersoonModel model = new PersoonModel();
-            BeheerViewModel viewmodel = new BeheerViewModel();
             model.voornaam = voornaam;
             model.achternaam = achternaam;
             model.geslacht = geslacht;
             model.geboortedatum = geboortedatum;
 
-            //BlabLaBLaBLaBLaBLa
- 
-            
-                viewmodel.PersoonLijst = PersoonDal.zoekenPersonen(model);
+            BeheerViewModel viewmodel = new BeheerViewModel();
 
-                return View("_ZoekResultatenPartial", viewmodel);
-     
+            viewmodel.PersoonLijst = PersoonDal.zoekenPersonen(model);
+            return View("_ZoekResultatenPartial", viewmodel);
+
         }
 
     }
