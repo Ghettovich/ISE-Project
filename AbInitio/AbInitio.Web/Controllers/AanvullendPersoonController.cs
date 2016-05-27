@@ -17,11 +17,13 @@ namespace AbInitio.Web.Controllers
     public class AanvullendPersoonController : Controller
     {
         [HttpGet]
-        public ActionResult NieuwAanvullendPersoon()
+        public ActionResult NieuwAanvullendPersoon(int persoonid)
         {
             AanvullendPersoonModel model = new AanvullendPersoonModel();
 
+            model.persoonid = persoonid;
             model.datumPrecisies = AanvullendPersoonDAL.datumPrecisiesOphalen();
+            model.aanvullendPersoonInformatieTypes = AanvullendPersoonDAL.aanvullendPersoonInformatieTypesOphalen();
 
             return View(model);
         }
@@ -57,7 +59,7 @@ namespace AbInitio.Web.Controllers
             AanvullendPersoonDAL.nieuwAanvullendPersoonInDatabase(model);
 
             // Redirect goed zetten.
-            return Redirect("");
+            return Redirect("AanvullendPersoon/OverzichtAanvullendPersoon");
         }
 
         [HttpGet]
@@ -90,8 +92,24 @@ namespace AbInitio.Web.Controllers
             model.persoonid = Int32.Parse(nvc["persoonId"]);
             model.persooninformatietypeid = Int32.Parse(nvc["persoonInformatieTypeId"]);
             model.persooninformatie = nvc["persoonInformatie"];
-            model.van = nvc["van"];
-            model.tot = nvc["tot"];
+            if (!string.IsNullOrEmpty(nvc["van"]))
+            {
+                DateTime d = DateTime.Parse(nvc["van"]);
+                model.van = d.ToString("yyyy-MM-dd");
+            }
+            else
+            {
+                model.van = nvc["van"];
+            }
+            if (!string.IsNullOrEmpty(nvc["tot"]))
+            {
+                DateTime d2 = DateTime.Parse(nvc["tot"]);
+                model.tot = d2.ToString("yyyy-MM-dd");
+            }
+            else
+            {
+                model.tot = nvc["tot"];
+            }
             model.datumPrecisie = nvc["datumPrecisie"];
 
             AanvullendPersoonDAL.wijzigAanvullendPersoonInDatabase(model);

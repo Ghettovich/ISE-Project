@@ -18,5 +18,6 @@ namespace AbInitio.Web.Models
         public DateTime gewijzigdOp { get; set; }
 
         public List<SelectListItem> datumPrecisies { get; set; }
+        public List<SelectListItem> aanvullendPersoonInformatieTypes { get; set; }
     }
 }

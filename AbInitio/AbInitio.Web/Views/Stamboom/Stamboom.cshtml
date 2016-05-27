@@ -49,8 +49,8 @@
                     @item.achternaam
                 </td>
                 <td>
-                    @item.geboortePrecisie @item.geboortedatum @if (@item.geboortedatum2 != null)
-                    { <span> en @item.geboortedatum2 </span>}
+                    @item.geboortePrecisie @if (@item.geboortedatum != null) { @item.geboortedatum.ToString().Substring(0, 9)} @if (@item.geboortedatum2 != null)
+                    { <span> en @item.geboortedatum2.ToString().Substring(0, 9)</span>}
                 </td>
                 <td>
                     @item.trouwdatum
