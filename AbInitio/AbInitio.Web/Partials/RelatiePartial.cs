@@ -12,6 +12,7 @@ namespace AbInitio.Web.DbContexts
         public string RelatieType { get; set; }
         public string RelatieInformatie { get; set; }
 
+        public List<aanvullenderelatieinformatie> AanvullendeInfo { get; set; }
 
 
 
