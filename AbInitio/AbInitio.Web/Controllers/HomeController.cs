@@ -38,5 +38,11 @@ namespace AbInitio.Web.Controllers
             System.Web.HttpContext.Current.Session["account"] = accountId;
             return Redirect("/Home");
         }
+
+        [HttpGet]
+        public ActionResult Error(string errorMessage)
+        {
+            return View(model:errorMessage);
+        }
     }
 }
