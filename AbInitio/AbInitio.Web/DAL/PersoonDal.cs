@@ -17,57 +17,6 @@ namespace AbInitio.Web.DAL
     {
         private static IDataReader reader;
 
-        //vervangen met sp
-        /// <summary>
-        /// Selectlist kun je gemakkelijk een dropdown meemaken op de view, 
-        /// je zet er de Value (e.g. relatietypeid) zodat deze weer met de view kan worden meegestuurd
-        /// Text is voor de items die in de dropdown te zien zijn
-        /// </summary>
-        /// <returns></returns>
-        public static List<SelectListItem> RelatieTypes(int relatietypeid)
-        {
-            try
-            {
-                List<SelectListItem> relaties = new List<SelectListItem>();
-                using (DataConfig dbdc = new DataConfig())
-                {
-                    dbdc.Open();
-                    using (IDbCommand cmd = dbdc.CreateCommand())
-                    {
-                        cmd.CommandText = "SELECT relatietypeid, relatietype FROM relatietype";
-                        using (IDataReader reader = dbdc.CreateSqlReader())
-                        {
-                            while (reader.Read())
-                            {
-                                object[] test = new object[reader.FieldCount];
-                                reader.GetValues(test);
-                                SelectListItem item = new SelectListItem();
-                                
-                                item.Value = test.GetValue(0).ToString();
-                                item.Text = test.GetValue(1).ToString();
-                                relaties.Add(item);
-
-                                if (relatietypeid > 0 && relatietypeid == (int)test.GetValue(0))
-                                {
-                                    item.Selected = true;
-                                }
-                                else
-                                {
-                                    item.Selected = false;
-                                }
-                            }
-                        }
-                    }
-                }
-                return relaties;
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-
-        }
         /// <summary>
         /// Dient alleen ff om de personen in een dropdown te krijgen voor toevoegen relaties
         /// </summary>
@@ -87,41 +36,6 @@ namespace AbInitio.Web.DAL
             } return listitems;
         }
         
-        //vervangen met sp
-        public static List<SelectListItem> AvrTypes()
-        {
-            try
-            {
-                List<SelectListItem> avr = new List<SelectListItem>();
-                using (DataConfig dbdc = new DataConfig())
-                {
-                    dbdc.Open();
-                    using (IDbCommand cmd = dbdc.CreateCommand())
-                    {
-                        cmd.CommandText = "SELECT rit.relatieinformatietypeid, rit.relatieinformatietype FROM relatieinformatietype rit";
-                        using (IDataReader reader = dbdc.CreateSqlReader())
-                        {
-                            while (reader.Read())
-                            {
-                                object[] test = new object[reader.FieldCount];
-                                reader.GetValues(test);
-                                SelectListItem item = new SelectListItem();
-                                item.Selected = false;
-                                item.Value = test.GetValue(0).ToString();
-                                item.Text = test.GetValue(1).ToString();
-                                avr.Add(item);
-                            }
-                        }
-                    }
-                } return avr;
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-        }
-
         /// <summary>
         /// Haalt de verschillende geboorteprecisies op
         /// </summary>
@@ -224,65 +138,6 @@ namespace AbInitio.Web.DAL
 
         //vervangen met sp
         /// <summary>
-        /// Haalt de personen op en de relatie types tot deze persoon
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public static List<PersoonPartial> RelatiesTotPersoon(int persoonid)
-        {
-            try
-            {
-                List<PersoonPartial> persoonrelaties = new List<PersoonPartial>();
-
-                using (DataConfig dbdc = new DataConfig())
-                {
-                    dbdc.Open();
-                    using (IDbCommand cmd = dbdc.CreateCommand())
-                    {
-                        cmd.CommandText = "SELECT p.persoonid, p.voornaam, p.tussenvoegsel, p.achternaam, r.relatieid, rt.relatietype ";
-                        cmd.CommandText += "FROM persoon p INNER JOIN relatie r ON p.persoonid = r.persoonid2 ";
-                        cmd.CommandText += "INNER JOIN relatietype rt ON r.relatietypeid = rt.relatietypeid ";
-                        cmd.CommandText += "WHERE r.persoonid1 = @persoonid;";
-
-                        IDataParameter dp;
-                        dp = cmd.CreateParameter();
-                        dp.ParameterName = "@persoonid";
-                        dp.Value = persoonid;
-                        cmd.Parameters.Add(dp);
-
-                        using (IDataReader dr = dbdc.CreateSqlReader())
-                        {
-                            object[] results = new object[dr.FieldCount];
-
-                            while (dr.Read())
-                            {
-                                dr.GetValues(results);
-                                persoonrelaties.Add(new PersoonPartial
-                                {
-                                    persoonid = (int)results.GetValue(0),
-                                    voornaam = (results.GetValue(1) != null ? results.GetValue(1).ToString() : string.Empty),
-                                    tussenvoegsel = (results.GetValue(2) != null ? results.GetValue(2).ToString() : string.Empty),
-                                    achternaam = (results.GetValue(3) != null ? results.GetValue(3).ToString() : string.Empty),
-                                    RelatieID = (int)results.GetValue(4),
-                                    RelatieType = results.GetValue(5).ToString()
-                                });
-                            }
-                        }
-                    }
-                }
-                return persoonrelaties;
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-
-
-        }
-        
-        //vervangen met sp
-        /// <summary>
         /// Vind een persoon in de persoon tabel middels de id
         /// </summary>
         /// <param name="id"></param>
@@ -320,7 +175,7 @@ namespace AbInitio.Web.DAL
                                     geboortenaam = (results.GetValue(6) != null ? results.GetValue(6).ToString() : string.Empty),
                                     geslacht = (results.GetValue(7) != null ? results.GetValue(7).ToString() : string.Empty),
                                     status = (results.GetValue(8) != null ? results.GetValue(8).ToString() : string.Empty),
-                                    geboortedatum = (results.GetValue(9) != null ? results.GetValue(9).ToString() : string.Empty),
+                                    geboortedatum = (results.GetValue(9) != null ? results.GetValue(9).ToString().Substring(0, 9) : string.Empty),
                                     geboorteprecisie = (results.GetValue(10) != null ? results.GetValue(10).ToString() : string.Empty),
                                     geboortedatum2 = (results.GetValue(11) != null ? results.GetValue(11).ToString() : string.Empty)
                                 };
@@ -485,7 +340,7 @@ namespace AbInitio.Web.DAL
                                     geboortenaam = (results.GetValue(6) != null ? results.GetValue(6).ToString() : string.Empty),
                                     geslacht = (results.GetValue(7) != null ? results.GetValue(7).ToString() : string.Empty),
                                     status = (results.GetValue(8) != null ? results.GetValue(8).ToString() : string.Empty),
-                                    geboortedatum = (results.GetValue(9) != null ? results.GetValue(9).ToString() : string.Empty),
+                                    geboortedatum = (results.GetValue(9) != null ? results.GetValue(9).ToString().Substring(0, 9) : string.Empty),
                                     geboorteprecisie = (results.GetValue(10) != null ? results.GetValue(10).ToString() : string.Empty)
                                 });
                             }
@@ -499,265 +354,7 @@ namespace AbInitio.Web.DAL
                 throw;
             }
         }
-
-        public static void PersonenInRelatie(int relatieid, out int persoon1, out int persoon2, out int relatietypeid)
-        {
-            try
-            {
-                persoon1 = 0;
-                persoon2 = 0;
-                relatietypeid = 0;
-                using (DataConfig dbdc = new DataConfig())
-                {
-                    using (IDbCommand cmd = dbdc.CreateCommand())
-                    {
-                        cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.CommandText = "dbo.SP_PersonenInRelatie";
-                        //cmd.CommandText = "SELECT r.persoonid1, r.persoonid2, r.relatietypeid FROM relatie r WHERE r.relatieid = @relatieid";
-
-                        IDataParameter relatieid_dp = cmd.CreateParameter();
-                        relatieid_dp.Direction = ParameterDirection.Input;
-                        relatieid_dp.ParameterName = "@relatieid";
-                        relatieid_dp.Value = relatieid;                        
-                        cmd.Parameters.Add(relatieid_dp);
-
-                        IDataParameter persoonid1_dp = cmd.CreateParameter();
-                        persoonid1_dp.Direction = ParameterDirection.Output;
-                        persoonid1_dp.ParameterName = "@persoonid1";
-                        persoonid1_dp.DbType = DbType.Int32;
-                        cmd.Parameters.Add(persoonid1_dp);
-
-                        IDataParameter persoonid2_dp = cmd.CreateParameter();
-                        persoonid2_dp.Direction = ParameterDirection.Output;
-                        persoonid2_dp.ParameterName = "@persoonid2";
-                        persoonid2_dp.DbType = DbType.Int32;
-                        cmd.Parameters.Add(persoonid2_dp);
-
-                        IDataParameter relatietypeid_dp = cmd.CreateParameter();
-                        relatietypeid_dp.Direction = ParameterDirection.Output;
-                        relatietypeid_dp.ParameterName = "@relatietypeid";
-                        relatietypeid_dp.DbType = DbType.Int32;
-                        cmd.Parameters.Add(relatietypeid_dp);
-
-                        dbdc.Open();
-                        cmd.ExecuteNonQuery();
-                        persoon1 = (int)persoonid1_dp.Value;
-                        persoon2 = (int)persoonid2_dp.Value;
-                        relatietypeid = (int)relatietypeid_dp.Value;
-                    }
-                }
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
-
-        //vervangen met sp
-        public static RelatiePartial GetRelatieInfo(int relatieid)
-        {
-            try
-            {
-                RelatiePartial rp = new RelatiePartial();
-                using (DataConfig dbdc = new DataConfig())
-                {
-                    using (IDbCommand cmd = dbdc.CreateCommand())
-                    {
-                        cmd.CommandText = "SELECT rt.relatietype FROM relatie r INNER JOIN relatietype rt ON r.relatietypeid = rt.relatietypeid ";
-                        cmd.CommandText += "WHERE r.relatieid = @relatieid ";
-
-                        IDataParameter dp = cmd.CreateParameter();
-                        dp.ParameterName = "@relatieid";
-                        dp.Value = relatieid;
-                        cmd.Parameters.Add(dp);
-                        dbdc.Open();
-                        using (IDataReader reader = dbdc.CreateSqlReader())
-                        {
-                            object[] results = new object[reader.FieldCount];
-                            reader.Read();
-                            rp.RelatieType = reader.GetValue(0).ToString();
-                        }
-                    }
-                } return rp;
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
-
-        //vervangen met sp
-        public static List<RelatiePartial> AanvullendeRelatieInfo(int relatieid)
-        {
-            try
-            {
-                List<RelatiePartial> avr = new List<RelatiePartial>();
-                using (DataConfig dbdc = new DataConfig())
-                {
-                    using (IDbCommand cmd = dbdc.CreateCommand())
-                    {
-                        cmd.CommandText = "SELECT avr.aanvullenderelatieinformatieid, rit.relatieinformatietype, avr.relatieinformatie ";
-                        cmd.CommandText += "FROM aanvullenderelatieinformatie avr INNER JOIN relatieinformatietype rit ON avr.relatieinformatietypeid = rit.relatieinformatietypeid ";
-                        cmd.CommandText += "WHERE avr.relatieid = @relatieid";
-
-                        IDataParameter dp = cmd.CreateParameter();
-                        dp.ParameterName = "@relatieid";
-                        dp.Value = relatieid;
-                        cmd.Parameters.Add(dp);
-
-                        dbdc.Open();
-                        using (IDataReader reader = dbdc.CreateSqlReader())
-                        {
-                            object[] results = new object[reader.FieldCount];
-
-                            while (reader.Read())
-                            {
-                                avr.Add(new RelatiePartial
-                                {
-                                    AvrRelatieID = (int)reader.GetValue(0),
-                                    RelatieType = reader.GetValue(1).ToString(),
-                                    RelatieInformatie = reader.GetValue(2).ToString()
-                                });
-                            }
-                        }
-                    } return avr;
-                }
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-
-        }
-
-        public static void WijzigRelatie(RelatieModel model, out string error)
-        {
-            try
-            {
-                error = string.Empty;
-                using (DataConfig dbdc = new DataConfig())
-                {
-                    dbdc.Open();
-                    using (IDbCommand cmd = dbdc.CreateCommand())
-                    {
-                        cmd.CommandText = "dbo.SP_WijzigRelatie";
-                        cmd.CommandType = CommandType.StoredProcedure;
-
-                        IDataParameter pm = cmd.CreateParameter();
-                        pm.Direction = ParameterDirection.Input;
-
-                        pm.ParameterName = "@relatieid";
-                        pm.Value = model.relatieid;
-                        cmd.Parameters.Add(pm);
-
-                        pm = cmd.CreateParameter();
-                        pm.ParameterName = "@persoonid1";
-                        pm.Value = model.persoonid1;
-                        cmd.Parameters.Add(pm);
-
-                        pm = cmd.CreateParameter();
-                        pm.ParameterName = "@persoonid2";
-                        pm.Value = model.persoonid2;
-                        cmd.Parameters.Add(pm);
-
-                        pm = cmd.CreateParameter();
-                        pm.ParameterName = "@relatietypeid";
-                        pm.Value = model.relatietypeid;
-                        cmd.Parameters.Add(pm);
-                        cmd.ExecuteReader();
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                error = e.Message;
-            }
-        }
-
-        public static void ToevoegenRelatie(RelatieModel model, out string error)
-        {
-            try
-            {
-                error = string.Empty;
-                using (DataConfig dbdc = new DataConfig())
-                {
-                    dbdc.Open();
-                    using (IDbCommand cmd = dbdc.CreateCommand())
-                    {
-                        cmd.CommandText = "dbo.SP_ToevoegenRelatie";
-                        cmd.CommandType = CommandType.StoredProcedure;
-
-                        IDataParameter pm = cmd.CreateParameter();
-                        pm.Direction = ParameterDirection.Input;
-                        
-                        pm = cmd.CreateParameter();
-                        pm.ParameterName = "@persoonid1";
-                        pm.Value = model.persoonid1;
-                        cmd.Parameters.Add(pm);
-
-                        pm = cmd.CreateParameter();
-                        pm.ParameterName = "@persoonid2";
-                        pm.Value = model.persoonid2;
-                        cmd.Parameters.Add(pm);
-
-                        pm = cmd.CreateParameter();
-                        pm.ParameterName = "@relatietypeid";
-                        pm.Value = model.relatietypeid;
-                        cmd.Parameters.Add(pm);
-
-                        cmd.ExecuteReader();
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                error = e.Message;
-            }
-        }
-
-        public static void ToevoegenAvr(RelatieModel model, out string error)
-        {
-            try
-            {
-                error = string.Empty;
-                using (DataConfig dbdc = new DataConfig())
-                {
-                    dbdc.Open();
-                    using (IDbCommand cmd = dbdc.CreateCommand())
-                    {
-                        cmd.CommandText = "dbo.SP_ToevoegenAvr";
-                        cmd.CommandType = CommandType.StoredProcedure;
-
-                        IDataParameter pm = cmd.CreateParameter();
-                        pm.Direction = ParameterDirection.Input;
-
-                        pm = cmd.CreateParameter();
-                        pm.ParameterName = "@relatieid";
-                        pm.Value = model.relatieid;
-                        cmd.Parameters.Add(pm);
-
-                        pm = cmd.CreateParameter();
-                        pm.ParameterName = "@relatieinformatietypeid";
-                        pm.Value = model.AvRelatieID;
-                        cmd.Parameters.Add(pm);
-
-                        pm = cmd.CreateParameter();
-                        pm.ParameterName = "@relatieinformatie";
-                        pm.Value = model.relatieinformatie;
-                        cmd.Parameters.Add(pm);
-
-                        cmd.ExecuteReader();
-                    }
-                }
-
-            }
-            catch (Exception e)
-            {
-                error = e.Message;
-            }
-        }
-
+                
         /// <summary>
         /// Alleen voor beheer
         /// </summary>
@@ -796,7 +393,7 @@ namespace AbInitio.Web.DAL
                                     geboortenaam = (results.GetValue(6) != null ? results.GetValue(6).ToString() : string.Empty),
                                     geslacht = (results.GetValue(7) != null ? results.GetValue(7).ToString() : string.Empty),
                                     status = (results.GetValue(8) != null ? results.GetValue(8).ToString() : string.Empty),
-                                    geboortedatum = (results.GetValue(9) != null ? results.GetValue(9).ToString() : string.Empty),
+                                    geboortedatum = (results.GetValue(9) != null ? results.GetValue(9).ToString().Substring(0, 9) : string.Empty),
                                     geboorteprecisie = (results.GetValue(10) != null ? results.GetValue(10).ToString() : string.Empty),
                                     geboortedatum2 = (results.GetValue(11) != null ? results.GetValue(11).ToString() : string.Empty)
 
@@ -861,7 +458,7 @@ namespace AbInitio.Web.DAL
                                 status = (results.GetValue(9) != null ? results.GetValue(9).ToString() : string.Empty),
                                 geboortedatum = (results.GetValue(5) != null  ? results.GetValue(5).ToString().Substring(0,9) : string.Empty),
                                 geboorteprecisie = (results.GetValue(6) != null ? results.GetValue(6).ToString() : string.Empty),
-                                geboortedatum2 = (results.GetValue(7) != null && results.GetValue(7).ToString().Length > 0 ? results.GetValue(7).ToString().Substring(0,9) : string.Empty),
+                                geboortedatum2 = (results.GetValue(7) != null ? results.GetValue(7).ToString() : string.Empty),
 
 
                             });
