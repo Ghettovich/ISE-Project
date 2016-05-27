@@ -1,0 +1,62 @@
+﻿@model AbInitio.Web.Models.AanvullendPersoonModel
+
+@{
+    ViewBag.Title = "Nieuw aanvullende persoon informatie";
+}
+
+<h2>Nieuw Persoon</h2>
+
+@using (Html.BeginForm("NieuwAanvullendPersoon", "AanvullendPersoon", FormMethod.Post))
+{
+
+    <div class="form-horizontal">
+        <h4>Persoon</h4>
+        <hr />
+
+        @Html.Hidden("persoonid")
+
+        <div class="form-group">
+            @Html.Label("aanvullendPersoonInformatieType", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("persooninformatietypeid", Model.aanvullendPersoonInformatieTypes, "", new { @class = "form-control" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("Datum precisie", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10 precisie">
+                @Html.DropDownList("datumPrecisie", Model.datumPrecisies, "", new { @class = "form-control" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("Van", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <input type="text" class="form-control" name="van" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("Tot", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <input type="text" class="form-control" name="tot" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("Persoon Informatie", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <input type="text" class="form-control" name="persooninformatie" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-2">
+                <button type="button" class="btn btn-default" onclick="location.href = 'AanvullendPersoon/OverzichtAanvullendPersoon'">Terug naar overzicht</button>
+            </div>
+            <div class="col-md-2">
+                <input type="submit" value="Opslaan" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}

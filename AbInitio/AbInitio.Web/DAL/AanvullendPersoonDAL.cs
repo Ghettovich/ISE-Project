@@ -16,21 +16,60 @@ namespace AbInitio.Web.DAL
         {
             List<SelectListItem> datumPrecisies = new List<SelectListItem>();
             SelectListItem item = new SelectListItem();
-            item.Selected = false;
+            SelectListItem item2 = new SelectListItem();
+            SelectListItem item3 = new SelectListItem();
+            SelectListItem item4 = new SelectListItem();
             item.Value = "op";
             item.Text = "op";
             datumPrecisies.Add(item);
-            item.Value = "voor";
-            item.Text = "voor";
-            datumPrecisies.Add(item);
-            item.Value = "na";
-            item.Text = "na";
-            datumPrecisies.Add(item);
-            item.Value = "tussen";
-            item.Text = "tussen";
-            datumPrecisies.Add(item);
+            item2.Value = "voor";
+            item2.Text = "voor";
+            datumPrecisies.Add(item2);
+            item3.Value = "na";
+            item3.Text = "na";
+            datumPrecisies.Add(item3);
+            item4.Value = "tussen";
+            item4.Text = "tussen";
+            datumPrecisies.Add(item4);
 
             return datumPrecisies;
+        }
+
+        public static List<SelectListItem> aanvullendPersoonInformatieTypesOphalen()
+        {
+            try
+            {
+                List<SelectListItem> aanvullendPersoonInformatieTypes = new List<SelectListItem>();
+                using (DataConfig dbdc = new DataConfig())
+                {
+                    dbdc.Open();
+                    using (IDbCommand cmd = dbdc.CreateCommand())
+                    {
+                        cmd.CommandText = "dbo.spd_AanvullendPersoonInformatieTypes";
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        using (IDataReader reader = dbdc.CreateSqlReader())
+                        {
+                            while (reader.Read())
+                            {
+                                object[] test = new object[reader.FieldCount];
+                                reader.GetValues(test);
+                                SelectListItem item = new SelectListItem();
+
+                                item.Value = test.GetValue(0).ToString();
+                                item.Text = test.GetValue(1).ToString();
+                                aanvullendPersoonInformatieTypes.Add(item);
+                            }
+                        }
+                    }
+                }
+                return aanvullendPersoonInformatieTypes;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
         }
 
         public static void nieuwAanvullendPersoonInDatabase(AanvullendPersoonModel model)
