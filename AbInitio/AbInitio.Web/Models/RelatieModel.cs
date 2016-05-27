@@ -31,7 +31,7 @@ namespace AbInitio.Web.Models
         public PersoonPartial persoon1 { get; set; }
         public PersoonPartial persoon2 { get; set; }
         public RelatiePartial Relatie { get; set; }
-        public List<RelatiePartial> AvrLijst { get; set; }
+        public List<AVRelatiePartial> AvrLijst { get; set; }
         public List<SelectListItem> Relatietypes { get; set; }
         public List<SelectListItem> AvrTypes { get; set; }
         public List<SelectListItem> Personen { get; set; }

@@ -27,16 +27,16 @@
     @foreach (var item in Model.AvrLijst) {
         <tr>
             <td>
-                @item.RelatieType
+                @item.AVInfoType
             </td>
             <td>
-                @item.RelatieInformatie
+                @item.relatieinformatie
             </td>
             <td>
 
-                @Html.ActionLink("Edit", "Edit", new { id=item.AvrRelatieID }) |
-                @Html.ActionLink("Details", "Details", new { id=item.AvrRelatieID }) |
-                @Html.ActionLink("Delete", "Delete", new { id=item.AvrRelatieID })
+                @Html.ActionLink("Edit", "Edit", new { id=item.aanvullenderelatieinformatieid }) |
+                @Html.ActionLink("Details", "Details", new { id=item.aanvullenderelatieinformatieid }) |
+                @Html.ActionLink("Delete", "Delete", new { id=item.aanvullenderelatieinformatieid })
             </td>
         </tr>
     }
