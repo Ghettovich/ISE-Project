@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Routing;
 
 namespace AbInitio.Web.Controllers
 {
@@ -78,7 +79,7 @@ namespace AbInitio.Web.Controllers
             {
                 if (ex is System.Data.SqlClient.SqlException)
                 {
-                    return View(viewModel);
+                    return RedirectToAction("Error", "Home", new { errorMessage = ex.Message });
                 }
                 else
                 {

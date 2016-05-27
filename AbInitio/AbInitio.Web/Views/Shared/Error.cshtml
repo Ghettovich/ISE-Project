@@ -1,19 +1,11 @@
-﻿<!DOCTYPE html>
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Error</title>
-</head>
-<body>
-    <hgroup>
-        <h1>Error.</h1>
-        <h2>An error occurred while processing your request.</h2>
-        
-    </hgroup>
-    <div class="jumbotron">
+﻿@{
+    ViewBag.Title = "Error";
+    
+}
 
-        <h3>@ViewBag.Error</h3>
+<h1 class="text-center">Error</h1>
 
-    </div>
-</body>
-</html>
+<h2 class="text-center">@Model</h2>
+
+<h3 class="text-center">Ga terug en probeer het opniew</h3>
+<input type="button" onclick="history.go(-1);" value="Terug" class="text-center btn btn-default">
