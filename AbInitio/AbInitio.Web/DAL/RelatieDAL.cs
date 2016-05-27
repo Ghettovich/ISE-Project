@@ -19,6 +19,13 @@ namespace AbInitio.Web.DAL
         private static string SP_PersonenInRelatie = "SP_PersonenInRelatie";
         private static string SP_AanvullendeRelatieInfo = "SP_AanvullendeRelatieInfo";
 
+        private static string SP_ToevoegenAvr = "SP_ToevoegenAvr";
+
+        private static string SP_VerwijderRelatie = "SP_VerwijderRelatie";
+        private static string SP_WijzigRelatie = "SP_WijzigRelatie";
+        private static string SP_ToevoegenRelatie = "SP_ToevoegenRelatie";
+
+
         //SelectLists
         public static List<SelectListItem> AvrTypes()
         {
@@ -170,9 +177,10 @@ namespace AbInitio.Web.DAL
                         using (IDataReader reader = dbdc.CreateSqlReader())
                         {
                             object[] results = new object[reader.FieldCount];
-
+                            
                             while (reader.Read())
                             {
+                                reader.GetValues(results);
                                 avr.Add(new AVRelatiePartial
                                 {
                                     aanvullenderelatieinformatieid = (int)reader.GetValue(0),
@@ -192,8 +200,6 @@ namespace AbInitio.Web.DAL
                 throw;
             }
         }
-
-        //Voids
         public static RelatiePartial GetRelatieInfo(int relatieid)
         {
             try
@@ -262,6 +268,8 @@ namespace AbInitio.Web.DAL
             }
         }
 
+
+        //Voids
         public static void VerwijderRelatie(int relatieid, out string error)
         {
             try
@@ -272,7 +280,7 @@ namespace AbInitio.Web.DAL
                     dbdc.Open();
                     using (IDbCommand cmd = dbdc.CreateCommand())
                     {
-                        cmd.CommandText = "dbo.VerwijderRelatie";
+                        cmd.CommandText = SP_VerwijderRelatie;
                         cmd.CommandType = CommandType.StoredProcedure;
                         IDataParameter pm = cmd.CreateParameter();
                         pm.Direction = ParameterDirection.Input;
@@ -300,7 +308,7 @@ namespace AbInitio.Web.DAL
                     dbdc.Open();
                     using (IDbCommand cmd = dbdc.CreateCommand())
                     {
-                        cmd.CommandText = "dbo.SP_WijzigRelatie";
+                        cmd.CommandText = SP_WijzigRelatie;
                         cmd.CommandType = CommandType.StoredProcedure;
 
                         IDataParameter pm = cmd.CreateParameter();
@@ -344,7 +352,7 @@ namespace AbInitio.Web.DAL
                     dbdc.Open();
                     using (IDbCommand cmd = dbdc.CreateCommand())
                     {
-                        cmd.CommandText = "dbo.SP_ToevoegenRelatie";
+                        cmd.CommandText = SP_ToevoegenRelatie;
                         cmd.CommandType = CommandType.StoredProcedure;
 
                         IDataParameter pm = cmd.CreateParameter();
@@ -374,9 +382,6 @@ namespace AbInitio.Web.DAL
                 error = e.Message;
             }
         }
-
-
-
 
         public static void ToevoegenAvr(RelatieModel model, out string error)
         {
