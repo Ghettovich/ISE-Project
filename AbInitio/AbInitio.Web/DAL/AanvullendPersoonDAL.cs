@@ -118,7 +118,7 @@ namespace AbInitio.Web.DAL
                     dbdc.Open();
                     using (IDbCommand cmd = dbdc.CreateCommand())
                     {
-                        cmd.CommandText = "dbo.spd_MaakAanvullendPersoon";
+                        cmd.CommandText = "dbo.spd_SelecteerAanvullendPersoon";
                         cmd.CommandType = CommandType.StoredProcedure;
                         IDataParameter dp = cmd.CreateParameter();
                         dp.ParameterName = "@aanvullendPersoonInformatieId";
@@ -171,8 +171,7 @@ namespace AbInitio.Web.DAL
                         IDataParameter pm = cmd.CreateParameter();
                         pm.Direction = ParameterDirection.Input;
 
-                        cmd.Parameters.Add(new SqlParameter("@aanvullendPersoonInformatieId", model.aanvullendepersooninformatieid));
-                        cmd.Parameters.Add(new SqlParameter("@persoonid", model.persoonid));
+                        cmd.Parameters.Add(new SqlParameter("@aanvullendePersoonInformatieId", model.aanvullendepersooninformatieid));
                         cmd.Parameters.Add(new SqlParameter("@persooninformatietypeid", model.persooninformatietypeid));
                         cmd.Parameters.Add(new SqlParameter("@persooninformatie", string.IsNullOrEmpty(model.persooninformatie)
                             ? (object)DBNull.Value : model.persooninformatie));
@@ -182,8 +181,8 @@ namespace AbInitio.Web.DAL
                             ? (object)DBNull.Value : model.tot));
                         cmd.Parameters.Add(new SqlParameter("@datumPrecisie", string.IsNullOrEmpty(model.datumPrecisie)
                             ? (object)DBNull.Value : model.datumPrecisie));
-                        cmd.Parameters.Add(new SqlParameter("@oudWijzigdatum", string.IsNullOrEmpty(model.gewijzigdOp.ToString("yyyy-MM-dd"))
-                            ? (object)DBNull.Value : model.gewijzigdOp));
+                        cmd.Parameters.Add(new SqlParameter("@oudWijzigdatum", string.IsNullOrEmpty(model.gewijzigdOp.ToString("yyyy-MM-dd HH:mm:ss"))
+                            ? (object)DBNull.Value : model.gewijzigdOp.ToString("yyyy-MM-dd HH:mm:ss")));
 
                         cmd.ExecuteNonQuery();
                     }

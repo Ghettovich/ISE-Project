@@ -79,6 +79,7 @@ namespace AbInitio.Web.Controllers
             model.datumPrecisie = m.datumPrecisie;
             model.gewijzigdOp = m.gewijzigdOp;
             model.datumPrecisies = AanvullendPersoonDAL.datumPrecisiesOphalen();
+            model.aanvullendPersoonInformatieTypes = AanvullendPersoonDAL.aanvullendPersoonInformatieTypesOphalen();
 
             return View(model);
         }
@@ -111,10 +112,11 @@ namespace AbInitio.Web.Controllers
                 model.tot = nvc["tot"];
             }
             model.datumPrecisie = nvc["datumPrecisie"];
+            model.gewijzigdOp = DateTime.Parse(nvc["gewijzigdOp"]);
 
             AanvullendPersoonDAL.wijzigAanvullendPersoonInDatabase(model);
-
-            return Redirect("");
+            // Pad nog goed zetten
+            return Redirect("AanvullendPersoon/OverzichtAanvullendPersoon");
         }
 
         [HttpPost]
