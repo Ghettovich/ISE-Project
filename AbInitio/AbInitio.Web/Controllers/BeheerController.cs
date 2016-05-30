@@ -226,7 +226,7 @@ namespace AbInitio.Web.Controllers
                     return View(viewmodel);
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 
             }
