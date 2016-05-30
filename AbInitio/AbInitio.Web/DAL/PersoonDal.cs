@@ -177,7 +177,8 @@ namespace AbInitio.Web.DAL
                                     status = (results.GetValue(8) != null ? results.GetValue(8).ToString() : string.Empty),
                                     geboortedatum = (results.GetValue(9) != null ? results.GetValue(9).ToString().Substring(0, 9) : string.Empty),
                                     geboorteprecisie = (results.GetValue(10) != null ? results.GetValue(10).ToString() : string.Empty),
-                                    geboortedatum2 = (results.GetValue(11) != null ? results.GetValue(11).ToString() : string.Empty)
+                                    geboortedatum2 = (results.GetValue(11) != null ? results.GetValue(11).ToString() : string.Empty),
+                                    gewijzigdOp = DateTime.Parse(results.GetValue(12).ToString())
                                 };
                             }
                         }
@@ -560,6 +561,8 @@ namespace AbInitio.Web.DAL
                             ? (object)DBNull.Value : model.geboorteprecisie));
                         cmd.Parameters.Add(new SqlParameter("@geboortedatum2", string.IsNullOrEmpty(model.geboortedatum2)
                             ? (object)DBNull.Value : model.geboortedatum2));
+                        cmd.Parameters.Add(new SqlParameter("@oudWijzigdatum", string.IsNullOrEmpty(model.gewijzigdOp.ToString("yyyy-MM-dd HH:mm:ss"))
+                            ? (object)DBNull.Value : model.gewijzigdOp.ToString("yyyy-MM-dd HH:mm:ss")));
 
                         cmd.ExecuteNonQuery();
                     }

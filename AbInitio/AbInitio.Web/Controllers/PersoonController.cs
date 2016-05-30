@@ -145,6 +145,7 @@ namespace AbInitio.Web.Controllers
             model.geslachtOpties = PersoonDal.geslachtOptiesOphalen();
             model.statussen = PersoonDal.statussen();
             model.geboortePrecisies = PersoonDal.geboortePrecisies();
+            model.gewijzigdOp = p.gewijzigdOp;
             
             return View(model);
         }
@@ -191,7 +192,8 @@ namespace AbInitio.Web.Controllers
             {
                 model.geboortedatum2 = nvc["geboortedatum2"];
             }
-            
+            model.gewijzigdOp = DateTime.Parse(nvc["gewijzigdOp"]);
+
 
             PersoonDal.wijzigPersoonInDatabase(model);
 
