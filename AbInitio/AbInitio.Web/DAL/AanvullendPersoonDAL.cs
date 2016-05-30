@@ -156,6 +156,54 @@ namespace AbInitio.Web.DAL
             }
         }
 
+        public static List<AanvullendPersoonModel> aanvullendePersoonInformatieVan(int id)
+        {
+            try
+            {
+                List<AanvullendPersoonModel> aanvullendePersoonInformatieLijst = new List<AanvullendPersoonModel>();
+                using (DataConfig dbdc = new DataConfig())
+                {
+                    dbdc.Open();
+                    using (IDbCommand cmd = dbdc.CreateCommand())
+                    {
+                        cmd.CommandText = "dbo.spd_AlleAanvullendPersoonPerPersoon";
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        IDataParameter dp = cmd.CreateParameter();
+                        dp.ParameterName = "@persoonid";
+                        dp.Value = id;
+                        cmd.Parameters.Add(dp);
+
+                        using (IDataReader dr = dbdc.CreateSqlReader())
+                        {
+                            object[] results = new object[dr.FieldCount];
+                            while (dr.Read())
+                            {
+                                dr.GetValues(results);
+                                aanvullendePersoonInformatieLijst.Add(new AanvullendPersoonModel
+                                {
+                                    aanvullendepersooninformatieid = (int)results.GetValue(0),
+                                    persoonid = (int)results.GetValue(1),
+                                    persooninformatietypeid = (int)results.GetValue(2),
+                                    persooninformatie = (results.GetValue(3) != null ? results.GetValue(3).ToString() : string.Empty),
+                                    van = (results.GetValue(4) != null ? results.GetValue(4).ToString() : string.Empty),
+                                    tot = (results.GetValue(5) != null ? results.GetValue(5).ToString() : string.Empty),
+                                    datumPrecisie = (results.GetValue(6) != null ? results.GetValue(6).ToString() : string.Empty),
+                                    gewijzigdOp = (DateTime.Parse(results.GetValue(7).ToString()))
+                                });
+
+                            }
+                        }
+                    }
+                }
+                return aanvullendePersoonInformatieLijst;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
         public static void wijzigAanvullendPersoonInDatabase(AanvullendPersoonModel model)
         {
             try
@@ -220,5 +268,11 @@ namespace AbInitio.Web.DAL
                 throw;
             }
         }
+        /*
+        public string convertIdNaarNaam(int aanvullendId)
+        {
+            AanvullendPersoonModel model = new AanvullendPersoonModel();
+            return model.aanvullendPersoonInformatieTypes.Where(p => p.Value == aanvullendId.ToString()).First().Text;
+        }*/
     }
 }

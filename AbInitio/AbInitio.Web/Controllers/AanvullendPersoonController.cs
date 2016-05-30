@@ -129,5 +129,16 @@ namespace AbInitio.Web.Controllers
 
             return RedirectToAction("");
         }
+
+        [HttpGet]
+        public ActionResult AanvullendPersoonLijst(int persoonid)
+        {
+            AanvullendPersoonModel model = new AanvullendPersoonModel();
+
+            model.aanvullendPersoonInformatieLijst = AanvullendPersoonDAL.aanvullendePersoonInformatieVan(persoonid);
+            model.persoonid = persoonid;
+
+            return View(model);
+        }
     }
 }
