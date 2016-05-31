@@ -68,6 +68,10 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
     <Reference Include="System.Web.DynamicData" />
@@ -76,6 +80,14 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Http, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.3\lib\net45\System.Web.Http.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.3\lib\net45\System.Web.Http.WebHost.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
@@ -130,12 +142,14 @@
     <Compile Include="App_Start\DataConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\AanvullendPersoonController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BeheerController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PersoonController.cs" />
     <Compile Include="Controllers\StamboomController.cs" />
     <Compile Include="Controllers\ZoekenController.cs" />
+    <Compile Include="DAL\AanvullendPersoonDAL.cs" />
     <Compile Include="DAL\AccountDAL.cs" />
     <Compile Include="DAL\PersoonDal.cs" />
     <Compile Include="DAL\RelatieDAL.cs" />
@@ -284,8 +298,6 @@
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Beheer\Index.cshtml" />
     <Content Include="Views\Stamboom\Index.cshtml" />
-    <Content Include="Views\Persoon\Gebruiker1.cshtml" />
-    <Content Include="Views\Persoon\Gebruiker2.cshtml" />
     <Content Include="Views\Persoon\Create.cshtml" />
     <Content Include="Views\Persoon\RelatieToevoegen.cshtml" />
     <Content Include="Views\Persoon\_PersonenInStamboom.cshtml" />
@@ -309,8 +321,15 @@
     <Content Include="Views\Zoeken\_ZoekResultatenPartial.cshtml" />
     <Content Include="Views\Persoon\NieuwPersoon.cshtml" />
     <Content Include="Views\Persoon\WijzigPersoon.cshtml" />
+    <Content Include="Views\AanvullendPersoon\NieuwAanvullendPersoon.cshtml" />
+    <Content Include="Views\AanvullendPersoon\WijzigAanvullendPersoon.cshtml" />
+    <Content Include="Views\AanvullendPersoon\AanvullendPersoonLijst.cshtml" />
+    <Content Include="Views\Home\Schakelbord.cshtml" />
+<<<<<<< Updated upstream
     <Content Include="Views\Beheer\WijzigAvr.cshtml" />
     <Content Include="Views\Beheer\AvrDetails.cshtml" />
+=======
+>>>>>>> Stashed changes
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
