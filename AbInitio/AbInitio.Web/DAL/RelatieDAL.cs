@@ -420,7 +420,7 @@ namespace AbInitio.Web.DAL
             }
         }
 
-        public static void WijzigAvr(WijzigAvrModel model, out string error)
+        public static void WijzigAvr(RelatieModel model, out string error)
         {
             try
             {
@@ -448,7 +448,7 @@ namespace AbInitio.Web.DAL
                         IDataParameter pm_RelatieInformatie = cmd.CreateParameter();
                         pm_RelatieInformatie.Direction = ParameterDirection.Input;
                         pm_RelatieInformatie.ParameterName = "@relatieinformatie";
-                        pm_RelatieInformatie.Value = model.RelatieInformatie;
+                        pm_RelatieInformatie.Value = model.relatieinformatie;
                         cmd.Parameters.Add(pm_RelatieInformatie);
 
                         IDataParameter pm_Van = cmd.CreateParameter();
@@ -568,7 +568,7 @@ namespace AbInitio.Web.DAL
 
                         pm = cmd.CreateParameter();
                         pm.ParameterName = "@relatieinformatietypeid";
-                        pm.Value = model.AvRelatieID;
+                        pm.Value = model.AvrInfoID;
                         cmd.Parameters.Add(pm);
 
                         pm = cmd.CreateParameter();
@@ -576,6 +576,40 @@ namespace AbInitio.Web.DAL
                         pm.Value = model.relatieinformatie;
                         cmd.Parameters.Add(pm);
 
+                        IDataParameter pm_Van = cmd.CreateParameter();
+                        pm_Van.Direction = ParameterDirection.Input;
+                        pm_Van.ParameterName = "@van";
+
+                        if (!string.IsNullOrEmpty(model.Van))
+                        {
+                            pm_Van.Value = model.VanDatum;
+                            IDataParameter pm_Precisie = cmd.CreateParameter();
+                            pm_Precisie.Direction = ParameterDirection.Input;
+                            pm_Precisie.ParameterName = "@datumprecisie";
+                            pm_Precisie.Value = model.Precisie;
+                            cmd.Parameters.Add(pm_Precisie);
+                        }
+                        else
+                        {
+                            pm_Van.Value = null;
+                        }
+                        cmd.Parameters.Add(pm_Van);
+
+                        IDataParameter pm_Tot = cmd.CreateParameter();
+                        pm_Tot.Direction = ParameterDirection.Input;
+                        pm_Tot.ParameterName = "@tot";
+                        
+                        
+                        if (!string.IsNullOrEmpty(model.Precisie) && !string.IsNullOrEmpty(model.Tot))
+                        {
+                            pm_Tot.Value = model.TotDatum;
+                            
+                        }
+                        else
+                        {
+                            pm_Tot.Value = null;                            
+                        }
+                        cmd.Parameters.Add(pm_Tot);
                         cmd.ExecuteReader();
                     }
                 }

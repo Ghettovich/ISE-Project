@@ -4,11 +4,6 @@
     ViewBag.Title = "AvrDetails";
 }
 
-<h2>AvrDetails</h2>
-
-
-
-
 <div>
     <h4>WijzigAvrModel</h4>
     <hr />
@@ -44,17 +39,9 @@
             @Html.Display(Model.AvrRelatie.datumTot)
         </dd>
 
-        <dt>
-            @Html.DisplayName(Model.AvrRelatie.gewijzigdOp.ToShortDateString())
-        </dt>
-
-        <dd>
-            @Html.Display(Model.AvrRelatie.gewijzigdOp.ToShortDateString())
-        </dd>
-
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    @Html.ActionLink("Wijzig", "WijzigAvr", new { avrid = Model.AvrRelatie.aanvullenderelatieinformatieid}) |
     @Html.ActionLink("Terug naar relatie", "AanvullendeRelatieInfo", new { relatieid = Model.AvrRelatie.relatieid })
 </p>
