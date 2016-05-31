@@ -145,6 +145,7 @@ namespace AbInitio.Web.Controllers
             model.geslachtOpties = PersoonDal.geslachtOptiesOphalen();
             model.statussen = PersoonDal.statussen();
             model.geboortePrecisies = PersoonDal.geboortePrecisies();
+            model.gewijzigdOp = p.gewijzigdOp;
             
             return View(model);
         }
@@ -153,49 +154,68 @@ namespace AbInitio.Web.Controllers
         [HttpPost]
         public ActionResult WijzigPersoon(PersoonModel model)
         {
-            NameValueCollection nvc = Request.Form;
+            try
+            {
+                NameValueCollection nvc = Request.Form;
 
-            model.persoonid = Int32.Parse(nvc["persoonId"]);
-            model.voornaam = nvc["voornaam"];
-            model.overigenamen = nvc["overigenamen"];
-            model.tussenvoegsel = nvc["tussenvoegsel"];
-            model.achternaam = nvc["achternaam"];
-            model.achtervoegsel = nvc["achtervoegsel"];
-            model.geboortenaam = nvc["geboortenaam"];
-            model.geslacht = nvc["geslacht"];
-            if(nvc["status"].Equals("True"))
-            {
-                model.status = "1";
-            } else if (nvc["status"].Equals("True"))
-            {
-                model.status = "0";
-            } else
-            {
-                model.status = null;
-            }
-            if (!string.IsNullOrEmpty(nvc["geboortedatum"]))
-            {
-                DateTime d = DateTime.Parse(nvc["geboortedatum"]);
-                model.geboortedatum = d.ToString("yyyy-MM-dd");
-            }
-            else
-            {
-                model.geboortedatum = nvc["geboortedatum"];
-            }
-            model.geboorteprecisie = nvc["geboorteprecisie"];
-            if (!string.IsNullOrEmpty(nvc["geboortedatum2"]))
-            {
-                DateTime d2 = DateTime.Parse(nvc["geboortedatum2"]);
-                model.geboortedatum2 = d2.ToString("yyyy-MM-dd");
-            } else
-            {
-                model.geboortedatum2 = nvc["geboortedatum2"];
-            }
-            
+                model.persoonid = Int32.Parse(nvc["persoonId"]);
+                model.voornaam = nvc["voornaam"];
+                model.overigenamen = nvc["overigenamen"];
+                model.tussenvoegsel = nvc["tussenvoegsel"];
+                model.achternaam = nvc["achternaam"];
+                model.achtervoegsel = nvc["achtervoegsel"];
+                model.geboortenaam = nvc["geboortenaam"];
+                model.geslacht = nvc["geslacht"];
+                if (nvc["status"].Equals("True"))
+                {
+                    model.status = "1";
+                }
+                else if (nvc["status"].Equals("True"))
+                {
+                    model.status = "0";
+                }
+                else
+                {
+                    model.status = null;
+                }
+                if (!string.IsNullOrEmpty(nvc["geboortedatum"]))
+                {
+                    DateTime d = DateTime.Parse(nvc["geboortedatum"]);
+                    model.geboortedatum = d.ToString("yyyy-MM-dd");
+                }
+                else
+                {
+                    model.geboortedatum = nvc["geboortedatum"];
+                }
+                model.geboorteprecisie = nvc["geboorteprecisie"];
+                if (!string.IsNullOrEmpty(nvc["geboortedatum2"]))
+                {
+                    DateTime d2 = DateTime.Parse(nvc["geboortedatum2"]);
+                    model.geboortedatum2 = d2.ToString("yyyy-MM-dd");
+                }
+                else
+                {
+                    model.geboortedatum2 = nvc["geboortedatum2"];
+                }
+                model.gewijzigdOp = DateTime.Parse(nvc["gewijzigdOp"]);
 
-            PersoonDal.wijzigPersoonInDatabase(model);
 
-            return Redirect("../Beheer/Personen");
+                PersoonDal.wijzigPersoonInDatabase(model);
+
+                return Redirect("../Beheer/Personen");
+            }
+            catch (Exception ex)
+            {
+                if (ex is System.Data.SqlClient.SqlException)
+                {
+                    return RedirectToAction("Error", "Home", new { errorMessage = ex.Message });
+                }
+                else
+                {
+                    throw ex;
+                }
+
+            }
         }
 
         [HttpPost]
