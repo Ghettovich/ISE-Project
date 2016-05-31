@@ -1,0 +1,60 @@
+﻿@model AbInitio.Web.ViewModels.BeheerViewModel
+
+@{
+    ViewBag.Title = "AvrDetails";
+}
+
+<h2>AvrDetails</h2>
+
+
+
+
+<div>
+    <h4>WijzigAvrModel</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayName(Model.AvrRelatie.relatieinformatie)
+        </dt>
+
+        <dd>
+            @Html.Display(Model.AvrRelatie.relatieinformatie)
+        </dd>
+
+        <dt>
+            @Html.DisplayName(Model.AvrRelatie.datumVan)
+        </dt>
+
+        <dd>
+            @Html.Display(Model.AvrRelatie.datumVan)
+        </dd>
+        <dt>
+            @Html.DisplayName(Model.AvrRelatie.datumPrecisie)
+        </dt>
+
+        <dd>
+            @Html.Display(Model.AvrRelatie.datumPrecisie)
+        </dd>
+
+        <dt>
+            @Html.DisplayName(Model.AvrRelatie.datumTot)
+        </dt>
+
+        <dd>
+            @Html.Display(Model.AvrRelatie.datumTot)
+        </dd>
+
+        <dt>
+            @Html.DisplayName(Model.AvrRelatie.gewijzigdOp.ToShortDateString())
+        </dt>
+
+        <dd>
+            @Html.Display(Model.AvrRelatie.gewijzigdOp.ToShortDateString())
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    @Html.ActionLink("Terug naar relatie", "AanvullendeRelatieInfo", new { relatieid = Model.AvrRelatie.relatieid })
+</p>

@@ -13,7 +13,7 @@ namespace AbInitio.Web.ViewModels
         public stamboom Stamboom { get; set; }
         public List<PersoonPartial> PersoonLijst { get; set; }
         public List<stamboom> StamboomLijst { get; set; }
-        public List<relatie> RelatieLijst { get; set; }
+        public AVRelatiePartial AvrRelatie { get; set; }
 
 
 
