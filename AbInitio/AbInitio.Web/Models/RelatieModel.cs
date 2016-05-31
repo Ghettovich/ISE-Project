@@ -36,35 +36,4 @@ namespace AbInitio.Web.Models
         public List<SelectListItem> AvrTypes { get; set; }
         public List<SelectListItem> Personen { get; set; }
     }
-
-    public class WijzigAvrModel
-    {
-
-        [Key]
-        public int AvrID { get; set; }
-
-        [Key]
-        public int RelatieID { get; set; }
-
-        [Key]
-        public int AvrInfoID { get; set; }
-        public DateTime GewijzigdOp { get; set; }
-
-        [Required]
-        public string RelatieInformatie { get; set; }
-        
-        public string Van { get; set; }
-        public string Tot { get; set; }
-
-        public DateTime VanDatum { get; set; }
-        public DateTime TotDatum { get; set; }
-
-        public string Precisie { get; set; }        
-        public PersoonPartial Persoon1 { get; set; }
-        public PersoonPartial Persoon2 { get; set; }
-        public AVRelatiePartial AvrRelatie { get; set; }
-        public List<SelectListItem> AvrTypes { get; set; }
-        public List<SelectListItem> DatumPrecisies { get; set; }
-
-    }
 }

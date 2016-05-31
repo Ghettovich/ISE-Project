@@ -14,15 +14,10 @@ $(document).on("click", ".details", function (e) {
 
 $(document).on("click", ".delete_link", function () {
 
-    
-    if ($(this).attr("data-persoonid")) {        
+    $("#relatieid").attr("value", $(this).attr('data-relatieid'));
+
+    if ($(this).has("data-persoonid")) {
         $("#persoonid").attr("value", $(this).attr('data-persoonid'));
-    }
-    else if ($(this).attr("data-relatieid")) {
-        $("#relatieid").attr("value", $(this).attr('data-relatieid'));
-    }
-    else if ($(this).attr("data-avrid")) {
-        $("#avrid").attr("value", $(this).attr("data-avrid"));
     }
 
 });

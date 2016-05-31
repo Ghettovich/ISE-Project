@@ -32,40 +32,13 @@
             <td>
                 @item.relatieinformatie
             </td>
-            <td class="actions">
-                <a class="detail-persoon" href="@(Url.Action("AanvullendeRelatieInfo", "Beheer", new  { avrid = item.aanvullenderelatieinformatieid }))">
-                    <span class="glyphicon glyphicon-book"></span>
-                </a>
-                <a class="wijzig_persoon" href="@(Url.Action("WijzigAvr", "Beheer", new { avrid = item.aanvullenderelatieinformatieid }))">
-                    <span class="glyphicon glyphicon-pencil"></span>
-                </a>
-                <a class="delete_link" href="#" data-avrid="@item.aanvullenderelatieinformatieid" data-toggle="modal" data-target="#confirm-delete">
-                    <span class="glyphicon glyphicon-remove"></span>
-                </a>
+            <td>
+
+                @Html.ActionLink("Edit", "Edit", new { id=item.aanvullenderelatieinformatieid }) |
+                @Html.ActionLink("Details", "Details", new { id=item.aanvullenderelatieinformatieid }) |
+                @Html.ActionLink("Delete", "Delete", new { id=item.aanvullenderelatieinformatieid })
             </td>
         </tr>
     }
 
 </table>
-
-<div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <form action="@Url.Action("VerwijderAvr", "Beheer")" method="post">
-                @Html.AntiForgeryToken()
-                <input type="hidden" value="@Model.Relatie.relatieid" name="relatieid" id="relatieid" />
-                <input type="hidden" value=""  name="avrid"  id="avrid" />
-                <div class="modal-header">
-                    <p>Relatie informatie</p>
-                </div>
-                <div class="modal-body">
-                    <p>Aanvullende relatie informatie verwijderen?</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Annuleer</button>
-                    <input type="submit" class="btn btn-danger" value="Verwijderen" />
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
