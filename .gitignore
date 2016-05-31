@@ -216,3 +216,4 @@ ModelManifest.xml
 
 /AbInitio/AbInitio.Web/bin
 /AbInitio/AbInitio.Web/Web.config
+AbInitio/AbInitio.Web/AbInitio.Web.csproj

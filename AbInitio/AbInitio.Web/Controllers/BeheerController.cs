@@ -155,21 +155,41 @@ namespace AbInitio.Web.Controllers
             return View(viewmodel);
         }
 
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult VerwijderAvr()
+        {
+            NameValueCollection nvc = Request.Form;
+            int avrid = Int32.Parse(nvc["avrid"]);
+            int relatieid = Int32.Parse(nvc["relatieid"]);
+            string error;
+            try
+            {
+                RelatieDAL.VerwijderAvr(avrid, out error);
+                if (string.IsNullOrEmpty(error))
+                {
+                    return RedirectToAction("AanvullendeRelatieInfo", new { relatieid = relatieid });
+                }
+            }
+            catch (Exception e)
+            {
+                error = e.Message;
+            } return View("Error", error);            
+        }
+
         [HttpGet]
         public ActionResult ToevoegenAvr(int relatieid)
         {
             RelatieModel viewmodel = new RelatieModel();
-            //int persoonid1, persoonid2, relatietypeid;
-
             viewmodel.Relatie = RelatieDAL.GetRelatieInfo(relatieid);
-
-            //PersoonDal.PersonenInRelatie(relatieid, out persoonid1, out persoonid2, out relatietypeid);
 
             if (viewmodel.Relatie != null)
             {
                 viewmodel.relatieid = relatieid;
                 viewmodel.persoon1 = PersoonDal.GetPersoon(viewmodel.Relatie.persoonid1);
-                viewmodel.persoon2 = PersoonDal.GetPersoon(viewmodel.Relatie.persoonid1);                
+                viewmodel.persoon2 = PersoonDal.GetPersoon(viewmodel.Relatie.persoonid1);
                 viewmodel.AvrTypes = RelatieDAL.AvrTypes();
                 return View(viewmodel);
 
@@ -208,6 +228,64 @@ namespace AbInitio.Web.Controllers
         }
 
         [HttpGet]
+        public ActionResult WijzigAvr(int avrid)
+        {
+            WijzigAvrModel viewmodel = new WijzigAvrModel();
+            viewmodel.AvrRelatie = RelatieDAL.GetAvrInfo(avrid, viewmodel.RelatieID);
+
+            if (viewmodel.AvrRelatie != null)
+            {
+                viewmodel.AvrTypes = RelatieDAL.AvrTypes();
+                viewmodel.DatumPrecisies = PersoonDal.geboortePrecisies();
+                return View(viewmodel);
+            } return HttpNotFound("Aanvullende relatie niet gevonden");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult WijzigAvr(WijzigAvrModel viewmodel)
+        {
+            string error;
+            NameValueCollection nvc = Request.Form;
+
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    
+                    if (!string.IsNullOrEmpty(viewmodel.Van))
+                    {
+                        viewmodel.VanDatum = Convert.ToDateTime(string.Format("{0:dd-MM-yyyy}", viewmodel.Van));
+                    }
+                    if (!string.IsNullOrEmpty(viewmodel.Tot) && !string.IsNullOrEmpty(viewmodel.Precisie))
+                    {
+                        viewmodel.TotDatum = Convert.ToDateTime(string.Format("{0:dd-MM-yyyy}", viewmodel.Tot));
+                    }
+                    RelatieDAL.WijzigAvr(viewmodel, out error);
+                    if (string.IsNullOrEmpty(error))
+                    {
+                        return RedirectToAction("AvrDetails", new { avrid = viewmodel.AvrID });
+                    }                    
+                }
+                else
+                {
+                    viewmodel.AvrRelatie = RelatieDAL.GetAvrInfo(viewmodel.AvrID, viewmodel.RelatieID);
+                    if (viewmodel.RelatieID > 0)
+                    {
+                        viewmodel.AvrTypes = RelatieDAL.AvrTypes();
+                        viewmodel.DatumPrecisies = PersoonDal.geboortePrecisies();
+                        return View(viewmodel);
+                    } return View("Error", "Aanvullende relatie kan niet worden gevonden");
+                }
+            }
+            catch (Exception e)
+            {
+                error = e.Message;
+            } return View("Error", error);
+
+        }
+
+        [HttpGet]
         public ActionResult AanvullendeRelatieInfo(int relatieid)
         {
 
@@ -226,11 +304,19 @@ namespace AbInitio.Web.Controllers
                     return View(viewmodel);
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                
-            }
-            return HttpNotFound();
+                return View("Error", e.Message);
+            } return HttpNotFound();
+        }
+
+        [HttpGet]
+        public ActionResult AvrDetails(int avrid)
+        {
+            BeheerViewModel viewmodel = new BeheerViewModel();
+            viewmodel.AvrRelatie = RelatieDAL.GetAvrInfo(avrid, null);
+            return View(viewmodel);
+
         }
 
         [HttpPost]

@@ -11,7 +11,7 @@ namespace AbInitio.Web.DbContexts
 
         public string AVInfoType { get; set; }
         public string datumVan { get; set; }
-        public string datumPrecisie { get; set; }
+        public string Precisie { get; set; }
         public string datumTot { get; set; }
 
     }

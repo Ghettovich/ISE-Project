@@ -19,5 +19,7 @@ namespace AbInitio.Web.Models
 
         public List<SelectListItem> datumPrecisies { get; set; }
         public List<SelectListItem> aanvullendPersoonInformatieTypes { get; set; }
+
+        public List<AanvullendPersoonModel> aanvullendPersoonInformatieLijst = new List<AanvullendPersoonModel>();
     }
 }
