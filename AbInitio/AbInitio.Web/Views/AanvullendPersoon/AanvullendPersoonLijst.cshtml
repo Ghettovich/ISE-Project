@@ -53,19 +53,16 @@
 </div>
 <div class="row">
     <div class="col-md-3">
-        @Html.ActionLink("Terug", "PersoonDetails", "Persoon", new { }, new { @class = "btn btn-primary btn-block" })
+        @Html.ActionLink("Terug", "PersoonDetails", "Beheer", new {persoonid = Model.persoonid }, new { @class = "btn btn-primary btn-block" })
     </div>
-    <div class="col-md-3 col-md-push-1">
-        @Html.ActionLink("Informatie wijzigen", "WijzigAanvullendPersoon", "AanvullendPersoon", new { }, new { @class = "btn btn-primary btn-block" })
-    </div>
-    <div class="col-md-3 col-md-push-2">
-        @Html.ActionLink("Informatie toevoegen", "NieuwAanvullendPersoon", "AanvullendPersoon", new { }, new { @class = "btn btn-primary btn-block" })
+    <div class="col-md-3 col-md-push-5">
+        @Html.ActionLink("Informatie toevoegen", "NieuwAanvullendPersoon", "AanvullendPersoon", new {persoonid = Model.persoonid }, new { @class = "btn btn-primary btn-block" })
     </div>
 </div>
 <div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form action="@Url.Action("VerwijderPersoon", "Persoon")" method="post">
+            <form action="@Url.Action("VerwijderAanvullendPersoon", "AanvullendPersoon")" method="post">
                 @Html.AntiForgeryToken()
                 <input type="hidden" id="persoonid" name="persoonid" />
                 <div class="modal-header">

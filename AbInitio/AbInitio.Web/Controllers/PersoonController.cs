@@ -14,9 +14,6 @@ using System.Web.Mvc;
 
 namespace AbInitio.Web.Controllers
 {
-
-    
-
     public class PersoonController : Controller
     {
         int accountid = 1;

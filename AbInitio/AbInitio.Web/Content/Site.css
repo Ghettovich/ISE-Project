@@ -36,3 +36,13 @@ textarea {
     white-space: normal;
     width: 177px; 
 }
+
+.bordered
+{
+    border-width: 2px;
+    border-color: black;
+    border-style: solid;
+    border-radius: 25px;
+    padding: 40px;
+    margin-top: 10px;
+}
