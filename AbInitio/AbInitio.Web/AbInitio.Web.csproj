@@ -309,6 +309,8 @@
     <Content Include="Views\Zoeken\_ZoekResultatenPartial.cshtml" />
     <Content Include="Views\Persoon\NieuwPersoon.cshtml" />
     <Content Include="Views\Persoon\WijzigPersoon.cshtml" />
+    <Content Include="Views\Beheer\WijzigAvr.cshtml" />
+    <Content Include="Views\Beheer\AvrDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
