@@ -11,11 +11,8 @@ namespace AbInitio.Web.DbContexts
         public new string geboortedatum { get; set; }
         public new string geboortedatum2 { get; set; }
         public int stamboomid { get; set; }
-
         public string RelatieType { get; set; }
         public int RelatieID { get; set; }
-        
-            
         public string GeefGeslacht
         {
             get
@@ -81,6 +78,70 @@ namespace AbInitio.Web.DbContexts
                 
             }
 
+        }
+
+    }
+
+    public class MatchPersoon : PersoonPartial
+    {
+        public int ScoreVoornaam { get; set; }
+        public int ScoreOverigenamen { get; set; }
+        public int ScoreTussenvoegsel { get; set; }
+        public int ScoreAchternaam { get; set; }
+        public int ScoreAchtervoegsel { get; set; }
+        public int ScoreGeboortenaam { get; set; }
+        public int ScoreGeslacht { get; set; }
+        public int ScoreStatus { get; set; }
+        public int ScoreGeboortedatum { get; set; }
+
+
+        public int TotaalScore()
+        {
+            return ScoreAchternaam + ScoreAchtervoegsel + ScoreGeboortedatum + ScoreGeboortenaam + ScoreGeslacht + ScoreOverigenamen + ScoreStatus + ScoreTussenvoegsel + ScoreVoornaam;
+
+
+
+
+        }
+
+        public bool MatchGevonden()
+        {
+            if (ScoreVoornaam > 0)
+            {
+                return true;
+            }
+            if (ScoreOverigenamen > 0)
+            {
+                return true;
+            }
+            if (ScoreTussenvoegsel > 0)
+            {
+                return true;
+            }
+            if (ScoreAchternaam > 0)
+            {
+                return true;
+            }
+            if (ScoreAchtervoegsel > 0)
+            {
+                return true;
+            }
+            if (ScoreGeboortenaam > 0)
+            {
+                return true;
+            }
+            if (ScoreGeslacht > 0)
+            {
+                return true;
+            }
+            if (ScoreStatus > 0)
+            {
+                return true;
+            }
+            if (ScoreGeboortedatum > 0)
+            {
+                return true;
+            } return false;
         }
 
     }

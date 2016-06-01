@@ -1,4 +1,5 @@
-﻿using AbInitio.Web.DAL;
+﻿using AbInitio.Web.Code;
+using AbInitio.Web.DAL;
 using AbInitio.Web.DbContexts;
 using AbInitio.Web.Models;
 using AbInitio.Web.ViewModels;
@@ -63,21 +64,27 @@ namespace AbInitio.Web.Controllers
 
             StamboomDAL dal = new StamboomDAL();
             MatchViewModel viewmodel = new MatchViewModel();
-
-
+            
             if (persoonid.HasValue)
             {
-                return View(viewmodel);
+
+                MatchingScore matching = new MatchingScore(persoonid.Value);
+                matching.Persoon = PersoonDal.GetPersoon(persoonid.Value);
+
+                if (matching.Persoon != null)
+                {
+                    viewmodel.FoundMatch = true;
+                    matching.StartMatch();
+                    viewmodel.MatchLijst = matching.list_personen;
+                    return View(viewmodel);
+                } return HttpNotFound("Persoon kan niet worden gevonden");
             }
             else
             {
                 viewmodel.PersonenInStamboom = dal.getPersonenInStamboom(stamboomid, accountid);
                 return View(viewmodel);
             }       
-
-            
         }
-
         
         [HttpGet]
         public ActionResult PersoonDetails(int persoonid)
@@ -118,6 +125,7 @@ namespace AbInitio.Web.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult WijzigRelatie(RelatieModel model)
         {
 

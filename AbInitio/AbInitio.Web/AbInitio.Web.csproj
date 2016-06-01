@@ -130,6 +130,7 @@
     <Compile Include="App_Start\DataConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Code\Matching.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BeheerController.cs" />
     <Compile Include="Controllers\HomeController.cs" />

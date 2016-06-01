@@ -22,7 +22,7 @@ namespace AbInitio.Web.DAL
         private static string SP_ToevoegenAvr = "SP_ToevoegenAvr";
         private static string SP_VerwijderAvr = "SP_VerwijderAvr";
         private static string SP_GeefAvr = "SP_GeefAvr";
-        private static string SP_WijzigAvr = "TiefMaarOp_KKSP";
+        private static string SP_WijzigAanvullendeRelatie = "SP_WijzigAanvullendeRelatie";
 
 
         private static string SP_VerwijderRelatie = "SP_VerwijderRelatie";
@@ -431,7 +431,7 @@ namespace AbInitio.Web.DAL
                     using (IDbCommand cmd = dbdc.CreateCommand())
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.CommandText = SP_WijzigAvr;            
+                        cmd.CommandText = SP_WijzigAanvullendeRelatie;            
 
                         IDataParameter pm_AvrID = cmd.CreateParameter();
                         pm_AvrID.Direction = ParameterDirection.Input;
@@ -493,7 +493,7 @@ namespace AbInitio.Web.DAL
                         pm_GewijzigdOp.Value = model.GewijzigdOp;
                         cmd.Parameters.Add(pm_GewijzigdOp);
 
-                        cmd.ExecuteReader();
+                        cmd.ExecuteNonQuery();
                     }
                 }
             }
@@ -502,7 +502,6 @@ namespace AbInitio.Web.DAL
                 error = e.Message;
             }
         }
-
 
         public static void ToevoegenRelatie(RelatieModel model, out string error)
         {
