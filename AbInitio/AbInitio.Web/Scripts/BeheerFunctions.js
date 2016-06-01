@@ -27,3 +27,22 @@ $(document).on("click", ".delete_link", function () {
 
 });
 
+$("#wijzigenRechten").click(function () {
+    var c = confirm("weet u zeker dat u deze collaborateur wilt wijzigen?");
+    if (c == false) {
+        $(location).attr('href', 'Index')
+        return c;
+    }
+
+
+});
+
+$("#verwijderenRechten").click(function () {
+    var c = confirm("weet u zeker dat u deze gebruiker wilt verwijderen uit jouw collaborateur?");
+    if (c == false) {
+        $(location).attr('href', 'Index')
+        return c;
+    }
+});
+
+

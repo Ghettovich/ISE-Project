@@ -13,6 +13,11 @@ namespace AbInitio.Web.Controllers
             return View();
         }
 
+        public ActionResult Schakelbord()
+        {
+            return View();
+        }
+
         public ActionResult About()
         {
             ViewBag.Message = "Your application description page.";

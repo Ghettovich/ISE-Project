@@ -31,35 +31,49 @@ namespace AbInitio.Web.Controllers
         [HttpPost]
         public ActionResult NieuwAanvullendPersoon(AanvullendPersoonModel model)
         {
-            NameValueCollection nvc = Request.Form;
+            try
+            {
+                NameValueCollection nvc = Request.Form;
 
-            model.persoonid = Int32.Parse(nvc["persoonid"]);
-            model.persooninformatietypeid =Int32.Parse(nvc["persooninformatietypeid"]);
-            model.persooninformatie = nvc["persooninformatie"];
-            if (!string.IsNullOrEmpty(nvc["van"]))
-            {
-                DateTime d = DateTime.Parse(nvc["van"]);
-                model.van = d.ToString("yyyy-MM-dd");
-            }
-            else
-            {
-                model.van = nvc["van"];
-            }
-            if (!string.IsNullOrEmpty(nvc["tot"]))
-            {
-                DateTime d2 = DateTime.Parse(nvc["tot"]);
-                model.tot = d2.ToString("yyyy-MM-dd");
-            }
-            else
-            {
-                model.tot = nvc["tot"];
-            }
-            model.datumPrecisie = nvc["datumPrecisie"];
+                model.persoonid = Int32.Parse(nvc["persoonid"]);
+                model.persooninformatie = nvc["persooninformatie"];
+                if (!string.IsNullOrEmpty(nvc["van"]))
+                {
+                    DateTime d = DateTime.Parse(nvc["van"]);
+                    model.van = d.ToString("yyyy-MM-dd");
+                }
+                else
+                {
+                    model.van = nvc["van"];
+                }
+                if (!string.IsNullOrEmpty(nvc["tot"]))
+                {
+                    DateTime d2 = DateTime.Parse(nvc["tot"]);
+                    model.tot = d2.ToString("yyyy-MM-dd");
+                }
+                else
+                {
+                    model.tot = nvc["tot"];
+                }
+                model.datumPrecisie = nvc["datumPrecisie"];
 
-            AanvullendPersoonDAL.nieuwAanvullendPersoonInDatabase(model);
+                AanvullendPersoonDAL.nieuwAanvullendPersoonInDatabase(model);
 
-            // Redirect goed zetten.
-            return Redirect("AanvullendPersoon/OverzichtAanvullendPersoon");
+                // Redirect goed zetten.
+                return Redirect("../AanvullendPersoon/AanvullendPersoonLijst/?persoonid=" + model.persoonid);
+            }
+            catch (Exception ex)
+            {
+                if (ex is System.Data.SqlClient.SqlException)
+                {
+                    return RedirectToAction("Error", "Home", new { errorMessage = ex.Message });
+                }
+                else
+                {
+                    throw ex;
+                }
+
+            }
         }
 
         [HttpGet]

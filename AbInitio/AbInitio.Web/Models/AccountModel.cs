@@ -30,6 +30,16 @@ namespace AbInitio.Web.Models
         [Required]
         [DataType(DataType.Password)]
         public string Wachtwoord { get; set; }
+        
+    }
 
+    public class AccountModel
+    {
+        public int stamboomAccountId { get; set; }
+        public string gebruikersnaam { get; set; }
+        public int stamboomRechten { get; set; }
+        public int accountId { get; set; }
+        public int stamboomId { get; set; }
+        public List<SelectListItem> RechtOpties { get; set; }
     }
 }
