@@ -122,7 +122,10 @@ namespace AbInitio.Web.DAL
                                 jongstlevendeman = (results.GetValue(6).ToString() != string.Empty ? (int)results.GetValue(6) : 0),
                                 jongstlevendevrouw = (results.GetValue(7).ToString() != string.Empty ? (int)results.GetValue(7) : 0),
                                 gemiddeldaantalkinderen = (results.GetValue(8).ToString() != string.Empty ? (int)results.GetValue(8) : 0),
-                                gemiddeldaantalgeboortes = (results.GetValue(9).ToString() != string.Empty ? (int)results.GetValue(9) : 0)
+                                gemiddeldaantalgeboortes = (results.GetValue(9).ToString() != string.Empty ? (int)results.GetValue(9) : 0),
+                                afgeschermd = Convert.ToBoolean(results.GetValue(10)),
+                                gewijzigdOp = DateTime.Parse(results.GetValue(11).ToString())
+
                             };
                         }
                     }
@@ -130,10 +133,9 @@ namespace AbInitio.Web.DAL
             } return stam;
         }
 
-        public void maakStamboom(int accountId, string familieNaam)
+        public stamboom maakStamboom(int accountId, string familieNaam)
         {
-            try
-            {
+                stamboom stam = null;
                 using (DataConfig dbdc = new DataConfig())
                 {
                     dbdc.Open();
@@ -148,20 +150,27 @@ namespace AbInitio.Web.DAL
                         pm.ParameterName = "@accountId";
                         pm.Value = accountId;
                         cmd.Parameters.Add(pm);
+
                         pm = cmd.CreateParameter();
                         pm.ParameterName = "@familienaam";
                         pm.Value = familieNaam;
                         cmd.Parameters.Add(pm);
 
-                        cmd.ExecuteReader();
+                    reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        object[] results = new object[reader.FieldCount];
+                        reader.GetValues(results);
+                            stam = new stamboom
+                            {
+                                stamboomid = (int)results.GetValue(0)
+                            };
+                         }
+                        }
                     }
-                }
-            }
-            catch
-            {
-                throw;
-            }
-        }
+                return stam;
+            } 
+        
 
         public List<StamboomModel> getStambomen(int accountId, string familieNaam)
         {
@@ -200,6 +209,101 @@ namespace AbInitio.Web.DAL
                             stambomen.Add(stamboom);
                         }
                         return stambomen;
+                    }
+                }
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+
+        public void afschermenStamboom(int stamboomid)
+        {
+            try
+            {
+                using (DataConfig dbdc = new DataConfig())
+                {
+                    dbdc.Open();
+                    using (IDbCommand cmd = dbdc.CreateCommand())
+                    {
+                        cmd.CommandText = "dbo.spd_AfschermenGegevens";
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        IDataParameter pm = cmd.CreateParameter();
+                        pm.Direction = ParameterDirection.Input;
+
+                        pm.ParameterName = "@stamboomid";
+                        pm.Value = stamboomid;
+                        cmd.Parameters.Add(pm);
+
+                        cmd.ExecuteReader();
+                    }
+                }
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public static void persoonInStamboom(int stamboomid,int persoonid)
+        {
+            try
+            {
+                using (DataConfig dbdc = new DataConfig())
+                {
+                    dbdc.Open();
+                    using (IDbCommand cmd = dbdc.CreateCommand())
+                    {
+                        cmd.CommandText = "dbo.personenToevoegenInStamboom";
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        IDataParameter pm = cmd.CreateParameter();
+                        pm.Direction = ParameterDirection.Input;
+
+                        pm.ParameterName = "@stamboomid";
+                        pm.Value = stamboomid;
+                        cmd.Parameters.Add(pm);
+
+                        pm = cmd.CreateParameter();
+                        pm.ParameterName = "@persoonid";
+                        pm.Value = persoonid;
+                        cmd.Parameters.Add(pm);
+
+                        cmd.ExecuteReader();
+                    }
+                }
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public void wijzigStamboom(StamboomModel model)
+        {
+            try
+            {
+                using (DataConfig dbdc = new DataConfig())
+                {
+                    dbdc.Open();
+                    using (IDbCommand cmd = dbdc.CreateCommand())
+                    {
+                        cmd.CommandText = "dbo.spd_WijzigStamboom";
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        IDataParameter pm = cmd.CreateParameter();
+                        pm.Direction = ParameterDirection.Input;
+
+                        cmd.Parameters.Add(new SqlParameter("@stamboomid", model.stamboomId));
+                        cmd.Parameters.Add(new SqlParameter("@familienaam", string.IsNullOrEmpty(model.familieNaam)
+                        ? (object)DBNull.Value : model.familieNaam));
+                        cmd.Parameters.Add(new SqlParameter("@oudWijzigdatum", string.IsNullOrEmpty(model.gewijzigdOp.ToString("yyyy-MM-dd HH:mm:ss"))
+                        ? (object)DBNull.Value : model.gewijzigdOp.ToString("yyyy-MM-dd HH:mm:ss")));
+
+                        cmd.ExecuteReader();
                     }
                 }
             }
@@ -363,7 +467,6 @@ namespace AbInitio.Web.DAL
                 throw ex;
             }
         }
-
 
     }
 }

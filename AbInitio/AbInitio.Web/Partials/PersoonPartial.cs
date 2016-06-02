@@ -12,6 +12,8 @@ namespace AbInitio.Web.DbContexts
         public new string geboortedatum2 { get; set; }
         public int kekuleid { get; set; }
         public int stamboomid { get; set; }
+        public int id { get; set; }
+
         public string RelatieType { get; set; }
         public int RelatieID { get; set; }
         public string GeefGeslacht

@@ -57,10 +57,10 @@ namespace AbInitio.Web.Controllers
         }
 
         [HttpGet]
-        public ActionResult NieuwPersoon()
+        public ActionResult NieuwPersoon(int stamboomid)
         {
             PersoonModel model = new PersoonModel();
-
+            model.stamboomid = stamboomid;
             model.geslachtOpties = PersoonDal.geslachtOptiesOphalen();
             model.statussen = PersoonDal.statussen();
             model.geboortePrecisies = PersoonDal.geboortePrecisies();
@@ -71,8 +71,10 @@ namespace AbInitio.Web.Controllers
         [HttpPost]
         public ActionResult NieuwPersoon(PersoonModel model)
         {
-            NameValueCollection nvc = Request.Form;
+            StamboomDAL stamboomDAL = new StamboomDAL();
+            PersoonPartial persoonid = new PersoonPartial();
 
+            NameValueCollection nvc = Request.Form;
 
             model.voornaam = nvc["voornaam"];
             model.overigenamen = nvc["overigenamen"];
@@ -112,10 +114,11 @@ namespace AbInitio.Web.Controllers
                 model.geboortedatum2 = nvc["geboortedatum2"];
             }
 
+            persoonid =  PersoonDal.nieuwPersoonInDatabase(model);
+            StamboomDAL.persoonInStamboom(model.stamboomid,persoonid.id);
 
-            PersoonDal.nieuwPersoonInDatabase(model);
 
-            return Redirect("../Beheer/Personen");
+            return Redirect("../Stamboom/Stamboom?stamboomId=" + model.stamboomid);
         }
 
         [HttpGet]

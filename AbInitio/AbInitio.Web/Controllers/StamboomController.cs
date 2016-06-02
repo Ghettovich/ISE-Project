@@ -30,12 +30,13 @@ namespace AbInitio.Web.Controllers
         [HttpPost]
         public ActionResult maakStamboom(string familienaam)
         {
-            if(Session["account"] != null)
+            StamboomViewModel viewModel = new StamboomViewModel();
+            if (Session["account"] == null)
             {
                 return Redirect("/Home");
             }
-            stamboomDAL.maakStamboom((int)Session["account"], familienaam);
-            return Redirect("overzichtStambomen");
+            viewModel.stamboom =  stamboomDAL.maakStamboom((int)Session["account"], familienaam);
+            return RedirectToAction("NieuwPersoon", "Persoon", new { stamboomid = viewModel.stamboom.stamboomid });
         }
 
         [HttpGet]
@@ -120,6 +121,35 @@ namespace AbInitio.Web.Controllers
         public ActionResult NieuwPersoon(NieuwPersoonModel model)
         {
             return View();
+        }
+
+
+        public ActionResult AfschermenStamboom(int stamboomId)
+        {
+            stamboomDAL.afschermenStamboom(stamboomId);
+            return Redirect("Stamboom?stamboomId="+stamboomId);
+        }
+
+
+        [HttpGet]
+        public ActionResult WijzigStamboom(int stamboomid)
+        {
+            StamboomViewModel model = new StamboomViewModel();
+            model.stamboomid = stamboomid;
+            model.stamboom = StamboomDAL.GetStamboom(stamboomid);
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult WijzigStamboom(int stamboomid,string familienaam,DateTime gewijzigdOp)
+        {
+            StamboomModel update = new StamboomModel();
+            update.stamboomId = stamboomid;
+            update.familieNaam = familienaam;
+            update.gewijzigdOp = gewijzigdOp;
+
+            stamboomDAL.wijzigStamboom(update);
+            return Redirect("Stamboom?stamboomId=" + stamboomid);
         }
 
     }

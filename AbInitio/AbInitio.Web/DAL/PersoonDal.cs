@@ -435,10 +435,11 @@ namespace AbInitio.Web.DAL
             }
         }
 
-        public static void nieuwPersoonInDatabase(PersoonModel model)
+        public static PersoonPartial nieuwPersoonInDatabase(PersoonModel model)
         {
             try
             {
+                PersoonPartial id = null;
                 using (DataConfig dbdc = new DataConfig())
                 {
                     dbdc.Open();
@@ -473,9 +474,19 @@ namespace AbInitio.Web.DAL
                         cmd.Parameters.Add(new SqlParameter("@geboortedatum2", string.IsNullOrEmpty(model.geboortedatum2)
                             ? (object)DBNull.Value : model.geboortedatum2));
 
-                        cmd.ExecuteNonQuery();
+                        reader = cmd.ExecuteReader();
+                        while (reader.Read())
+                        {
+                            object[] results = new object[reader.FieldCount];
+                            reader.GetValues(results);
+                            id = new PersoonPartial
+                            {
+                                id = (int)results.GetValue(0)
+                            };
+                        }
                     }
                 }
+                return id;
             }
             catch (Exception)
             {

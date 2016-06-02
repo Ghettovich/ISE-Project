@@ -54,5 +54,6 @@ namespace AbInitio.Web.Models
         public int accountId { get; set; }
         public int stamboomId { get; set; }
         public string familieNaam { get; set; }
+        public DateTime gewijzigdOp { get; set; }
     }
 }
