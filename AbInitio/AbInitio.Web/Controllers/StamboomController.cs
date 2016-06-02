@@ -145,7 +145,8 @@ namespace AbInitio.Web.Controllers
             StamboomViewModel model = new StamboomViewModel();
             model.stamboomid = stamboomid;
             model.stamboom = StamboomDAL.GetStamboom(stamboomid);
-            return View(model);
+            model.personen = stamboomDAL.getPersonenInStamboom(stamboomid, (int)Session["account"]);
+            return View("StamboomWijzigen",model);
         }
 
         [HttpPost]
@@ -157,7 +158,7 @@ namespace AbInitio.Web.Controllers
             update.gewijzigdOp = gewijzigdOp;
 
             stamboomDAL.wijzigStamboom(update);
-            return Redirect("Stamboom?stamboomId=" + stamboomid);
+            return Redirect("WijzigStamboom");
         }
 
     }
