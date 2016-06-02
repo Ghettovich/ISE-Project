@@ -1,66 +1,148 @@
 ﻿@model AbInitio.Web.ViewModels.StamboomViewModel
 
+
 @{
     ViewBag.Title = "Stamboom";
 }
 
+<div id="overzichtBody">
+ 
+        <div class="overzichtHeader">
+            <div style="display:inline-block">
+                <h2>Stamboom van</h2>
+                <h3> Familie <span style="color:darkcyan">@Model.stamboom.familienaam</span></h3>
+            </div>
 
-<h1> Familie : @Model.stamboom.familienaam</h1>
+            <div class="actions" style="display:inline-block; margin-left:3%;">
+                <a id="voegPersoonToe" style="text-decoration: none" class="glyphicon glyphicon-plus" href="@(Url.Action("NieuwPersoon", "Persoon", new{ stamboomid = Model.stamboom.stamboomid }))">
+                </a>
+            </div>
 
-<table class="table table-striped">
-    <tr>
-        <th>
-            Kekule Nummer
-        </th>
-        <th>
-            Voornaam
-        </th>
-        <th>
-            Tussenvoegsel
-        </th>
-        <th>
-            Achternaam
-        </th>
-        <th>
-            Geboortedatum
-        </th>
-        <th>
-            Trouwdatum
-        </th>
-        <th>
-            Overlijdingsdatum
-        </th>
-    </tr>
-    @if (Model.personen != null)
-    {
-        foreach (var item in Model.personen)
+            <div class="actions" style="display:inline-block; margin-left:3%;">
+                <a id="afschermIcon" style="text-decoration: none" href="@(Url.Action("AfschermenStamboom", "Stamboom", new { stamboomId = Model.stamboom.stamboomid }))">
+                </a>
+            </div>
+
+            <div class="actions" style="display:inline-block; margin-left:3%;">
+                <a id="wijzig" data-stamboomid="@Model.stamboom.stamboomid" href="#" style="text-decoration: none" class="glyphicon glyphicon-pencil"></a>
+            </div>
+
+        </div>
+
+        <div class="wijzigForm" style="display:none">
+
+
+            @using (Html.BeginForm("WijzigStamboom", "Stamboom", FormMethod.Post, htmlAttributes: new { onsubmit = "return confirm('Weet je zeker dat je de wijzigingen wilt oplsaan?');" }))
+            {
+
+                <div class="form-inline">
+                    <h2>Stamboom van</h2>
+                    <input type="hidden" id="stamboomid" name="stamboomid" value="" />
+                    <input type="hidden" id="wijzigDatum" name="gewijzigdOp" value="@Model.stamboom.gewijzigdOp" />
+
+                    <div class="form-inline">
+                        @Html.Label("Familienaam", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-2">
+                            <input type="text" class="form-control" name="familienaam" value="@Model.stamboom.familienaam" />
+                        </div>
+
+                        <div class="col-md-2">
+                            <input type="submit" class="btn btn-primary" value="Opslaan"/>
+                        </div>
+
+                    </div>
+                        
+                    </div>
+
+            }
+        </div>
+
+
+    <table class="table table-striped">
+        <tr>
+            <th>
+                Kekule Nummer
+            </th>
+            <th>
+                Voornaam
+            </th>
+            <th>
+                Tussenvoegsel
+            </th>
+            <th>
+                Achternaam
+            </th>
+            <th>
+                Geboortedatum
+            </th>
+            <th>
+                Trouwdatum
+            </th>
+            <th>
+                Overlijdingsdatum
+            </th>
+        </tr>
+        @if (Model.personen != null)
         {
-            <tr>
-                <td>
-                    @item.kekuleId
-                </td>
-                <td>
-                    @item.voornaam
-                </td>
-                <td>
-                    @item.tussenvoegsel
-                </td>
-                <td>
-                    @item.achternaam
-                </td>
-                <td>
-                    @item.geboortePrecisie @if (@item.geboortedatum != null) { @item.geboortedatum.ToString().Substring(0, 9)} @if (@item.geboortedatum2 != null)
+            foreach (var item in Model.personen)
+            {
+                <tr>
+                    <td>
+                        @item.kekuleId
+                    </td>
+                    <td>
+                        @item.voornaam
+                    </td>
+                    <td>
+                        @item.tussenvoegsel
+                    </td>
+                    <td>
+                        @item.achternaam
+                    </td>
+                    <td>
+                        @item.geboortePrecisie @if (@item.geboortedatum != null)
+                        { @item.geboortedatum.ToString().Substring(0, 9)} @if (@item.geboortedatum2 != null)
                     { <span> en @item.geboortedatum2.ToString().Substring(0, 9)</span>}
-                </td>
-                <td>
-                    @item.trouwdatum
-                </td>
-                <td>
-                    @item.overlijdingsdatum
-                </td>
-            </tr>
+                    </td>
+                    <td>
+                        @item.trouwdatum
+                    </td>
+                    <td>
+                        @item.overlijdingsdatum
+                    </td>
+                </tr>
+            }
         }
-    }
- </table>
+    </table>
 
-<button>toevoegen persoon</button>
+
+</div>
+
+<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+<script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+<script>
+    var afscherm = '@Model.stamboom.afgeschermd';
+
+    $(document).ready(function () {
+        
+        $("#wijzig").click(function () {
+            $(".wijzigForm").fadeIn('fast');
+            $(".overzichtHeader").fadeOut('fast');
+            var stamboomid = $(this).attr('data-stamboomid');
+            $("#stamboomid").attr('value', stamboomid);
+
+        });
+
+                if (afscherm == 'True') {
+                    $('#afschermIcon').removeClass('glyphicon glyphicon-lock').addClass('glyphicon glyphicon-ok');
+                }
+                else if (afscherm == 'False')
+                {
+                    $('#afschermIcon').removeClass('glyphicon glyphicon-ok').addClass('glyphicon glyphicon-lock');
+                }
+            });
+</script>
+

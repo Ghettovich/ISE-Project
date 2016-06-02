@@ -23,6 +23,7 @@ namespace AbInitio.Web.Models
         public string geboortedatum { get; set; }
         public string geboorteprecisie { get; set; }
         public string geboortedatum2 { get; set; }
+        public int stamboomid { get; set; }
 
         public List<SelectListItem> geboortePrecisies { get; set; }
         public List<SelectListItem> geslachtOpties { get; set; }
