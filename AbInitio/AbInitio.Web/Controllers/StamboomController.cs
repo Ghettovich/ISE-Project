@@ -130,6 +130,14 @@ namespace AbInitio.Web.Controllers
             return Redirect("Stamboom?stamboomId="+stamboomId);
         }
 
+        public ActionResult verwijderStamboom(int accountid,int stamboomId)
+        {
+            stamboomDAL.verwijderStamboom(accountid, stamboomId);
+            return Redirect("OverzichtStambomen");
+        }
+
+
+
 
         [HttpGet]
         public ActionResult WijzigStamboom(int stamboomid)
