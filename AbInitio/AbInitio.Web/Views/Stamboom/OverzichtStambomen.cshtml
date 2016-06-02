@@ -57,8 +57,9 @@
                         </span>
                     }
                     <div class="col-md-1" style="padding:0px">
-                        <a class="delete_link" href="#" data-persoonid="@item.stamboomId" data-toggle="modal" data-target="#confirm-delete">
-                            <span class="glyphicon glyphicon-remove"></span>
+                        <a class="delete_link" id="stamboomDelete-@item.stamboomId" href="#" value="@item.stamboomId" data-toggle="modal" data-target="#confirm-delete" onclick="setHiddenField('stamboomid-' + @item.stamboomId)">
+                            <input type="hidden" id="stamboomid-@item.stamboomId" value="@item.stamboomId" />
+                            <span class="glyphicon glyphicon-remove" ></span>
                         </a>
                     </div>
                 </td>
@@ -72,7 +73,7 @@
         <div class="modal-content">
             <form action="@Url.Action("VerwijderStamboom", "Stamboom")" method="post">
                 @Html.AntiForgeryToken()
-                <input type="hidden" id="stamboomId" name="stamboomid" />
+                <input type="hidden" id="stamboomidHidden" name="stamboomid"/>
                 <div class="modal-header">
                     <p>Verwijder stamboom</p>
                 </div>
