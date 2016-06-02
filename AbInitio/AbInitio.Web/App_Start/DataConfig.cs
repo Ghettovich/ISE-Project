@@ -96,9 +96,9 @@ namespace AbInitio.Web.App_Start
             return sqlAdapter;
         }
 
-        public IDbDataAdapter CreateSqlDbAdapter(SqlCommand cmd)
+        public IDbDataAdapter CreateSqlDbAdapter(IDbCommand cmd)
         {
-            sqlAdapter = new SqlDataAdapter(cmd.CommandText, cmd.Connection);
+            sqlAdapter = new SqlDataAdapter(cmd.CommandText, cmd.Connection.ConnectionString);
             return sqlAdapter;
         }
 

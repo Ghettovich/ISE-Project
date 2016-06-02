@@ -67,23 +67,26 @@ namespace AbInitio.Web.Controllers
             
             if (persoonid.HasValue)
             {
+                MatchingScore matching = new MatchingScore(persoonid.Value);               
 
-                MatchingScore matching = new MatchingScore(persoonid.Value);
-                matching.Persoon = PersoonDal.GetPersoon(persoonid.Value);
-
-                if (matching.Persoon != null)
+                if (matching.S_Persoon != null)
                 {
-                    viewmodel.FoundMatch = true;
                     matching.StartMatch();
-                    viewmodel.MatchLijst = matching.list_personen;
-                    return View(viewmodel);
-                } return HttpNotFound("Persoon kan niet worden gevonden");
+                    viewmodel.Persoon = matching.S_Persoon;
+                    if (matching.list_personen.Count > 0)
+                    {
+                        viewmodel.FoundMatch = true;
+                        viewmodel.MatchLijst = matching.list_personen;
+                        return View(viewmodel);
+                    }                                    
+                }                
             }
             else
             {
-                viewmodel.PersonenInStamboom = dal.getPersonenInStamboom(stamboomid, accountid);
+                viewmodel.PersonenInStamboom = PersoonDal.PersonenInStamboom(stamboomid);
+                //viewmodel.PersonenInStamboom = dal.getPersonenInStamboom(stamboomid, accountid);
                 return View(viewmodel);
-            }       
+            } return HttpNotFound("Persoon kan niet worden gevonden");
         }
         
         [HttpGet]

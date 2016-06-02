@@ -13,6 +13,7 @@ namespace AbInitio.Web.DAL
     public class StamboomDAL
     {
         private static string SP_MatchPersoon = "SP_MatchPersoon";
+        private const string con = "Server=localhost; Database=AbInitio; Trusted_Connection=True";
 
         public IDataReader reader { get; set; }
 
@@ -72,20 +73,21 @@ namespace AbInitio.Web.DAL
         public static DataTable MatchPersonen(int persoonid)
         {
             DataTable dt = new DataTable();
-            
-            using (DataConfig dbdc = new DataConfig())
-            {
-                using (SqlCommand cmd = new SqlCommand())
-                {
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.CommandText = SP_MatchPersoon;
 
-                    using (SqlDataAdapter adapter = new SqlDataAdapter(cmd))
+            using (SqlConnection con = new SqlConnection("Server=localhost; Database=AbInitio; Trusted_Connection=True"))
+            {
+                using (SqlCommand cmd = new SqlCommand(SP_MatchPersoon))
+                {
+                    cmd.Connection = con;
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    using (SqlDataAdapter sda = new SqlDataAdapter(cmd))
                     {
-                        adapter.Fill(dt);
-                    }                
+                        sda.Fill(dt);
+                    }
+
                 }
-            } return dt;
+            }
+            return dt;
         }
 
         public static stamboom GetStamboom(int stamboomid)

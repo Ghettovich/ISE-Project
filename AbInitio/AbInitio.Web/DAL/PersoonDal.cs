@@ -272,7 +272,7 @@ namespace AbInitio.Web.DAL
                     using (IDbCommand cmd = dbdc.CreateCommand())
                     {
                         cmd.CommandText = "SELECT p.persoonid, p.voornaam, p.overigenamen, p.tussenvoegsel, p.achternaam, p.achtervoegsel, ";
-                        cmd.CommandText += "p.geboortenaam, p.geslacht, p.status, p.geboortedatum, p.geboorteprecisie ";
+                        cmd.CommandText += "p.geboortenaam, p.geslacht, p.status, p.geboortedatum, p.geboorteprecisie, pis.kekuleid ";
                         cmd.CommandText += "FROM dbo.persoon p ";
                         cmd.CommandText += "INNER JOIN dbo.personeninstamboom pis ON pis.persoonid = p.persoonid ";
                         cmd.CommandText += "WHERE pis.stamboomid = @stamboomid";
@@ -302,7 +302,8 @@ namespace AbInitio.Web.DAL
                                     geslacht = (results.GetValue(7) != null ? results.GetValue(7).ToString() : string.Empty),
                                     status = (results.GetValue(8) != null ? results.GetValue(8).ToString() : string.Empty),
                                     geboortedatum = (results.GetValue(9) != null ? results.GetValue(9).ToString().Substring(0, 9) : string.Empty),
-                                    geboorteprecisie = (results.GetValue(10) != null ? results.GetValue(10).ToString() : string.Empty)
+                                    geboorteprecisie = (results.GetValue(10) != null ? results.GetValue(10).ToString() : string.Empty),
+                                    KekuleID = (results.GetValue(11) != null ? results.GetValue(11).ToString() : string.Empty)
                                 });
                             }
                         }
