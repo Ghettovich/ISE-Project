@@ -14,11 +14,35 @@ $(document).on("click", ".details", function (e) {
 
 $(document).on("click", ".delete_link", function () {
 
-    $("#relatieid").attr("value", $(this).attr('data-relatieid'));
-
-    if ($(this).has("data-persoonid")) {
+    
+    if ($(this).attr("data-persoonid")) {        
         $("#persoonid").attr("value", $(this).attr('data-persoonid'));
+    }
+    else if ($(this).attr("data-relatieid")) {
+        $("#relatieid").attr("value", $(this).attr('data-relatieid'));
+    }
+    else if ($(this).attr("data-avrid")) {
+        $("#avrid").attr("value", $(this).attr("data-avrid"));
     }
 
 });
+
+$("#wijzigenRechten").click(function () {
+    var c = confirm("weet u zeker dat u deze collaborateur wilt wijzigen?");
+    if (c == false) {
+        $(location).attr('href', 'Index')
+        return c;
+    }
+
+
+});
+
+$("#verwijderenRechten").click(function () {
+    var c = confirm("weet u zeker dat u deze gebruiker wilt verwijderen uit jouw collaborateur?");
+    if (c == false) {
+        $(location).attr('href', 'Index')
+        return c;
+    }
+});
+
 

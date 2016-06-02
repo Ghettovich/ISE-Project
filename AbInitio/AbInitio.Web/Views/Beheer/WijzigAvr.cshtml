@@ -1,26 +1,28 @@
 ﻿@model AbInitio.Web.Models.RelatieModel
 
 @{
-    ViewBag.Title = "ToevoegenAvr";
+    ViewBag.Title = "WijzigAvr";
 }
 
-<h2>ToevoegenAvr</h2>
+<h2>WijzigAvr</h2>
 
-@using (Html.BeginForm("ToevoegenAvr", "Beheer", FormMethod.Post)) 
+
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    <input type="hidden" name="relatieid" value="@Model.relatieid"/>
-    <input type="hidden" name="persoonid1" value="@Model.persoon1.persoonid" />
-    <input type="hidden" name="persoonid2" value="@Model.persoon2.persoonid" />
+    
     <div class="form-horizontal">
         <h4>aanvullenderelatieinformatie</h4>
         <hr />
-        <p>Relatie tussen:</p>
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <input type="hidden" value="@Model.AvrRelatie.aanvullenderelatieinformatieid" name="AvrID" id="AvrID" />
+        <input type="hidden" value="@Model.AvrRelatie.relatieid" name="RelatieID" id="RelatieID" />
+        <input type="hidden" value="@Model.AvrRelatie.gewijzigdOp" name="GewijzigdOp" id="GewijzigdOp" />
+
         <p>@Model.persoon1.GeefVolledigeNaam</p>
         <p>Relatietype: @Model.Relatie.RelatieType</p>
         <p>@Model.persoon2.GeefVolledigeNaam</p>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
         <div class="form-group">
             @Html.Label("Relatie informatie type", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
@@ -28,28 +30,26 @@
             </div>
         </div>
         <div class="form-group">
-            @Html.Label("Aanvullende informatie", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.Label("Info", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                <textarea cols="25" rows="10" name="relatieinformatie" required></textarea>
-                @Html.ValidationMessageFor(model => model.relatieinformatie, "", new { @class = "text-danger" })
+                <textarea name="RelatieInformatie" id="RelatieInformatie" required>@Model.AvrRelatie.relatieinformatie</textarea>
+                @Html.ValidationMessage("RelatieInformatie", new { @class = "text-danger" })
             </div>
         </div>
-
         <div class="form-group">
+            @Html.Label("precisie", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10 precisie">
+                @Html.DropDownList("Precisie", Model.DatumPrecisies, "", new { @class = "form-control precisie" })
+            </div>
+        </div>
+        <div class="form-group van" style="display:none">
             @Html.Label("Van", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.Editor("Van", new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessage("Van", new { @class = "text-danger" })
             </div>
         </div>
-        <div class="form-group">
-            @Html.Label("Datum precisie", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10 precisie">
-                @Html.DropDownList("Precisie", Model.DatumPrecisies, "", new { @class = "form-control" })
-            </div>
-        </div>
-
-        <div class="form-group" style="display:none">
+        <div class="form-group tot" style="display:none">
             @Html.Label("Tot", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.Editor("Tot", new { htmlAttributes = new { @class = "form-control" } })
@@ -59,12 +59,16 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Toevoegen" class="btn btn-default" />
+                <input type="submit" value="Opslaan" class="btn btn-default" />
             </div>
         </div>
     </div>
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Terug naar relatie", "AanvullendeRelatieInfo", new { relatieid = Model.AvrRelatie.relatieid })
 </div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

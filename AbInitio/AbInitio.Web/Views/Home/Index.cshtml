@@ -6,7 +6,21 @@
     <h1>Ab Initio</h1>
     <p class="lead">De website om jouw verleden in kaart te brengen</p>
 </div>
+<div class="row">
+    <div class="col-md-4 col-md-push-1 bordered">
+        <p>Een uitnodigende tekst om te beginnen met het maken van een stamboom.</p>
+        </br></br>
+        @Html.ActionLink("Stamboom aanmaken", "MaakStamboom", "Stamboom", new { }, new { @class = "btn btn-primary btn-block" })
+    </div>
+    <div class="col-md-4 col-md-push-3 bordered">
+        <p>Een uitnodigende tekst om verder te gaan met een bestaande stamboom.</p>
+        </br></br>
+        @Html.ActionLink("Mijn stambomen", "OverzichtStambomen", "Stamboom", new { }, new { @class = "btn btn-primary btn-block" })
+    </div>
+</div>
 
+
+<!--
 <div class="row col-lg-offset-3">
     <div class="col-md-4">
         <h2 class="text-center">Persoon beheren</h2>
@@ -38,4 +52,4 @@
         </div>
     </div>
 </div>
-
+-->

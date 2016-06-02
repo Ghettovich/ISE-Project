@@ -1,0 +1,63 @@
+﻿@model System.Collections.Generic.List<AbInitio.Web.Models.AccountModel>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+ <br />
+
+<div class="col-md-offset-10">
+    <input type="button" value="Mijn stamboom" class="text-center btn btn-default">
+</div>
+
+<h2>Familienaam:</h2>
+
+<table class="table table-striped">
+    <tr>
+        <th>
+            Gebruikersnaam
+        </th>
+        <th>
+            Rechten niveau
+        </th>
+        <th>
+
+        </th>
+    </tr>
+    @if (Model != null)
+    {
+        foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.gebruikersnaam
+                </td>
+                <td>
+                    @if(@item.stamboomRechten == 2)
+                    {
+                        <text>Bewerken</text>
+                    }
+                    else if (@item.stamboomRechten == 3)
+                    {
+                        <text>Inzien</text>
+}
+                </td>
+                <td class="actions">
+                    <a href="@(Url.Action("wijzigenRecht", "StamboomRechten", new { stamboomAccountId = item.stamboomAccountId, recht = item.stamboomRechten }))">
+                        <span class="glyphicon glyphicon-pencil" id="wijzigenRechten"></span>
+                    </a>
+                    <a href="@(Url.Action("verwijderenRecht", "StamboomRechten", new { stamboomAccountId = item.stamboomAccountId }))">
+                        <span class="glyphicon glyphicon-trash" id="verwijderenRechten"></span>
+                    </a>
+                </td>
+            </tr>
+        }
+    }
+</table>
+<div class="col-md-offset-10">
+    <a href="@Url.Action("Toevoegen")">
+        <input type="button" value="Voeg account toe" class="text-center btn btn-default">
+    </a>
+</div>
+
+

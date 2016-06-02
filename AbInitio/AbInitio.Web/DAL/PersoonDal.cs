@@ -42,82 +42,42 @@ namespace AbInitio.Web.DAL
         /// <returns>List met selectlistitems</returns>
         public static List<SelectListItem> geboortePrecisies()
         {
-            try
-            {
-                List<SelectListItem> geboortePrecisies = new List<SelectListItem>();
-                using (DataConfig dbdc = new DataConfig())
-                {
-                    dbdc.Open();
-                    using (IDbCommand cmd = dbdc.CreateCommand())
-                    {
-                        cmd.CommandText = "SELECT DISTINCT geboorteprecisie FROM persoon WHERE geboorteprecisie IS NOT NULL";
-                        using (IDataReader reader = dbdc.CreateSqlReader())
-                        {
-                            while (reader.Read())
-                            {
-                                object[] test = new object[reader.FieldCount];
-                                reader.GetValues(test);
-                                SelectListItem item = new SelectListItem();
-                                item.Selected = false;
-                                item.Value = test.GetValue(0).ToString();
-                                item.Text = test.GetValue(0).ToString();
-                                geboortePrecisies.Add(item);
-                            }
-                        }
-                    }
-                }
-                return geboortePrecisies;
-            }
-            catch (Exception)
-            {
+            List<SelectListItem> datumPrecisies = new List<SelectListItem>();
+            SelectListItem item = new SelectListItem();
+            SelectListItem item2 = new SelectListItem();
+            SelectListItem item3 = new SelectListItem();
+            SelectListItem item4 = new SelectListItem();
+            item.Value = "op";
+            item.Text = "op";
+            datumPrecisies.Add(item);
+            item2.Value = "voor";
+            item2.Text = "voor";
+            datumPrecisies.Add(item2);
+            item3.Value = "na";
+            item3.Text = "na";
+            datumPrecisies.Add(item3);
+            item4.Value = "tussen";
+            item4.Text = "tussen";
+            datumPrecisies.Add(item4);
 
-                throw;
-            }
+            return datumPrecisies;
 
         }
 
         //vervangen met sp
         public static List<SelectListItem> statussen()
         {
-            try
-            {
-                List<SelectListItem> geboortePrecisies = new List<SelectListItem>();
-                using (DataConfig dbdc = new DataConfig())
-                {
-                    dbdc.Open();
-                    using (IDbCommand cmd = dbdc.CreateCommand())
-                    {
-                        cmd.CommandText = "SELECT DISTINCT status FROM persoon WHERE status IS NOT NULL ORDER BY status";
-                        using (IDataReader reader = dbdc.CreateSqlReader())
-                        {
-                            while (reader.Read())
-                            {
-                                object[] test = new object[reader.FieldCount];
-                                reader.GetValues(test);
-                                SelectListItem item = new SelectListItem();
-                                item.Selected = false;
-                                item.Value = test.GetValue(0).ToString();
-                                if (item.Value.ToString().Equals("False"))
-                                {
-                                    item.Text = "Overleden";
-                                }
-                                else
-                                {
-                                    item.Text = "Levend";
-                                }
+            List<SelectListItem> statussen = new List<SelectListItem>();
+            SelectListItem item = new SelectListItem();
+            SelectListItem item2 = new SelectListItem();
+            item.Value = "0";
+            item.Text = "overleden";
+            statussen.Add(item);
+            item2.Value = "1";
+            item2.Text = "levend";
+            statussen.Add(item2);
 
-                                geboortePrecisies.Add(item);
-                            }
-                        }
-                    }
-                }
-                return geboortePrecisies;
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
+            return statussen;
         }
 
         public static List<SelectListItem> geslachtOptiesOphalen()
@@ -177,7 +137,8 @@ namespace AbInitio.Web.DAL
                                     status = (results.GetValue(8) != null ? results.GetValue(8).ToString() : string.Empty),
                                     geboortedatum = (results.GetValue(9) != null ? results.GetValue(9).ToString().Substring(0, 9) : string.Empty),
                                     geboorteprecisie = (results.GetValue(10) != null ? results.GetValue(10).ToString() : string.Empty),
-                                    geboortedatum2 = (results.GetValue(11) != null ? results.GetValue(11).ToString() : string.Empty)
+                                    geboortedatum2 = (results.GetValue(11) != null ? results.GetValue(11).ToString() : string.Empty),
+                                    gewijzigdOp = DateTime.Parse(results.GetValue(12).ToString())
                                 };
                             }
                         }
@@ -571,6 +532,8 @@ namespace AbInitio.Web.DAL
                             ? (object)DBNull.Value : model.geboorteprecisie));
                         cmd.Parameters.Add(new SqlParameter("@geboortedatum2", string.IsNullOrEmpty(model.geboortedatum2)
                             ? (object)DBNull.Value : model.geboortedatum2));
+                        cmd.Parameters.Add(new SqlParameter("@oudWijzigdatum", string.IsNullOrEmpty(model.gewijzigdOp.ToString("yyyy-MM-dd HH:mm:ss"))
+                            ? (object)DBNull.Value : model.gewijzigdOp.ToString("yyyy-MM-dd HH:mm:ss")));
 
                         cmd.ExecuteNonQuery();
                     }

@@ -17,11 +17,13 @@ namespace AbInitio.Web.Controllers
     public class AanvullendPersoonController : Controller
     {
         [HttpGet]
-        public ActionResult NieuwAanvullendPersoon()
+        public ActionResult NieuwAanvullendPersoon(int persoonid)
         {
             AanvullendPersoonModel model = new AanvullendPersoonModel();
 
+            model.persoonid = persoonid;
             model.datumPrecisies = AanvullendPersoonDAL.datumPrecisiesOphalen();
+            model.aanvullendPersoonInformatieTypes = AanvullendPersoonDAL.aanvullendPersoonInformatieTypesOphalen();
 
             return View(model);
         }
@@ -29,35 +31,49 @@ namespace AbInitio.Web.Controllers
         [HttpPost]
         public ActionResult NieuwAanvullendPersoon(AanvullendPersoonModel model)
         {
-            NameValueCollection nvc = Request.Form;
+            try
+            {
+                NameValueCollection nvc = Request.Form;
 
-            model.persoonid = Int32.Parse(nvc["persoonid"]);
-            model.persooninformatietypeid =Int32.Parse(nvc["persooninformatietypeid"]);
-            model.persooninformatie = nvc["persooninformatie"];
-            if (!string.IsNullOrEmpty(nvc["van"]))
-            {
-                DateTime d = DateTime.Parse(nvc["van"]);
-                model.van = d.ToString("yyyy-MM-dd");
-            }
-            else
-            {
-                model.van = nvc["van"];
-            }
-            if (!string.IsNullOrEmpty(nvc["tot"]))
-            {
-                DateTime d2 = DateTime.Parse(nvc["tot"]);
-                model.tot = d2.ToString("yyyy-MM-dd");
-            }
-            else
-            {
-                model.tot = nvc["tot"];
-            }
-            model.datumPrecisie = nvc["datumPrecisie"];
+                model.persoonid = Int32.Parse(nvc["persoonid"]);
+                model.persooninformatie = nvc["persooninformatie"];
+                if (!string.IsNullOrEmpty(nvc["van"]))
+                {
+                    DateTime d = DateTime.Parse(nvc["van"]);
+                    model.van = d.ToString("yyyy-MM-dd");
+                }
+                else
+                {
+                    model.van = nvc["van"];
+                }
+                if (!string.IsNullOrEmpty(nvc["tot"]))
+                {
+                    DateTime d2 = DateTime.Parse(nvc["tot"]);
+                    model.tot = d2.ToString("yyyy-MM-dd");
+                }
+                else
+                {
+                    model.tot = nvc["tot"];
+                }
+                model.datumPrecisie = nvc["datumPrecisie"];
 
-            AanvullendPersoonDAL.nieuwAanvullendPersoonInDatabase(model);
+                AanvullendPersoonDAL.nieuwAanvullendPersoonInDatabase(model);
 
-            // Redirect goed zetten.
-            return Redirect("");
+                // Redirect goed zetten.
+                return Redirect("../AanvullendPersoon/AanvullendPersoonLijst/?persoonid=" + model.persoonid);
+            }
+            catch (Exception ex)
+            {
+                if (ex is System.Data.SqlClient.SqlException)
+                {
+                    return RedirectToAction("Error", "Home", new { errorMessage = ex.Message });
+                }
+                else
+                {
+                    throw ex;
+                }
+
+            }
         }
 
         [HttpGet]
@@ -77,6 +93,7 @@ namespace AbInitio.Web.Controllers
             model.datumPrecisie = m.datumPrecisie;
             model.gewijzigdOp = m.gewijzigdOp;
             model.datumPrecisies = AanvullendPersoonDAL.datumPrecisiesOphalen();
+            model.aanvullendPersoonInformatieTypes = AanvullendPersoonDAL.aanvullendPersoonInformatieTypesOphalen();
 
             return View(model);
         }
@@ -84,19 +101,51 @@ namespace AbInitio.Web.Controllers
         [HttpPost]
         public ActionResult WijzigAanvullendPersoon(AanvullendPersoonModel model)
         {
-            NameValueCollection nvc = Request.Form;
+            try
+            {
+                NameValueCollection nvc = Request.Form;
 
-            model.aanvullendepersooninformatieid = Int32.Parse(nvc["aanvullendPersoonInformatieId"]);
-            model.persoonid = Int32.Parse(nvc["persoonId"]);
-            model.persooninformatietypeid = Int32.Parse(nvc["persoonInformatieTypeId"]);
-            model.persooninformatie = nvc["persoonInformatie"];
-            model.van = nvc["van"];
-            model.tot = nvc["tot"];
-            model.datumPrecisie = nvc["datumPrecisie"];
+                model.aanvullendepersooninformatieid = Int32.Parse(nvc["aanvullendPersoonInformatieId"]);
+                model.persoonid = Int32.Parse(nvc["persoonId"]);
+                model.persooninformatietypeid = Int32.Parse(nvc["persoonInformatieTypeId"]);
+                model.persooninformatie = nvc["persoonInformatie"];
+                if (!string.IsNullOrEmpty(nvc["van"]))
+                {
+                    DateTime d = DateTime.Parse(nvc["van"]);
+                    model.van = d.ToString("yyyy-MM-dd");
+                }
+                else
+                {
+                    model.van = nvc["van"];
+                }
+                if (!string.IsNullOrEmpty(nvc["tot"]))
+                {
+                    DateTime d2 = DateTime.Parse(nvc["tot"]);
+                    model.tot = d2.ToString("yyyy-MM-dd");
+                }
+                else
+                {
+                    model.tot = nvc["tot"];
+                }
+                model.datumPrecisie = nvc["datumPrecisie"];
+                model.gewijzigdOp = DateTime.Parse(nvc["gewijzigdOp"]);
 
-            AanvullendPersoonDAL.wijzigAanvullendPersoonInDatabase(model);
+                AanvullendPersoonDAL.wijzigAanvullendPersoonInDatabase(model);
+                // Pad nog goed zetten
+                return Redirect("AanvullendPersoon/OverzichtAanvullendPersoon");
+            }
+            catch (Exception ex)
+            {
+                if (ex is System.Data.SqlClient.SqlException)
+                {
+                    return RedirectToAction("Error", "Home", new { errorMessage = ex.Message });
+                }
+                else
+                {
+                    throw ex;
+                }
 
-            return Redirect("");
+            }
         }
 
         [HttpPost]
@@ -108,6 +157,17 @@ namespace AbInitio.Web.Controllers
             AanvullendPersoonDAL.verwijderAanvullendPersoonInDatabase(aanvullendPersoonInformatieId);
 
             return RedirectToAction("");
+        }
+
+        [HttpGet]
+        public ActionResult AanvullendPersoonLijst(int persoonid)
+        {
+            AanvullendPersoonModel model = new AanvullendPersoonModel();
+
+            model.aanvullendPersoonInformatieLijst = AanvullendPersoonDAL.aanvullendePersoonInformatieVan(persoonid);
+            model.persoonid = persoonid;
+
+            return View(model);
         }
     }
 }

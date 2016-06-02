@@ -19,6 +19,17 @@ namespace AbInitio.Web.DAL
         private static string SP_PersonenInRelatie = "SP_PersonenInRelatie";
         private static string SP_AanvullendeRelatieInfo = "SP_AanvullendeRelatieInfo";
 
+        private static string SP_ToevoegenAvr = "SP_ToevoegenAvr";
+        private static string SP_VerwijderAvr = "SP_VerwijderAvr";
+        private static string SP_GeefAvr = "SP_GeefAvr";
+        private static string SP_WijzigAanvullendeRelatie = "SP_WijzigAanvullendeRelatie";
+
+
+        private static string SP_VerwijderRelatie = "SP_VerwijderRelatie";
+        private static string SP_WijzigRelatie = "SP_WijzigRelatie";
+        private static string SP_ToevoegenRelatie = "SP_ToevoegenRelatie";
+
+
         //SelectLists
         public static List<SelectListItem> AvrTypes()
         {
@@ -100,7 +111,7 @@ namespace AbInitio.Web.DAL
             }
 
         }
-
+        
         //Lists
         public static List<PersoonPartial> RelatiesTotPersoon(int persoonid)
         {
@@ -170,9 +181,10 @@ namespace AbInitio.Web.DAL
                         using (IDataReader reader = dbdc.CreateSqlReader())
                         {
                             object[] results = new object[reader.FieldCount];
-
+                            
                             while (reader.Read())
                             {
+                                reader.GetValues(results);
                                 avr.Add(new AVRelatiePartial
                                 {
                                     aanvullenderelatieinformatieid = (int)reader.GetValue(0),
@@ -192,8 +204,6 @@ namespace AbInitio.Web.DAL
                 throw;
             }
         }
-
-        //Voids
         public static RelatiePartial GetRelatieInfo(int relatieid)
         {
             try
@@ -262,6 +272,54 @@ namespace AbInitio.Web.DAL
             }
         }
 
+        public static AVRelatiePartial GetAvrInfo(int avrid, int? relatieid)
+        {
+            try
+            {
+                AVRelatiePartial avr_partial = null;
+                relatieid = 0;
+                using (DataConfig dbdc = new DataConfig())
+                {
+                    dbdc.Open();
+                    using (IDbCommand cmd = dbdc.CreateCommand())
+                    {
+                        cmd.CommandText = SP_GeefAvr;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        IDataParameter dp = cmd.CreateParameter();
+                        dp.ParameterName = "@avrid";
+                        dp.Value = avrid;
+                        cmd.Parameters.Add(dp);
+
+                        using (IDataReader dr = dbdc.CreateSqlReader())
+                        {
+                            object[] results = new object[dr.FieldCount];
+                            while (dr.Read())
+                            {
+                                dr.GetValues(results);
+                                avr_partial = new AVRelatiePartial
+                                {
+                                    aanvullenderelatieinformatieid = (int)dr.GetValue(0),
+                                    relatieid = (int)dr.GetValue(1),
+                                    relatieinformatietypeid = (int)dr.GetValue(2),
+                                    relatieinformatie = (dr.GetValue(3) != null ? dr.GetValue(3).ToString() : string.Empty),
+                                    datumVan = (dr.GetValue(4) != null ? dr.GetValue(4).ToString() : string.Empty),
+                                    datumTot = (dr.GetValue(5) != null ? dr.GetValue(5).ToString() : string.Empty),
+                                    datumPrecisie = (dr.GetValue(6) != null ? dr.GetValue(6).ToString() : string.Empty),
+                                    gewijzigdOp = dr.GetDateTime(7)
+                                };
+
+                            }
+                        } 
+                    }
+                } return avr_partial;            
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        //Voids
         public static void VerwijderRelatie(int relatieid, out string error)
         {
             try
@@ -272,12 +330,40 @@ namespace AbInitio.Web.DAL
                     dbdc.Open();
                     using (IDbCommand cmd = dbdc.CreateCommand())
                     {
-                        cmd.CommandText = "dbo.VerwijderRelatie";
+                        cmd.CommandText = SP_VerwijderRelatie;
                         cmd.CommandType = CommandType.StoredProcedure;
                         IDataParameter pm = cmd.CreateParameter();
                         pm.Direction = ParameterDirection.Input;
                         pm.ParameterName = "@relatieid";
                         pm.Value = relatieid;
+                        cmd.Parameters.Add(pm);
+                        cmd.ExecuteReader();
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                error = e.Message;
+            }
+
+        }
+
+        public static void VerwijderAvr(int avrid, out string error)
+        {
+            try
+            {
+                error = string.Empty;
+                using (DataConfig dbdc = new DataConfig())
+                {
+                    dbdc.Open();
+                    using (IDbCommand cmd = dbdc.CreateCommand())
+                    {
+                        cmd.CommandText = SP_VerwijderAvr;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        IDataParameter pm = cmd.CreateParameter();
+                        pm.Direction = ParameterDirection.Input;
+                        pm.ParameterName = "@avrID";
+                        pm.Value = avrid;
                         cmd.Parameters.Add(pm);
                         cmd.ExecuteReader();
                     }
@@ -300,7 +386,7 @@ namespace AbInitio.Web.DAL
                     dbdc.Open();
                     using (IDbCommand cmd = dbdc.CreateCommand())
                     {
-                        cmd.CommandText = "dbo.SP_WijzigRelatie";
+                        cmd.CommandText = SP_WijzigRelatie;
                         cmd.CommandType = CommandType.StoredProcedure;
 
                         IDataParameter pm = cmd.CreateParameter();
@@ -325,6 +411,89 @@ namespace AbInitio.Web.DAL
                         pm.Value = model.relatietypeid;
                         cmd.Parameters.Add(pm);
                         cmd.ExecuteReader();
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                error = e.Message;
+            }
+        }
+
+        public static void WijzigAvr(RelatieModel model, out string error)
+        {
+            try
+            {
+                error = string.Empty;
+                using (DataConfig dbdc = new DataConfig())
+                {
+                    dbdc.Open();
+                    using (IDbCommand cmd = dbdc.CreateCommand())
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.CommandText = SP_WijzigAanvullendeRelatie;            
+
+                        IDataParameter pm_AvrID = cmd.CreateParameter();
+                        pm_AvrID.Direction = ParameterDirection.Input;
+                        pm_AvrID.ParameterName = "@avrid";
+                        pm_AvrID.Value = model.AvrID;
+                        cmd.Parameters.Add(pm_AvrID);
+
+                        IDataParameter pm_AvrInfoID = cmd.CreateParameter();
+                        pm_AvrInfoID.Direction = ParameterDirection.Input;
+                        pm_AvrInfoID.ParameterName = "@relatieinformatietypeid";
+                        pm_AvrInfoID.Value = model.AvrInfoID;
+                        cmd.Parameters.Add(pm_AvrInfoID);
+
+                        IDataParameter pm_RelatieInformatie = cmd.CreateParameter();
+                        pm_RelatieInformatie.Direction = ParameterDirection.Input;
+                        pm_RelatieInformatie.ParameterName = "@relatieinformatie";
+                        pm_RelatieInformatie.Value = model.relatieinformatie;
+                        cmd.Parameters.Add(pm_RelatieInformatie);
+
+                        IDataParameter pm_Van = cmd.CreateParameter();
+                        pm_Van.Direction = ParameterDirection.Input;
+                        pm_Van.ParameterName = "@van";
+
+                        if (!string.IsNullOrEmpty(model.Van))
+                        {
+                            pm_Van.Value = model.VanDatum;
+                        }
+                        else
+                        {
+                            pm_Van.Value = null;
+                        }
+                        cmd.Parameters.Add(pm_Van);
+
+                        IDataParameter pm_Tot = cmd.CreateParameter();
+                        pm_Tot.Direction = ParameterDirection.Input;
+                        pm_Tot.ParameterName = "@tot";
+
+                        IDataParameter pm_Precisie = cmd.CreateParameter();
+                        pm_Precisie.Direction = ParameterDirection.Input;
+                        pm_Precisie.ParameterName = "@datumprecisie";
+
+                        if (!string.IsNullOrEmpty(model.Precisie) && !string.IsNullOrEmpty(model.Tot))
+                        {
+                            pm_Tot.Value = model.TotDatum;                        
+                            pm_Precisie.Value = model.Precisie;
+                        }
+                        else
+                        {
+                            pm_Tot.Value = null;
+                            pm_Precisie.Value = null;
+                        }
+
+                        cmd.Parameters.Add(pm_Tot);
+                        cmd.Parameters.Add(pm_Precisie);
+
+                        IDataParameter pm_GewijzigdOp = cmd.CreateParameter();
+                        pm_GewijzigdOp.Direction = ParameterDirection.Input;
+                        pm_GewijzigdOp.ParameterName = "@gewijzigdOp";
+                        pm_GewijzigdOp.Value = model.GewijzigdOp;
+                        cmd.Parameters.Add(pm_GewijzigdOp);
+
+                        cmd.ExecuteNonQuery();
                     }
                 }
             }
@@ -344,7 +513,7 @@ namespace AbInitio.Web.DAL
                     dbdc.Open();
                     using (IDbCommand cmd = dbdc.CreateCommand())
                     {
-                        cmd.CommandText = "dbo.SP_ToevoegenRelatie";
+                        cmd.CommandText = SP_ToevoegenRelatie;
                         cmd.CommandType = CommandType.StoredProcedure;
 
                         IDataParameter pm = cmd.CreateParameter();
@@ -375,9 +544,6 @@ namespace AbInitio.Web.DAL
             }
         }
 
-
-
-
         public static void ToevoegenAvr(RelatieModel model, out string error)
         {
             try
@@ -388,7 +554,7 @@ namespace AbInitio.Web.DAL
                     dbdc.Open();
                     using (IDbCommand cmd = dbdc.CreateCommand())
                     {
-                        cmd.CommandText = "dbo.SP_ToevoegenAvr";
+                        cmd.CommandText = SP_ToevoegenAvr;
                         cmd.CommandType = CommandType.StoredProcedure;
 
                         IDataParameter pm = cmd.CreateParameter();
@@ -401,7 +567,7 @@ namespace AbInitio.Web.DAL
 
                         pm = cmd.CreateParameter();
                         pm.ParameterName = "@relatieinformatietypeid";
-                        pm.Value = model.AvRelatieID;
+                        pm.Value = model.AvrInfoID;
                         cmd.Parameters.Add(pm);
 
                         pm = cmd.CreateParameter();
@@ -409,6 +575,40 @@ namespace AbInitio.Web.DAL
                         pm.Value = model.relatieinformatie;
                         cmd.Parameters.Add(pm);
 
+                        IDataParameter pm_Van = cmd.CreateParameter();
+                        pm_Van.Direction = ParameterDirection.Input;
+                        pm_Van.ParameterName = "@van";
+
+                        if (!string.IsNullOrEmpty(model.Van))
+                        {
+                            pm_Van.Value = model.VanDatum;
+                            IDataParameter pm_Precisie = cmd.CreateParameter();
+                            pm_Precisie.Direction = ParameterDirection.Input;
+                            pm_Precisie.ParameterName = "@datumprecisie";
+                            pm_Precisie.Value = model.Precisie;
+                            cmd.Parameters.Add(pm_Precisie);
+                        }
+                        else
+                        {
+                            pm_Van.Value = null;
+                        }
+                        cmd.Parameters.Add(pm_Van);
+
+                        IDataParameter pm_Tot = cmd.CreateParameter();
+                        pm_Tot.Direction = ParameterDirection.Input;
+                        pm_Tot.ParameterName = "@tot";
+                        
+                        
+                        if (!string.IsNullOrEmpty(model.Precisie) && !string.IsNullOrEmpty(model.Tot))
+                        {
+                            pm_Tot.Value = model.TotDatum;
+                            
+                        }
+                        else
+                        {
+                            pm_Tot.Value = null;                            
+                        }
+                        cmd.Parameters.Add(pm_Tot);
                         cmd.ExecuteReader();
                     }
                 }

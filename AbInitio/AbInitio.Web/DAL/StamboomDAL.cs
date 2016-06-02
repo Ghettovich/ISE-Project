@@ -12,7 +12,9 @@ namespace AbInitio.Web.DAL
 {
     public class StamboomDAL
     {
-        public IDataReader reader { get; private set; }
+        private static string SP_MatchPersoon = "SP_MatchPersoon";
+
+        public IDataReader reader { get; set; }
 
         public void PersoonToevoegen(NieuwPersoonModel p)
         {
@@ -67,24 +69,54 @@ namespace AbInitio.Web.DAL
             } return stambomen;
         }
         
+        public static DataTable MatchPersonen(int persoonid)
+        {
+            DataTable dt = new DataTable();
+            
+            using (DataConfig dbdc = new DataConfig())
+            {
+                using (SqlCommand cmd = new SqlCommand())
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.CommandText = SP_MatchPersoon;
+
+                    using (SqlDataAdapter adapter = new SqlDataAdapter(cmd))
+                    {
+                        adapter.Fill(dt);
+                    }                
+                }
+            } return dt;
+        }
 
         public static stamboom GetStamboom(int stamboomid)
         {
             stamboom stam = null;
             using (DataConfig dbdc = new DataConfig())
             {
+                dbdc.Open();
                 using (IDbCommand cmd = dbdc.CreateCommand())
                 {
-                    cmd.CommandText = "SELECT s.stamboomid, s.familienaam, s.levensverwachtingman, s.levensverwachtingvrouw, s.langstlevendeman, s.langstlevendevrouw, s.jongstlevendeman, s.jongstlevendevrouw, s.gemiddeldaantalkinderen, s.gemiddeldaantalgeboortes, s.afgeschermd,s.gewijzigdOp ";
-                    cmd.CommandText += "FROM dbo.stamboom s ";
-                    cmd.CommandText += "WHERE s.stamboomid = @stamboomid";
+                    cmd.CommandText = "dbo.getStamboom";
+                    cmd.CommandType = CommandType.StoredProcedure;
 
-                    IDbDataParameter dp = cmd.CreateParameter();
-                    dp.ParameterName = "@stamboomid";
-                    dp.Value = stamboomid;
-                    cmd.Parameters.Add(dp);
+                    IDataParameter pm = cmd.CreateParameter();
+                    pm.Direction = ParameterDirection.Input;
 
-                    dbdc.Open();
+                    pm.ParameterName = "@stamboomid";
+                    pm.Value = stamboomid;
+                    cmd.Parameters.Add(pm);
+                    
+                    
+
+                        //cmd.CommandText = "SELECT s.stamboomid, s.familienaam, s.levensverwachtingman, s.levensverwachtingvrouw, s.langstlevendeman, s.langstlevendevrouw, s.jongstlevendeman, s.jongstlevendevrouw, s.gemiddeldaantalkinderen, s.gemiddeldaantalgeboortes ";
+                        //cmd.CommandText += "FROM dbo.stamboom s ";
+                        //cmd.CommandText += "WHERE s.stamboomid = @stamboomid";
+
+                        //IDbDataParameter dp = cmd.CreateParameter();
+                        //dp.ParameterName = "@stamboomid";
+                        //dp.Value = stamboomid;
+                        //cmd.Parameters.Add(dp);
+
                     using (IDataReader dr = dbdc.CreateSqlReader())
                     {
                         object[] results = new object[dr.FieldCount];

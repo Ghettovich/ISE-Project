@@ -1,0 +1,60 @@
+﻿@model System.Collections.Generic.List<AbInitio.Web.Models.AccountModel>
+@{
+    ViewBag.Title = "Toevoegen";
+    foreach(var item in Model)
+    {
+        List<SelectListItem> rechten = new List<SelectListItem>();
+        rechten.Add(new SelectListItem() { Text = "Bewerken", Value = "2" });
+        rechten.Add(new SelectListItem() { Text = "Inzien", Value = "3" });
+
+        item.RechtOpties = rechten;
+    }
+}
+
+<h2>Familienaam:</h2>
+
+<form action="" class="form-inline" method="post">
+    <div class="form-group">
+        <input type="text" class="form-control" name="gebruikersnaam" id="gebruikersnaam" placeholder="gebruikersnaam" required />
+            
+    </div>
+    <div class="form-group col-lg-offset-1">
+        <button type="submit" class="btn btn-default">Zoeken</button>
+    </div>
+</form>
+
+<br />
+<table class="table table-striped">
+    <tr>
+        <th>
+            Account
+        </th>
+        <th>
+        </th>
+    </tr>
+    @if (Model != null)
+    {
+        foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.gebruikersnaam
+                </td>
+                <td>
+                    <form action="ToevoegenRecht" class="form-inline col-lg-offset-7" method="post">
+                        <div class="form-group">
+                            <input type="hidden" class="form-control" name="accountId" id="accountId" placeholder="accountId" value="@item.accountId" required/>
+                            @Html.DropDownList("rechtenText", item.RechtOpties, new { @class = "form-control"})
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-default">Uitnodigen</button>
+                        </div>
+                    </form>
+                </td>
+            </tr>
+        }
+    }
+</table>
+<br />
+<input type="button" onclick="history.go(-1);" value="Terug" class="text-center btn btn-default col-lg-offset-11" />
+

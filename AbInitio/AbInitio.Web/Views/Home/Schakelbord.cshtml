@@ -1,0 +1,51 @@
+﻿@model AbInitio.Web.Models.StamboomModel
+
+    @{
+        ViewBag.Title = "Schakelbord";
+    }
+
+    <div class="row bordered">
+        <div class="col-md-12">
+            <div class="row">
+                <h1>AbInitio</h1>
+            </div>
+            <div class="row">
+                <h3>Familienaam: @Model.familieNaam</h3>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3 bordered">
+            <p>Een uitnodigende teks om de stamboom verder uit te werken.</p>
+            </br></br>
+            @Html.ActionLink("Stamboom wijzigen", "WijzigStamboom", "Stamboom", new { }, new { @class = "btn btn-primary btn-block" })
+        </div>
+        <div class="col-md-4 col-md-push-1 bordered">
+            <p>Een uitnodigende teks om de stamboom verder uit te werken.</p>
+            </br></br>
+            @Html.ActionLink("Overzicht", "Stamboom", "Stamboom", new { }, new { @class = "btn btn-primary btn-block" })
+        </div>
+        <div class="col-md-3 col-md-push-2 bordered">
+            <p>Een uitnodigende teks om de stamboom verder uit te werken.</p>
+            </br></br>
+            @Html.ActionLink("Zoeken Personen", "Zoek", "Zoeken", new { }, new { @class = "btn btn-primary btn-block" })
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3 bordered">
+            <p>Een uitnodigende teks om de stamboom verder uit te werken.</p>
+            </br></br>
+            @Html.ActionLink("Mijn personen", "Personen", "Beheer", new { }, new { @class = "btn btn-primary btn-block" })
+        </div>
+        <div class="col-md-4 col-md-push-1 bordered">
+            <p>Een uitnodigende teks om de stamboom verder uit te werken.</p>
+            </br></br>
+            @Html.ActionLink("Collaborateurs", "Index", "StamboomRechten", new { }, new { @class = "btn btn-primary btn-block" })
+        </div>
+        <div class="col-md-3 col-md-push-2 bordered">
+            <p>Een uitnodigende teks om de stamboom verder uit te werken.</p>
+            </br></br>
+            @Html.ActionLink("Matchen", "Match", "Beheer", new { }, new { @class = "btn btn-primary btn-block" })
+        </div>
+    </div>
+
