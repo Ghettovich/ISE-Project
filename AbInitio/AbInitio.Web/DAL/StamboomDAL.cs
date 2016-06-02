@@ -105,17 +105,6 @@ namespace AbInitio.Web.DAL
                     pm.ParameterName = "@stamboomid";
                     pm.Value = stamboomid;
                     cmd.Parameters.Add(pm);
-                    
-                    
-
-                        //cmd.CommandText = "SELECT s.stamboomid, s.familienaam, s.levensverwachtingman, s.levensverwachtingvrouw, s.langstlevendeman, s.langstlevendevrouw, s.jongstlevendeman, s.jongstlevendevrouw, s.gemiddeldaantalkinderen, s.gemiddeldaantalgeboortes ";
-                        //cmd.CommandText += "FROM dbo.stamboom s ";
-                        //cmd.CommandText += "WHERE s.stamboomid = @stamboomid";
-
-                        //IDbDataParameter dp = cmd.CreateParameter();
-                        //dp.ParameterName = "@stamboomid";
-                        //dp.Value = stamboomid;
-                        //cmd.Parameters.Add(dp);
 
                     using (IDataReader dr = dbdc.CreateSqlReader())
                     {
@@ -195,6 +184,90 @@ namespace AbInitio.Web.DAL
                         pm = cmd.CreateParameter();
                         pm.ParameterName = "@familienaam";
                         pm.Value = "%" + familieNaam + "%";
+                        cmd.Parameters.Add(pm);
+
+                        reader = cmd.ExecuteReader();
+
+                        List<StamboomModel> stambomen = new List<StamboomModel>();
+                        StamboomModel stamboom;
+
+                        while (reader.Read())
+                        {
+                            stamboom = new StamboomModel();
+                            stamboom.stamboomId = (int)reader["stamboomid"];
+                            stamboom.accountId = (int)reader["accountid"];
+                            stamboom.familieNaam = reader["familienaam"].ToString();
+                            stambomen.Add(stamboom);
+                        }
+                        return stambomen;
+                    }
+                }
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public List<StamboomModel> getEigenStambomen(int accountId)
+        {
+            try
+            {
+                using (DataConfig dbdc = new DataConfig())
+                {
+                    dbdc.Open();
+                    using (IDbCommand cmd = dbdc.CreateCommand())
+                    {
+                        cmd.CommandText = "dbo.zoekenEigenStambomen";
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        IDataParameter pm = cmd.CreateParameter();
+                        pm.Direction = ParameterDirection.Input;
+
+                        pm.ParameterName = "@opvrager";
+                        pm.Value = accountId;
+                        cmd.Parameters.Add(pm);
+
+                        reader = cmd.ExecuteReader();
+
+                        List<StamboomModel> stambomen = new List<StamboomModel>();
+                        StamboomModel stamboom;
+
+                        while (reader.Read())
+                        {
+                            stamboom = new StamboomModel();
+                            stamboom.stamboomId = (int)reader["stamboomid"];
+                            stamboom.accountId = (int)reader["accountid"];
+                            stamboom.familieNaam = reader["familienaam"].ToString();
+                            stambomen.Add(stamboom);
+                        }
+                        return stambomen;
+                    }
+                }
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public List<StamboomModel> getCollaboratieStambomen(int accountId)
+        {
+            try
+            {
+                using (DataConfig dbdc = new DataConfig())
+                {
+                    dbdc.Open();
+                    using (IDbCommand cmd = dbdc.CreateCommand())
+                    {
+                        cmd.CommandText = "dbo.zoekenCollaboratieStambomen";
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        IDataParameter pm = cmd.CreateParameter();
+                        pm.Direction = ParameterDirection.Input;
+
+                        pm.ParameterName = "@opvrager";
+                        pm.Value = accountId;
                         cmd.Parameters.Add(pm);
 
                         reader = cmd.ExecuteReader();

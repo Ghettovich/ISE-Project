@@ -47,6 +47,22 @@ namespace AbInitio.Web.Controllers
         }
 
         [HttpPost]
+        public ActionResult eigenStambomen()
+        {
+            List<StamboomModel> stambomen = new List<StamboomModel>();
+            stambomen = stamboomDAL.getEigenStambomen((int)Session["account"]);
+            return View("OverzichtStambomen", stambomen);
+        }
+
+        [HttpPost]
+        public ActionResult collaboratieStambomen()
+        {
+            List<StamboomModel> stambomen = new List<StamboomModel>();
+            stambomen = stamboomDAL.getCollaboratieStambomen((int)Session["account"]);
+            return View("OverzichtStambomen", stambomen);
+        }
+
+        [HttpPost]
         public ActionResult overzichtStambomen(string familieNaam)
         {
             if (Session["account"] == null)

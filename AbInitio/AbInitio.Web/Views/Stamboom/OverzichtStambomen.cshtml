@@ -6,12 +6,18 @@
 
 <h2>Mijn Stambomen</h2>
 
-<div class="col-md-3">
-    @Html.ActionLink("Eigen Stambomen", "EigenStamboom", "Stamboom", new { }, new { @class = "btn btn-primary btn-block" })
-</div>
-<div class="col-md-3 col-md-push-6">
-    @Html.ActionLink("Collaboraties", "CollaboratieStamboom", "Stamboom", new { }, new { @class = "btn btn-primary btn-block" })
-</div>
+@using (Html.BeginForm("eigenStambomen", "Stamboom", FormMethod.Post, new { @class = "col-md-3" }))
+{
+    <button type="submit" class="btn btn-primary btn-block" >Eigen Stambomen</button>
+}
+@using (Html.BeginForm("overzichtStambomen", "Stamboom", FormMethod.Get, new { @class = "col-md-4 col-md-push-1" }))
+{
+    <button type="submit" class="btn btn-primary btn-block">Alle Stambomen</button>
+}
+@using (Html.BeginForm("collaboratieStambomen", "Stamboom", FormMethod.Post, new { @class = "col-md-3 col-md-push-2" }))
+{
+    <button type="submit" class="btn btn-primary btn-block">Collaboratie Stambomen</button>
+}
 </br></br>
     
 <table class="table table-striped">

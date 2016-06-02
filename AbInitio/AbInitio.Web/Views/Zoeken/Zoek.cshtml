@@ -52,9 +52,13 @@
 }
 
 
-
-<div>
-    @Html.ActionLink("Terug naar home pagina", "Index")
+<div class="row">
+    @using (Html.BeginForm("Schakelbord", "Home", FormMethod.Post, new { @class = "col-md-2" }))
+    {
+        <button type="submit" class="btn btn-primary btn-block"  id="stamboomid" name="stamboomid" value="@Session["stamboomid"]">
+            Mijn Stamboom
+        </button>
+    }
 </div>
 
 <script src="~/Scripts/jquery-1.10.2.min.js"></script>

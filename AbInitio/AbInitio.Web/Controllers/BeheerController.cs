@@ -40,6 +40,19 @@ namespace AbInitio.Web.Controllers
             } return View(viewmodel);
         }
 
+        [HttpPost]
+        public ActionResult Personen()
+        {
+            BeheerViewModel viewmodel = new BeheerViewModel();
+            viewmodel.PersoonLijst = PersoonDal.PersonenInStamboom((int)Session["stamboomid"]);
+
+            if (Request.IsAjaxRequest())
+            {
+                return PartialView("_Personen", viewmodel);
+            }
+            return View("PersonenInStamboom" ,viewmodel);
+        }
+
         [HttpGet]
         public ActionResult BeheerStamboom(int stamboomid, string zoekterm = null)
         {

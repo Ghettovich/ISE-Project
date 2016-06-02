@@ -1,0 +1,54 @@
+﻿@model AbInitio.Web.ViewModels.BeheerViewModel
+@{
+    ViewBag.Title = "Personen";
+}
+<div class="row" style="margin-top: 20px">
+    @using (Html.BeginForm("Schakelbord", "Home", FormMethod.Post, new { @class = "col-md-3 col-md-push-9" }))
+    {
+        <button type="submit" class="btn btn-primary btn-block" id="stamboomid" name="stamboomid" value="@Session["stamboomid"]">Mijn Stamboom</button>
+    }
+</div>
+<div class="row" style="margin-top: 20px">
+    <div class="col-md-6">
+        <h2>Familienaam: @Session["familienaam"]</h2>
+    </div>
+    <div class="col-md-3">
+        @using (Html.BeginForm("PersonenInStamboom", "Home", FormMethod.Post, new { }))
+        {
+            <button type="submit" class="btn btn-primary btn-block">Personen in stamboom</button>
+        }
+    </div>
+    <div class="col-md-3">
+        @using (Html.BeginForm("PersonenNietInStamboom", "Home", FormMethod.Post, new { }))
+        {
+            <button type="submit" class="btn btn-primary btn-block">Personen niet in stamboom</button>
+        }
+    </div>
+</div>
+@Html.Partial("_Personen", Model)
+<div class="row">
+    @using (Html.BeginForm("NieuwPersoon", "Persoon", FormMethod.Get, new { @class = "col-md-3 col-md-push-9" }))
+    {
+        <button type="submit" class="btn btn-primary btn-block" id="stamboomid" name="stamboomid" value="@Session["stamboomid"]">Persoon toevoegen</button>
+    }
+</div>
+<div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form action="@Url.Action("VerwijderPersoon", "Persoon")" method="post">
+                @Html.AntiForgeryToken()
+                <input type="hidden" id="persoonid" name="persoonid" />
+                <div class="modal-header">
+                    <p>Verwijder persoon</p>
+                </div>
+                <div class="modal-body">
+                    <p>Persoon verwijderen?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Annuleer</button>
+                    <input type="submit" class="btn btn-danger" value="Verwijderen" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

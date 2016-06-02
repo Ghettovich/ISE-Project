@@ -26,6 +26,7 @@ namespace AbInitio.Web.Controllers
             System.Web.HttpContext.Current.Session["stamboomid"] = stamboomid;
             StamboomModel model = new StamboomModel();
             model.familieNaam = StamboomDAL.GetStamboom(stamboomid).familienaam;
+            System.Web.HttpContext.Current.Session["familienaam"] = model.familieNaam;
             return View(model);
         }
 

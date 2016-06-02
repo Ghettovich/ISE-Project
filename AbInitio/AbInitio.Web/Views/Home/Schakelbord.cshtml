@@ -10,7 +10,7 @@
                 <h1>AbInitio</h1>
             </div>
             <div class="row">
-                <h3>Familienaam: @Model.familieNaam</h3>
+                <h3>Familienaam: @Session["familienaam"]</h3>
             </div>
         </div>
     </div>
@@ -23,7 +23,10 @@
         <div class="col-md-4 col-md-push-1 bordered">
             <p>Een uitnodigende teks om de stamboom verder uit te werken.</p>
             </br></br>
-            @Html.ActionLink("Overzicht", "Stamboom", "Stamboom", new { }, new { @class = "btn btn-primary btn-block" })
+            @using (Html.BeginForm("Stamboom", "Stamboom", FormMethod.Post, new { }))
+            {
+                <button type="submit" class="btn btn-primary btn-block" id="stamboomid" name="stamboomid" value="@Session["stamboomid"]">Overzicht</button>
+            }
         </div>
         <div class="col-md-3 col-md-push-2 bordered">
             <p>Een uitnodigende teks om de stamboom verder uit te werken.</p>
@@ -35,7 +38,10 @@
         <div class="col-md-3 bordered">
             <p>Een uitnodigende teks om de stamboom verder uit te werken.</p>
             </br></br>
-            @Html.ActionLink("Mijn personen", "Personen", "Beheer", new { }, new { @class = "btn btn-primary btn-block" })
+            @using (Html.BeginForm("Personen", "Beheer", FormMethod.Post, new { }))
+            {
+                <button type="submit" class="btn btn-primary btn-block">Mijn Personen</button>
+            }
         </div>
         <div class="col-md-4 col-md-push-1 bordered">
             <p>Een uitnodigende teks om de stamboom verder uit te werken.</p>
