@@ -23,7 +23,7 @@ namespace AbInitio.Web.DAL
 
         public static List<SelectListItem> PersonenLijst(int stamboomid)
         {
-            List<PersoonPartial> personen = PersonenInStamboom(stamboomid);
+            List<PersoonPartial> personen = PersonenStamboom(stamboomid);
             List<SelectListItem> listitems = new List<SelectListItem>();
 
             foreach (var item in personen)
@@ -261,6 +261,61 @@ namespace AbInitio.Web.DAL
         /// </summary>
         /// <param name="stamboomid"></param>
         /// <returns></returns>
+        public static List<PersoonPartial> PersonenStamboom(int stamboomid)
+        {
+
+            try
+            {
+                List<PersoonPartial> persoon_list = new List<PersoonPartial>();
+                using (DataConfig dbdc = new DataConfig())
+                {
+                    dbdc.Open();
+                    using (IDbCommand cmd = dbdc.CreateCommand())
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.CommandText = "dbo.spd_AllePersonenStamboom";
+
+                        IDataParameter voornaam_dp = cmd.CreateParameter();
+                        voornaam_dp.Direction = ParameterDirection.Input;
+
+                        cmd.Parameters.Add(new SqlParameter("@stamboomid", string.IsNullOrEmpty(stamboomid.ToString())
+                            ? (object)DBNull.Value : stamboomid.ToString()));
+
+                        using (IDataReader dr = dbdc.CreateSqlReader())
+                        {
+                            object[] results;
+                            while (dr.Read())
+                            {
+                                results = new object[dr.FieldCount];
+                                dr.GetValues(results);
+                                persoon_list.Add(new PersoonPartial
+                                {
+                                    persoonid = (int)results.GetValue(0),
+                                    voornaam = (results.GetValue(1) != null ? results.GetValue(1).ToString() : string.Empty),
+                                    tussenvoegsel = (results.GetValue(2) != null ? results.GetValue(2).ToString() : string.Empty),
+                                    achternaam = (results.GetValue(3) != null ? results.GetValue(3).ToString() : string.Empty),
+                                    geboortenaam = (results.GetValue(4) != null ? results.GetValue(4).ToString() : string.Empty),
+                                    geslacht = (results.GetValue(5) != null ? results.GetValue(5).ToString() : string.Empty),
+                                    status = (results.GetValue(6) != null ? results.GetValue(6).ToString() : string.Empty),
+                                    geboortedatum = (results.GetValue(7) != null ? results.GetValue(7).ToString().Substring(0, 9) : string.Empty),
+                                    geboorteprecisie = (results.GetValue(8) != null ? results.GetValue(8).ToString() : string.Empty),
+                                    geboortedatum2 = (results.GetValue(9) != null ? results.GetValue(9).ToString() : string.Empty),
+                                    kekuleid = (int)results.GetValue(10)
+
+                                });
+                            }
+                        }
+
+                    }
+                }
+                return persoon_list;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
         public static List<PersoonPartial> PersonenInStamboom(int stamboomid)
         {
 
@@ -274,6 +329,61 @@ namespace AbInitio.Web.DAL
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.CommandText = "dbo.spd_AllePersonenInStamboom";
+
+                        IDataParameter voornaam_dp = cmd.CreateParameter();
+                        voornaam_dp.Direction = ParameterDirection.Input;
+
+                        cmd.Parameters.Add(new SqlParameter("@stamboomid", string.IsNullOrEmpty(stamboomid.ToString())
+                            ? (object)DBNull.Value : stamboomid.ToString()));
+
+                        using (IDataReader dr = dbdc.CreateSqlReader())
+                        {
+                            object[] results;
+                            while (dr.Read())
+                            {
+                                results = new object[dr.FieldCount];
+                                dr.GetValues(results);
+                                persoon_list.Add(new PersoonPartial
+                                {
+                                    persoonid = (int)results.GetValue(0),
+                                    voornaam = (results.GetValue(1) != null ? results.GetValue(1).ToString() : string.Empty),
+                                    tussenvoegsel = (results.GetValue(2) != null ? results.GetValue(2).ToString() : string.Empty),
+                                    achternaam = (results.GetValue(3) != null ? results.GetValue(3).ToString() : string.Empty),
+                                    geboortenaam = (results.GetValue(4) != null ? results.GetValue(4).ToString() : string.Empty),
+                                    geslacht = (results.GetValue(5) != null ? results.GetValue(5).ToString() : string.Empty),
+                                    status = (results.GetValue(6) != null ? results.GetValue(6).ToString() : string.Empty),
+                                    geboortedatum = (results.GetValue(7) != null ? results.GetValue(7).ToString().Substring(0, 9) : string.Empty),
+                                    geboorteprecisie = (results.GetValue(8) != null ? results.GetValue(8).ToString() : string.Empty),
+                                    geboortedatum2 = (results.GetValue(9) != null ? results.GetValue(9).ToString() : string.Empty),
+                                    kekuleid = (int)results.GetValue(10)
+
+                                });
+                            }
+                        }
+
+                    }
+                }
+                return persoon_list;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public static List<PersoonPartial> PersonenNietInStamboom(int stamboomid)
+        {
+
+            try
+            {
+                List<PersoonPartial> persoon_list = new List<PersoonPartial>();
+                using (DataConfig dbdc = new DataConfig())
+                {
+                    dbdc.Open();
+                    using (IDbCommand cmd = dbdc.CreateCommand())
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.CommandText = "dbo.spd_AllePersonenNietInStamboom";
 
                         IDataParameter voornaam_dp = cmd.CreateParameter();
                         voornaam_dp.Direction = ParameterDirection.Input;

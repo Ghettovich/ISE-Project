@@ -44,13 +44,39 @@ namespace AbInitio.Web.Controllers
         public ActionResult Personen()
         {
             BeheerViewModel viewmodel = new BeheerViewModel();
-            viewmodel.PersoonLijst = PersoonDal.PersonenInStamboom((int)Session["stamboomid"]);
+            viewmodel.PersoonLijst = PersoonDal.PersonenStamboom((int)Session["stamboomid"]);
 
             if (Request.IsAjaxRequest())
             {
                 return PartialView("_Personen", viewmodel);
             }
             return View("PersonenInStamboom" ,viewmodel);
+        }
+
+        [HttpPost]
+        public ActionResult PersonenInStamboom()
+        {
+            BeheerViewModel viewmodel = new BeheerViewModel();
+            viewmodel.PersoonLijst = PersoonDal.PersonenInStamboom((int)Session["stamboomid"]);
+
+            if (Request.IsAjaxRequest())
+            {
+                return PartialView("_Personen", viewmodel);
+            }
+            return View("PersonenInStamboom", viewmodel);
+        }
+
+        [HttpPost]
+        public ActionResult PersonenNietInStamboom()
+        {
+            BeheerViewModel viewmodel = new BeheerViewModel();
+            viewmodel.PersoonLijst = PersoonDal.PersonenNietInStamboom((int)Session["stamboomid"]);
+
+            if (Request.IsAjaxRequest())
+            {
+                return PartialView("_Personen", viewmodel);
+            }
+            return View("PersonenInStamboom", viewmodel);
         }
 
         [HttpGet]
@@ -60,7 +86,7 @@ namespace AbInitio.Web.Controllers
 
             viewmodel.stamboomid = stamboomid;
             viewmodel.Stamboom = StamboomDAL.GetStamboom(stamboomid);
-            viewmodel.PersoonLijst = PersoonDal.PersonenInStamboom(stamboomid);
+            viewmodel.PersoonLijst = PersoonDal.PersonenStamboom(stamboomid);
 
             if (Request.IsAjaxRequest())
             {

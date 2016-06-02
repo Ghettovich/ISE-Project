@@ -28,7 +28,7 @@ namespace AbInitio.Web.Controllers
             if (stamboomid.HasValue)
             {
                 viewmodel.stamboomid = stamboomid.Value;
-                viewmodel.PersononenInStamboom = PersoonDal.PersonenInStamboom(stamboomid.Value);
+                viewmodel.PersononenInStamboom = PersoonDal.PersonenStamboom(stamboomid.Value);
 
                 if (Request.IsAjaxRequest())
                 {
@@ -46,7 +46,7 @@ namespace AbInitio.Web.Controllers
             if (stamboomid.HasValue)
             {
                 viewmodel.stamboomid = stamboomid.Value;
-                viewmodel.PersononenInStamboom = PersoonDal.PersonenInStamboom(stamboomid.Value);
+                viewmodel.PersononenInStamboom = PersoonDal.PersonenStamboom(stamboomid.Value);
 
                 if (Request.IsAjaxRequest())
                 {

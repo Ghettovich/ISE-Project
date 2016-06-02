@@ -13,13 +13,13 @@
         <h2>Familienaam: @Session["familienaam"]</h2>
     </div>
     <div class="col-md-3">
-        @using (Html.BeginForm("PersonenInStamboom", "Home", FormMethod.Post, new { }))
+        @using (Html.BeginForm("PersonenInStamboom", "Beheer", FormMethod.Post, new { }))
         {
             <button type="submit" class="btn btn-primary btn-block">Personen in stamboom</button>
         }
     </div>
     <div class="col-md-3">
-        @using (Html.BeginForm("PersonenNietInStamboom", "Home", FormMethod.Post, new { }))
+        @using (Html.BeginForm("PersonenNietInStamboom", "Beheer", FormMethod.Post, new { }))
         {
             <button type="submit" class="btn btn-primary btn-block">Personen niet in stamboom</button>
         }
