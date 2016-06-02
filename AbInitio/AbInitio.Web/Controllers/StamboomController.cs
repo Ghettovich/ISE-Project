@@ -93,7 +93,7 @@ namespace AbInitio.Web.Controllers
                 }
                 viewModel.personen = stamboomDAL.getPersonenInStamboom(stamboomId,accountId );
 
-                return View(viewModel);
+                return View("StamboomWijzigen",viewModel);
             }
             catch (Exception ex)
             {
