@@ -18,6 +18,7 @@ namespace AbInitio.Web.App_Start
         private SqlCommand sqlCommand = new SqlCommand();
         private SqlDataReader sqlDataReader;
         private SqlDataAdapter sqlAdapter;
+        
 
         public DataConfig()
         {
@@ -92,6 +93,12 @@ namespace AbInitio.Web.App_Start
         public IDataAdapter CreateSqlAdapter(SqlCommand cmd)
         {
             sqlAdapter = new SqlDataAdapter(cmd);
+            return sqlAdapter;
+        }
+
+        public IDbDataAdapter CreateSqlDbAdapter(SqlCommand cmd)
+        {
+            sqlAdapter = new SqlDataAdapter(cmd.CommandText, cmd.Connection);
             return sqlAdapter;
         }
 

@@ -4,6 +4,7 @@ using AbInitio.Web.Models;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 
@@ -11,6 +12,8 @@ namespace AbInitio.Web.DAL
 {
     public class StamboomDAL
     {
+        private static string SP_MatchPersoon = "SP_MatchPersoon";
+
         public IDataReader reader { get; set; }
 
         public void PersoonToevoegen(NieuwPersoonModel p)
@@ -66,6 +69,24 @@ namespace AbInitio.Web.DAL
             } return stambomen;
         }
         
+        public static DataTable MatchPersonen(int persoonid)
+        {
+            DataTable dt = new DataTable();
+            
+            using (DataConfig dbdc = new DataConfig())
+            {
+                using (SqlCommand cmd = new SqlCommand())
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.CommandText = SP_MatchPersoon;
+
+                    using (SqlDataAdapter adapter = new SqlDataAdapter(cmd))
+                    {
+                        adapter.Fill(dt);
+                    }                
+                }
+            } return dt;
+        }
 
         public static stamboom GetStamboom(int stamboomid)
         {

@@ -33,7 +33,7 @@
                 @item.relatieinformatie
             </td>
             <td class="actions">
-                <a class="detail-persoon" href="@(Url.Action("AanvullendeRelatieInfo", "Beheer", new  { avrid = item.aanvullenderelatieinformatieid }))">
+                <a class="detail_avr" href="@(Url.Action("AvrDetails", "Beheer", new  { avrid = item.aanvullenderelatieinformatieid }))">
                     <span class="glyphicon glyphicon-book"></span>
                 </a>
                 <a class="wijzig_persoon" href="@(Url.Action("WijzigAvr", "Beheer", new { avrid = item.aanvullenderelatieinformatieid }))">

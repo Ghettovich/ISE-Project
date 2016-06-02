@@ -1,0 +1,131 @@
+﻿@model AbInitio.Web.ViewModels.MatchViewModel
+@{
+    ViewBag.Title = "MatchPersoon";
+}
+
+@if (Model.FoundMatch)
+{
+    <h2>MatchPersoon</h2>
+        <form role="form">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>
+                            Voornaam
+                        </th>
+                        <th>
+                            Tussenvoegsel
+                        </th>
+                        <th>
+                            Achternaam
+                        </th>
+                        <th>
+                            Geboortedatum
+                        </th>
+                        <th>
+                            Trouwdatum
+                        </th>
+                        <th>
+                            Overlijdingsdatum
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.MatchLijst)
+                {
+                        <tr>
+                            <td><input type="radio" name="persoonid" value="@item.persoonid" /></td>
+                            <td>
+                                @item.voornaam
+                            </td>
+                            <td>
+                                @item.tussenvoegsel
+                            </td>
+                            <td>
+                                @item.achternaam
+                            </td>
+                            <td>
+                                @item.geboorteprecisie @if (@item.geboortedatum != null)
+                                { @item.geboortedatum.ToString().Substring(0, 9)} @if (@item.geboortedatum2 != null)
+                                { <span> en @item.geboortedatum2.ToString().Substring(0, 9)</span>}
+                            </td>
+                            <td>
+                            </td>
+                            <td>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <input type="submit" class="btn btn-default" value="Match" />
+        </form>
+
+}
+else
+{
+
+    <h2>MatchPersoon</h2>
+    <form role="form">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>
+                        Kekule Nummer
+                    </th>
+                    <th>
+                        Voornaam
+                    </th>
+                    <th>
+                        Tussenvoegsel
+                    </th>
+                    <th>
+                        Achternaam
+                    </th>
+                    <th>
+                        Geboortedatum
+                    </th>
+                    <th>
+                        Trouwdatum
+                    </th>
+                    <th>
+                        Overlijdingsdatum
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.PersonenInStamboom)
+                {
+                    <tr>
+                        <td><input type="radio" name="persoonid" value="@item.persoonId" /></td>
+                        <td>
+                            @item.kekuleId
+                        </td>
+                        <td>
+                            @item.voornaam
+                        </td>
+                        <td>
+                            @item.tussenvoegsel
+                        </td>
+                        <td>
+                            @item.achternaam
+                        </td>
+                        <td>
+                            @item.geboortePrecisie @if (@item.geboortedatum != null)
+                            { @item.geboortedatum.ToString().Substring(0, 9)} @if (@item.geboortedatum2 != null)
+                            { <span> en @item.geboortedatum2.ToString().Substring(0, 9)</span>}
+                        </td>
+                        <td>
+                            @item.trouwdatum
+                        </td>
+                        <td>
+                            @item.overlijdingsdatum
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <input type="submit" class="btn btn-default" value="Match" />
+    </form>
+}

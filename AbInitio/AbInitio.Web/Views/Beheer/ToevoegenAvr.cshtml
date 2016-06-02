@@ -24,7 +24,7 @@
         <div class="form-group">
             @Html.Label("Relatie informatie type", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("AvRelatieID", Model.AvrTypes, new { @class = "form-control" })
+                @Html.DropDownList("AvrInfoID", Model.AvrTypes, new { @class = "form-control" })
             </div>
         </div>
         <div class="form-group">
@@ -34,6 +34,29 @@
                 @Html.ValidationMessageFor(model => model.relatieinformatie, "", new { @class = "text-danger" })
             </div>
         </div>
+
+        <div class="form-group">
+            @Html.Label("Van", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.Editor("Van", new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessage("Van", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.Label("Datum precisie", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10 precisie">
+                @Html.DropDownList("Precisie", Model.DatumPrecisies, "", new { @class = "form-control" })
+            </div>
+        </div>
+
+        <div class="form-group" style="display:none">
+            @Html.Label("Tot", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.Editor("Tot", new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessage("Tot", new { @class = "text-danger" })
+            </div>
+        </div>
+
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Toevoegen" class="btn btn-default" />
