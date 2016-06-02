@@ -41,7 +41,9 @@ namespace AbInitio.Web.Controllers
         [HttpGet]
         public ActionResult overzichtStambomen()
         {
-            return View();
+            List<StamboomModel> stambomen = new List<StamboomModel>();
+            stambomen = stamboomDAL.getStambomen((int)Session["account"], "");
+            return View(stambomen);
         }
 
         [HttpPost]
@@ -56,12 +58,13 @@ namespace AbInitio.Web.Controllers
             return View(stambomen);
         }
 
-        [HttpGet]
+        [HttpPost]
         public ActionResult Stamboom(int stamboomId)
         {
             StamboomViewModel viewModel = new StamboomViewModel();
             try
             {
+                System.Web.HttpContext.Current.Session["stamboomid"] = stamboomId;
                 int accountId;
                 viewModel.stamboom = StamboomDAL.GetStamboom(stamboomId);
                 if (Session["account"] != null) {

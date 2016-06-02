@@ -13,37 +13,51 @@
     @Html.ActionLink("Collaboraties", "CollaboratieStamboom", "Stamboom", new { }, new { @class = "btn btn-primary btn-block" })
 </div>
 </br></br>
-
+    
 <table class="table table-striped">
     <br />
     <tr>
-        <th>
+        <th style="width:70%">
             familienaam
         </th>
-        <th>
+        <th style="width:30%">
             
         </th>
     </tr>
-    @if (Model != null)
-    {
-        foreach (var item in Model)
+
+        @if (Model != null)
         {
+            foreach (var item in Model)
+            {
             <tr>
                 <td>
-                    @Html.ActionLink(item.familieNaam, "Stamboom", new { stamboomId = item.stamboomId })
+                    <p>@item.familieNaam</p>
                 </td>
                 <td class="actions">
-                    <a class="detail-persoon" href="@(Url.Action("Stamboom", "Stamboom", new  { stamboomid = item.stamboomId }))">
-                        <span class="glyphicon glyphicon-book"></span>
-                    </a>
-                    <a class="wijzig_persoon" href="@(Url.Action("Schakelbord", "Home", new { stamboomid = item.stamboomId }))">
-                        <span class="glyphicon glyphicon-pencil"></span>
-                    </a>
-                    <a class="delete_link" href="#" data-persoonid="@item.stamboomId" data-toggle="modal" data-target="#confirm-delete">
-                        <span class="glyphicon glyphicon-remove"></span>
-                    </a>
+                    @using (Html.BeginForm("Stamboom", "Stamboom", FormMethod.Post, new { @class = "col-md-1", @style = "padding:0px" }))
+                    {
+                        <span>
+                            <button type="submit" class="btn btn-link" style="padding:0px" id="stamboomid" name="stamboomid" value="@item.stamboomId">
+                                <span class="glyphicon glyphicon-book"></span>
+                            </button>
+                        </span>
+                    }
+                    @using (Html.BeginForm("Schakelbord", "Home", FormMethod.Post, new { @class = "col-md-1", @style = "padding:0px" }))
+                    {
+                        <span>
+                            <button type="submit" class="btn btn-link" style="padding:0px" id="stamboomid" name="stamboomid" value="@item.stamboomId">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                            </button>
+                        </span>
+                    }
+                    <div class="col-md-1" style="padding:0px">
+                        <a class="delete_link" href="#" data-persoonid="@item.stamboomId" data-toggle="modal" data-target="#confirm-delete">
+                            <span class="glyphicon glyphicon-remove"></span>
+                        </a>
+                    </div>
                 </td>
             </tr>
+            
         }
     }
 </table>
