@@ -248,6 +248,40 @@ namespace AbInitio.Web.DAL
             }
         }
 
+        public void verwijderStamboom(int accountid, int stamboomid)
+        {
+            try
+            {
+                using (DataConfig dbdc = new DataConfig())
+                {
+                    dbdc.Open();
+                    using (IDbCommand cmd = dbdc.CreateCommand())
+                    {
+                        cmd.CommandText = "dbo.spd_VerwijderStamboom";
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        IDataParameter pm = cmd.CreateParameter();
+                        pm.Direction = ParameterDirection.Input;
+
+                        pm.ParameterName = "@stamboomid";
+                        pm.Value = stamboomid;
+                        cmd.Parameters.Add(pm);
+
+                        pm = cmd.CreateParameter();
+                        pm.ParameterName = "@accountid";
+                        pm.Value = accountid;
+                        cmd.Parameters.Add(pm);
+
+                        cmd.ExecuteReader();
+                    }
+                }
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
         public static void persoonInStamboom(int stamboomid,int persoonid)
         {
             try
