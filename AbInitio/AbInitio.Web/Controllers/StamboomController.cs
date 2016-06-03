@@ -163,13 +163,33 @@ namespace AbInitio.Web.Controllers
         [HttpPost]
         public ActionResult WijzigStamboom(int stamboomid,string familienaam,DateTime gewijzigdOp)
         {
+            Regex reg = new Regex(@"^[a-zA-Z]+$");
+            Debug.WriteLine(familienaam);
+            if (reg.IsMatch(familienaam) == false)
+            {
+                return RedirectToAction("Error", "Home", new { errorMessage = "Foutive invoer!" });
+            }
             StamboomModel update = new StamboomModel();
             update.stamboomId = stamboomid;
             update.familieNaam = familienaam;
             update.gewijzigdOp = gewijzigdOp;
-
-            stamboomDAL.wijzigStamboom(update);
-            return Redirect("WijzigStamboom");
+            try
+            {
+                stamboomDAL.wijzigStamboom(update);
+            }
+            catch (Exception ex)
+            {
+                if (ex is System.Data.SqlClient.SqlException)
+                {
+                    return RedirectToAction("Error", "Home", new { errorMessage = ex.Message });
+                }
+                else
+                {
+                    throw ex;
+                }
+            }
+            Session["familienaam"] = familienaam;
+            return Redirect("WijzigStamboom?stamboomid=" + stamboomid);
         }
 
         [HttpGet]
