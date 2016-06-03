@@ -118,7 +118,7 @@ namespace AbInitio.Web.Controllers
             StamboomDAL.persoonInStamboom(model.stamboomid,persoonid.id);
 
 
-            return Redirect("../Stamboom/Stamboom?stamboomId=" + model.stamboomid);
+            return Redirect("../Stamboom/WijzigStamboom?stamboomId=" + model.stamboomid);
         }
 
         [HttpGet]

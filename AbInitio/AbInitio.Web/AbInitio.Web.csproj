@@ -130,14 +130,12 @@
     <Compile Include="App_Start\DataConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="Code\Matching.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BeheerController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PersoonController.cs" />
     <Compile Include="Controllers\StamboomController.cs" />
     <Compile Include="Controllers\ZoekenController.cs" />
-    <Compile Include="DAL\AanvullendPersoonDAL.cs" />
     <Compile Include="DAL\AccountDAL.cs" />
     <Compile Include="DAL\PersoonDal.cs" />
     <Compile Include="DAL\RelatieDAL.cs" />
@@ -212,7 +210,6 @@
     <Compile Include="Partials\RelatiePartial.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\BeheerViewModel.cs" />
-    <Compile Include="ViewModels\MatchViewModel.cs" />
     <Compile Include="ViewModels\StamboomViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -262,7 +259,6 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
-    <Content Include="Scripts\RelatieFunctions.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.matchmedia.addListener.js" />
     <Content Include="Scripts\respond.matchmedia.addListener.min.js" />
@@ -315,10 +311,6 @@
     <Content Include="Views\Persoon\WijzigPersoon.cshtml" />
     <Content Include="Views\Beheer\WijzigAvr.cshtml" />
     <Content Include="Views\Beheer\AvrDetails.cshtml" />
-    <Content Include="Views\Beheer\MatchPersoon.cshtml" />
-    <Content Include="Views\AanvullendPersoon\AanvullendPersoonLijst.cshtml" />
-    <Content Include="Views\AanvullendPersoon\NieuwAanvullendPersoon.cshtml" />
-    <Content Include="Views\AanvullendPersoon\WijzigAanvullendPersoon.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -352,13 +344,13 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>16168</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:16169/</IISUrl>
+          <IISUrl>http://localhost:16168/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
           </CustomServerUrl>
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
-          <servers defaultServer="">
+          <servers defaultServer="SelfHostServer">
             <server name="SelfHostServer" exePath="" cmdArgs="" url="http://localhost:16168/" workingDir="" />
           </servers>
         </WebProjectProperties>

@@ -59,5 +59,12 @@
             </tr>
         }
     }
-</table>
-<button type="submit" class="btn btn-primary btn-block" id="stamboomid" name="stamboomid" value="@Session["stamboomid"]">Visuele weergave</button>
+ </table>
+<div class="row">
+    <div class="col-lg-offset-10">
+        @Html.ActionLink("Visuele weergave","visueleStamboom",new { stamboomId = Model.stamboom.stamboomid}, new { @class = "btn btn-primary" })
+    </div>
+   
+</div>
+
+
