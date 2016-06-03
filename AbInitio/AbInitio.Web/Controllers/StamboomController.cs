@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
@@ -24,17 +25,23 @@ namespace AbInitio.Web.Controllers
         [HttpGet]
         public ActionResult maakStamboom()
         {
+            if (Session["account"] == null)
+            {
+                return RedirectToAction("Error", "Home", new { errorMessage = "Log in AUB" });
+            }
             return View();
         }
 
         [HttpPost]
         public ActionResult maakStamboom(string familienaam)
         {
-            StamboomViewModel viewModel = new StamboomViewModel();
-            if (Session["account"] == null)
+            Regex reg = new Regex(@"^[a-zA-Z'.]{1,40}$");
+            if (reg.IsMatch(familienaam) == false)
             {
-                return Redirect("/Home");
+                return RedirectToAction("Error", "Home", new { errorMessage = "Foutive invoer!" });
             }
+            StamboomViewModel viewModel = new StamboomViewModel();
+
             viewModel.stamboom =  stamboomDAL.maakStamboom((int)Session["account"], familienaam);
             return RedirectToAction("NieuwPersoon", "Persoon", new { stamboomid = viewModel.stamboom.stamboomid });
         }
@@ -42,6 +49,10 @@ namespace AbInitio.Web.Controllers
         [HttpGet]
         public ActionResult overzichtStambomen()
         {
+            if(Session["account"] == null)
+            {
+                return RedirectToAction("Error", "Home", new { errorMessage = "Log in AUB" });
+            }
             List<StamboomModel> stambomen = new List<StamboomModel>();
             stambomen = stamboomDAL.getStambomen((int)Session["account"], "");
             return View(stambomen);
@@ -123,11 +134,11 @@ namespace AbInitio.Web.Controllers
             return View();
         }
 
-
+        [HttpGet]
         public ActionResult AfschermenStamboom(int stamboomId)
         {
             stamboomDAL.afschermenStamboom(stamboomId);
-            return Redirect("WijzigStamboom");
+            return Redirect("WijzigStamboom?stamboomId=" + stamboomId);
         }
 
         public ActionResult verwijderStamboom(int stamboomId)
@@ -152,13 +163,67 @@ namespace AbInitio.Web.Controllers
         [HttpPost]
         public ActionResult WijzigStamboom(int stamboomid,string familienaam,DateTime gewijzigdOp)
         {
+            Regex reg = new Regex(@"^[a-zA-Z]+$");
+            Debug.WriteLine(familienaam);
+            if (reg.IsMatch(familienaam) == false)
+            {
+                return RedirectToAction("Error", "Home", new { errorMessage = "Foutive invoer!" });
+            }
             StamboomModel update = new StamboomModel();
             update.stamboomId = stamboomid;
             update.familieNaam = familienaam;
             update.gewijzigdOp = gewijzigdOp;
+            try
+            {
+                stamboomDAL.wijzigStamboom(update);
+            }
+            catch (Exception ex)
+            {
+                if (ex is System.Data.SqlClient.SqlException)
+                {
+                    return RedirectToAction("Error", "Home", new { errorMessage = ex.Message });
+                }
+                else
+                {
+                    throw ex;
+                }
+            }
+            Session["familienaam"] = familienaam;
+            return Redirect("WijzigStamboom?stamboomid=" + stamboomid);
+        }
 
-            stamboomDAL.wijzigStamboom(update);
-            return Redirect("WijzigStamboom");
+        [HttpGet]
+        public ActionResult visueleStamboom(int stamboomId)
+        {
+            StamboomViewModel viewModel = new StamboomViewModel();
+            try
+            {
+                int accountId;
+                viewModel.stamboom = StamboomDAL.GetStamboom(stamboomId);
+                if (Session["account"] != null)
+                {
+                    accountId = (int)Session["account"];
+                }
+                else
+                {
+                    accountId = 1;
+                }
+                viewModel.personen = stamboomDAL.getPersonenInStamboom(stamboomId, accountId);
+
+                return View(viewModel);
+            }
+            catch (Exception ex)
+            {
+                if (ex is System.Data.SqlClient.SqlException)
+                {
+                    return RedirectToAction("Error", "Home", new { errorMessage = ex.Message });
+                }
+                else
+                {
+                    throw ex;
+                }
+
+            }
         }
 
     }

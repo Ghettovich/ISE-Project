@@ -32,13 +32,13 @@
 
             <div class="form-inline">
                 <h2>Stamboom van</h2>
-                <input type="hidden" id="stamboomid" name="stamboomid" value="" />
+                <input type="hidden" id="stamboomid" name="stamboomid" value=@Model.stamboomid />
                 <input type="hidden" id="wijzigDatum" name="gewijzigdOp" value="@Model.stamboom.gewijzigdOp" />
 
                 <div class="form-inline">
                     @Html.Label("Familienaam", htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-2">
-                        <input type="text" class="form-control" name="familienaam" value="@Model.stamboom.familienaam" />
+                        <input type="text" class="form-control" name="familienaam" value="@Model.stamboom.familienaam" required />
                     </div>
 
                     <div class="col-md-2">

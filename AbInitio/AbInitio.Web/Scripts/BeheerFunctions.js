@@ -27,7 +27,7 @@ $(document).on("click", ".delete_link", function () {
 
 });
 
-$("#wijzigenRechten").click(function () {
+$(".wijzigenRechten").click(function () {
     var c = confirm("weet u zeker dat u deze collaborateur wilt wijzigen?");
     if (c == false) {
         $(location).attr('href', 'Index')
@@ -37,7 +37,7 @@ $("#wijzigenRechten").click(function () {
 
 });
 
-$("#verwijderenRechten").click(function () {
+$(".verwijderenRechten").click(function () {
     var c = confirm("weet u zeker dat u deze gebruiker wilt verwijderen uit jouw collaborateur?");
     if (c == false) {
         $(location).attr('href', 'Index')
@@ -45,6 +45,13 @@ $("#verwijderenRechten").click(function () {
     }
 });
 
+$("#afschermIcon").click(function () {
+    var c = confirm("Weet u zeker dat u de afscherming van deze stamboom wilt wijzigen?");
+    if (c == false) {
+        $(location).attr('href', 'Index')
+        return c;
+    }
+});
 
 function setHiddenField(elementId) {
     window.alert(document.getElementById(elementId).value);
