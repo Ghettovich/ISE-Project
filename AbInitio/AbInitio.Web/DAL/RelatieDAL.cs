@@ -521,7 +521,7 @@ namespace AbInitio.Web.DAL
 
                         pm = cmd.CreateParameter();
                         pm.ParameterName = "@persoonid1";
-                        pm.Value = model.persoonid1;
+                        pm.Value = model.persoon1.persoonid;
                         cmd.Parameters.Add(pm);
 
                         pm = cmd.CreateParameter();

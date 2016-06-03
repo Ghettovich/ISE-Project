@@ -127,7 +127,7 @@ namespace AbInitio.Web.Controllers
         public ActionResult AfschermenStamboom(int stamboomId)
         {
             stamboomDAL.afschermenStamboom(stamboomId);
-            return Redirect("Stamboom?stamboomId="+stamboomId);
+            return Redirect("WijzigStamboom");
         }
 
         public ActionResult verwijderStamboom(int stamboomId)

@@ -98,7 +98,7 @@ namespace AbInitio.Web.Controllers
         [HttpGet]
         public ActionResult MatchPersoon(int? persoonid, char? geslacht, string voornaam = null, string vvg = null, string achternaam = null)
         {
-            int accountid = 1;
+            //int accountid = 1;
             int stamboomid = 1;
 
             StamboomDAL dal = new StamboomDAL();
@@ -201,11 +201,12 @@ namespace AbInitio.Web.Controllers
         }
 
         [HttpGet]
-        public ActionResult ToevoegenRelatie(int stamboomid)
+        public ActionResult ToevoegenRelatie(int stamboomid,int persoonid1)
         {
             RelatieModel viewmodel = new RelatieModel();
             viewmodel.Relatietypes = RelatieDAL.RelatieTypes(0);
             viewmodel.Personen = PersoonDal.PersonenLijst(stamboomid);
+            viewmodel.persoon1 = PersoonDal.GetPersoon(persoonid1);
             viewmodel.StamboomdID = stamboomid;
             return View(viewmodel);
         }
@@ -217,6 +218,7 @@ namespace AbInitio.Web.Controllers
             viewmodel.Relatietypes = RelatieDAL.RelatieTypes(0);
             viewmodel.Personen = PersoonDal.PersonenLijst(viewmodel.StamboomdID);
             viewmodel.StamboomdID = viewmodel.StamboomdID;
+            viewmodel.persoon1 = viewmodel.persoon1;
 
             if (ModelState.IsValid)
             {

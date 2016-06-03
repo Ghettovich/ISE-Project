@@ -17,6 +17,7 @@ namespace AbInitio.Web.ViewModels
 
         }
         public int stamboomid { get; set; }
+        public int persoonid1 { get; set; }
         public List<stamboom> StambomenGebruiker { get; set; }
         public List<PersoonPartial> PersononenInStamboom { get; set; }
         
