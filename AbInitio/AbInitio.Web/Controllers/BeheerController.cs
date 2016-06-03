@@ -192,7 +192,7 @@ namespace AbInitio.Web.Controllers
         }
 
         [HttpGet]
-        public ActionResult ToevoegenRelatie(int stamboomid)
+        public ActionResult ToevoegenRelatie(int stamboomid,int persoonid1)
         {
             RelatieModel viewmodel = new RelatieModel();
             viewmodel.Personen = PersoonDal.PersonenLijst(stamboomid);

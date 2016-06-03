@@ -263,6 +263,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Scripts\RelatieFunctions.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.matchmedia.addListener.js" />
     <Content Include="Scripts\respond.matchmedia.addListener.min.js" />
@@ -315,6 +316,10 @@
     <Content Include="Views\Persoon\WijzigPersoon.cshtml" />
     <Content Include="Views\Beheer\WijzigAvr.cshtml" />
     <Content Include="Views\Beheer\AvrDetails.cshtml" />
+    <Content Include="Views\Beheer\MatchPersoon.cshtml" />
+    <Content Include="Views\AanvullendPersoon\AanvullendPersoonLijst.cshtml" />
+    <Content Include="Views\AanvullendPersoon\NieuwAanvullendPersoon.cshtml" />
+    <Content Include="Views\AanvullendPersoon\WijzigAanvullendPersoon.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -348,13 +353,13 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>16168</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:16168/</IISUrl>
+          <IISUrl>http://localhost:16169/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
           </CustomServerUrl>
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
-          <servers defaultServer="SelfHostServer">
+          <servers defaultServer="">
             <server name="SelfHostServer" exePath="" cmdArgs="" url="http://localhost:16168/" workingDir="" />
           </servers>
         </WebProjectProperties>

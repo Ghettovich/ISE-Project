@@ -25,7 +25,7 @@ namespace AbInitio.Web.DAL
 
         public static List<SelectListItem> PersonenLijst(int stamboomid)
         {
-            List<PersoonPartial> personen = PersonenStamboom(stamboomid);
+            List<PersoonPartial> personen = PersonenNietInStamboom(stamboomid);
             List<SelectListItem> listitems = new List<SelectListItem>();
 
             foreach (var item in personen)
@@ -416,7 +416,7 @@ namespace AbInitio.Web.DAL
                                     geboortedatum = (results.GetValue(7) != null ? results.GetValue(7).ToString().Substring(0, 9) : string.Empty),
                                     geboorteprecisie = (results.GetValue(8) != null ? results.GetValue(8).ToString() : string.Empty),
                                     geboortedatum2 = (results.GetValue(9) != null ? results.GetValue(9).ToString() : string.Empty),
-                                    kekuleid = (int)results.GetValue(10)
+        
 
                                 });
                             }
