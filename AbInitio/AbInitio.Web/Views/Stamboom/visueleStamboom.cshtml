@@ -92,7 +92,7 @@
         for (i = 0;i<model.length;i++){
             for(j = 0;j<model.length;j++){
                 if(parseInt(model[j].kekuleId)== 1){
-                    personen.name =  model[j].voornaam;
+                    root.children[0].name =  model[j].voornaam;
                 } else if(parseInt(model[j].kekuleId) == index){
                     var indexP;
                     if(index%2 == 0){
@@ -101,7 +101,6 @@
                         indexP = (index - 1)/2
                     }
                     testpush(root,indexP,model[j].voornaam,parseInt(model[j].kekuleId))
-                    
                 }
             }
             index++;
