@@ -81,76 +81,63 @@
                 @Model.Persoon.geefDatum
             </dd>
 
-            <dt>
-                Geboorteprecisie
-            </dt>
-
-            <dd>
-                @Model.Persoon.geboorteprecisie
-            </dd>
-
-            <dt>
-                Geboortedatum2
-            </dt>
-
-            <dd>
-                @Model.Persoon.geefDatum2
-            </dd>
 
         </dl>
     </div>
-    
+
+    <a href="@Url.Action("MatchPersoon", "Beheer")" role="button" class="btn btn-primary">Opnieuw matchen</a>
+
     <h2>MatchPersoon</h2>
-        <form role="form">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Naam</th>
-                        <th>Overige namen</th>
-                        <th>Achtervoegsel</th>
-                        <th>Geslacht</th>
-                        <th>Geboortenaam</th>
-                        <th>Geboren</th>
-                        <th>Totaal Score</th>
-                        <th>Aanvullende info</th>
-                    </tr>
-                </thead>
-                <tbody>
-                @foreach (var item in Model.MatchLijst)
+    <table class="table">
+        <thead>
+            <tr>
+                <th>id</th>
+                <th>Naam</th>
+                <th>Overige namen</th>
+                <th>Achtervoegsel</th>
+                <th>Geslacht</th>
+                <th>Geboortenaam</th>
+                <th>Geboren</th>
+                <th>Match op kolom</th>
+                <th>Totaal Score</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.MatchLijst)
                 {
-                        <tr>
-                            <td>
-                                @item.GeefVolledigeNaam
-                            </td>
-                            <td>
-                                @item.overigenamen
-                            </td>
-                            <td>
-                                @item.achtervoegsel
-                            </td>
-                            <td>
-                                @item.geslacht
-                            </td>
-                            <td>
-                                @item.geboortenaam
-                            </td>
-                            <td>
-                                @item.geboorteprecisie @if (@item.geboortedatum != null)
-                                { @item.geboortedatum } @if (@item.geboortedatum2 != null)
-                                { <span> en @item.geboortedatum2</span>}
-                            </td>
-                            <td>
-                                @item.Totaal
-                            </td>
-                            <td>
-                                @item.AantalAanvullendInfo
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
+                <tr>
+                    <td>@item.persoonid</td>
+                    <td>
+                        @item.GeefVolledigeNaam
+                    </td>
+                    <td>
+                        @item.overigenamen
+                    </td>
+                    <td>
+                        @item.achtervoegsel
+                    </td>
+                    <td>
+                        @item.GeefGeslacht
+                    </td>
+                    <td>
+                        @item.geboortenaam
+                    </td>
+                    <td>
+                        @item.geefDatum
+                    </td>
+                    <td>
+                        @item.MatchKolommen
+                    </td>
+                    <td>
+                        @item.TotaalScore
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
             <input type="submit" class="btn btn-default" value="Match" />
-        </form>
+
 
 }
 else
@@ -190,15 +177,13 @@ else
                             @item.achtervoegsel
                         </td>
                         <td>
-                            @item.geslacht
+                            @item.GeefGeslacht
                         </td>
                         <td>
                             @item.geboortenaam
                         </td>
                         <td>
-                            @item.geboorteprecisie @if (@item.geboortedatum != null)
-                            { @item.geboortedatum } @if (@item.geboortedatum2 != null)
-                            { <span> en @item.geboortedatum2</span>}
+                            @item.geefDatum
                         </td>
                     </tr>
                 }
