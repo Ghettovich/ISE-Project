@@ -1,4 +1,6 @@
-﻿using System;
+﻿using AbInitio.Web.DAL;
+using AbInitio.Web.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -12,10 +14,20 @@ namespace AbInitio.Web.Controllers
         {
             return View();
         }
-
+        [HttpGet]
         public ActionResult Schakelbord()
         {
             return View();
+        }
+
+        [HttpPost]
+        public ActionResult Schakelbord(int stamboomid)
+        {
+            System.Web.HttpContext.Current.Session["stamboomid"] = stamboomid;
+            StamboomModel model = new StamboomModel();
+            model.familieNaam = StamboomDAL.GetStamboom(stamboomid).familienaam;
+            System.Web.HttpContext.Current.Session["familienaam"] = model.familieNaam;
+            return View(model);
         }
 
         public ActionResult About()

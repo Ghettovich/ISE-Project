@@ -1,0 +1,209 @@
+﻿@model AbInitio.Web.ViewModels.MatchViewModel
+@{
+    ViewBag.Title = "MatchPersoon";
+}
+
+@if (Model.FoundMatch)
+{
+
+    <div>
+        <h4>persoon</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                Voornaam
+            </dt>
+
+            <dd>
+                @Model.Persoon.voornaam
+            </dd>
+
+            <dt>
+                Overige namen
+            </dt>
+
+            <dd>
+                @Model.Persoon.overigenamen
+            </dd>
+
+            <dt>
+                Tussenvoegsel
+            </dt>
+
+            <dd>
+                @Model.Persoon.tussenvoegsel
+            </dd>
+
+            <dt>
+                Achternaam
+            </dt>
+
+            <dd>
+                @Model.Persoon.achternaam
+            </dd>
+
+            <dt>
+                Achtervoegsel
+            </dt>
+
+            <dd>
+                @Model.Persoon.achtervoegsel
+            </dd>
+
+            <dt>
+                Geboortenaam
+            </dt>
+            <dd>
+                @Model.Persoon.geboortenaam
+            </dd>
+
+            <dt>
+                Geslacht
+            </dt>
+
+            <dd>
+                @(Model.Persoon.GeefGeslacht)
+            </dd>
+
+            <dt>
+                Status
+            </dt>
+
+            <dd>
+                @Model.Persoon.geefStatus
+            </dd>
+
+            <dt>
+                Geboortedatum
+            </dt>
+
+            <dd>
+                @Model.Persoon.geefDatum
+            </dd>
+
+            <dt>
+                Geboorteprecisie
+            </dt>
+
+            <dd>
+                @Model.Persoon.geboorteprecisie
+            </dd>
+
+            <dt>
+                Geboortedatum2
+            </dt>
+
+            <dd>
+                @Model.Persoon.geefDatum2
+            </dd>
+
+        </dl>
+    </div>
+    
+    <h2>MatchPersoon</h2>
+        <form role="form">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Naam</th>
+                        <th>Overige namen</th>
+                        <th>Achtervoegsel</th>
+                        <th>Geslacht</th>
+                        <th>Geboortenaam</th>
+                        <th>Geboren</th>
+                        <th>Totaal Score</th>
+                        <th>Aanvullende info</th>
+                    </tr>
+                </thead>
+                <tbody>
+                @foreach (var item in Model.MatchLijst)
+                {
+                        <tr>
+                            <td>
+                                @item.GeefVolledigeNaam
+                            </td>
+                            <td>
+                                @item.overigenamen
+                            </td>
+                            <td>
+                                @item.achtervoegsel
+                            </td>
+                            <td>
+                                @item.geslacht
+                            </td>
+                            <td>
+                                @item.geboortenaam
+                            </td>
+                            <td>
+                                @item.geboorteprecisie @if (@item.geboortedatum != null)
+                                { @item.geboortedatum } @if (@item.geboortedatum2 != null)
+                                { <span> en @item.geboortedatum2</span>}
+                            </td>
+                            <td>
+                                @item.Totaal
+                            </td>
+                            <td>
+                                @item.AantalAanvullendInfo
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <input type="submit" class="btn btn-default" value="Match" />
+        </form>
+
+}
+else
+{
+
+    <h2>MatchPersoon</h2>
+    <form role="form" action="@Url.Action("MatchPersoon", "Beheer")" method="get" class="form-inline">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Kekule Nummer</th>
+                    <th>Naam</th>
+                    <th>Overige namen</th>
+                    <th>Achtervoegsel</th>
+                    <th>Geslacht</th>
+                    <th>Geboortenaam</th>
+                    <th>Geboren</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.PersonenInStamboom)
+                {
+                    <tr>
+                        <td><input type="radio" name="persoonid" value="@item.persoonid" /></td>
+                        <td>
+                            @item.KekuleID
+                        </td>
+                        <td>
+                            @item.GeefVolledigeNaam
+                        </td>
+                        <td>
+                            @item.overigenamen
+                        </td>
+                        <td>
+                            @item.achtervoegsel
+                        </td>
+                        <td>
+                            @item.geslacht
+                        </td>
+                        <td>
+                            @item.geboortenaam
+                        </td>
+                        <td>
+                            @item.geboorteprecisie @if (@item.geboortedatum != null)
+                            { @item.geboortedatum } @if (@item.geboortedatum2 != null)
+                            { <span> en @item.geboortedatum2</span>}
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <input type="submit" class="btn btn-default" value="Match" />
+    </form>
+}

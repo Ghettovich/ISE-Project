@@ -30,18 +30,37 @@ namespace AbInitio.Web.Controllers
         [HttpPost]
         public ActionResult maakStamboom(string familienaam)
         {
-            if(Session["account"] != null)
+            StamboomViewModel viewModel = new StamboomViewModel();
+            if (Session["account"] == null)
             {
                 return Redirect("/Home");
             }
-            stamboomDAL.maakStamboom((int)Session["account"], familienaam);
-            return Redirect("overzichtStambomen");
+            viewModel.stamboom =  stamboomDAL.maakStamboom((int)Session["account"], familienaam);
+            return RedirectToAction("NieuwPersoon", "Persoon", new { stamboomid = viewModel.stamboom.stamboomid });
         }
 
         [HttpGet]
         public ActionResult overzichtStambomen()
         {
-            return View();
+            List<StamboomModel> stambomen = new List<StamboomModel>();
+            stambomen = stamboomDAL.getStambomen((int)Session["account"], "");
+            return View(stambomen);
+        }
+
+        [HttpPost]
+        public ActionResult eigenStambomen()
+        {
+            List<StamboomModel> stambomen = new List<StamboomModel>();
+            stambomen = stamboomDAL.getEigenStambomen((int)Session["account"]);
+            return View("OverzichtStambomen", stambomen);
+        }
+
+        [HttpPost]
+        public ActionResult collaboratieStambomen()
+        {
+            List<StamboomModel> stambomen = new List<StamboomModel>();
+            stambomen = stamboomDAL.getCollaboratieStambomen((int)Session["account"]);
+            return View("OverzichtStambomen", stambomen);
         }
 
         [HttpPost]
@@ -56,12 +75,13 @@ namespace AbInitio.Web.Controllers
             return View(stambomen);
         }
 
-        [HttpGet]
+        [HttpPost]
         public ActionResult Stamboom(int stamboomId)
         {
             StamboomViewModel viewModel = new StamboomViewModel();
             try
             {
+                System.Web.HttpContext.Current.Session["stamboomid"] = stamboomId;
                 int accountId;
                 viewModel.stamboom = StamboomDAL.GetStamboom(stamboomId);
                 if (Session["account"] != null) {
@@ -101,6 +121,44 @@ namespace AbInitio.Web.Controllers
         public ActionResult NieuwPersoon(NieuwPersoonModel model)
         {
             return View();
+        }
+
+
+        public ActionResult AfschermenStamboom(int stamboomId)
+        {
+            stamboomDAL.afschermenStamboom(stamboomId);
+            return Redirect("Stamboom?stamboomId="+stamboomId);
+        }
+
+        public ActionResult verwijderStamboom(int stamboomId)
+        {
+            stamboomDAL.verwijderStamboom((int)Session["account"], stamboomId);
+            return Redirect("OverzichtStambomen");
+        }
+
+
+
+
+        [HttpGet]
+        public ActionResult WijzigStamboom(int stamboomid)
+        {
+            StamboomViewModel model = new StamboomViewModel();
+            model.stamboomid = stamboomid;
+            model.stamboom = StamboomDAL.GetStamboom(stamboomid);
+            model.personen = stamboomDAL.getPersonenInStamboom(stamboomid, (int)Session["account"]);
+            return View("StamboomWijzigen",model);
+        }
+
+        [HttpPost]
+        public ActionResult WijzigStamboom(int stamboomid,string familienaam,DateTime gewijzigdOp)
+        {
+            StamboomModel update = new StamboomModel();
+            update.stamboomId = stamboomid;
+            update.familieNaam = familienaam;
+            update.gewijzigdOp = gewijzigdOp;
+
+            stamboomDAL.wijzigStamboom(update);
+            return Redirect("WijzigStamboom");
         }
 
         [HttpGet]
