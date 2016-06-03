@@ -1,0 +1,280 @@
+﻿@model AbInitio.Web.ViewModels.StamboomViewModel
+
+@{
+    ViewBag.Title = "visueleStamboom";
+}
+
+<script src="~/Scripts/d3.js"></script>
+<script>
+    //<![CDATA[
+    window.onload = function () {
+        var margin = {
+            top: 10,
+            right: 10,
+            bottom: 10,
+            left: 10
+        },
+        width = 840,
+            height = 600;
+        var kx = function (d) {
+            return d.x - 30;
+        };
+        var ky = function (d) {
+            return d.y - 10;
+        };
+        //thie place the text x axis adjust this to center align the text
+        var tx = function (d) {
+            return d.x - 28;
+        };
+        //thie place the text y axis adjust this to center align the text
+        var ty = function (d) {
+            return d.y + 5;
+        };
+        //make an SVG
+        var svg = d3.select("#graph").append("svg")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+            .append("g")
+            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+        var persoon = function(){}
+       
+        var personen = {
+            name: "",
+            id: 0,
+            hidden: true,
+            children: [{
+                name: "",
+                id: 1,
+                hidden: false,
+                no_parent: true,
+                children: []
+            }]
+        }
+
+
+        function testpush(o, idd, tt, tid) {
+            for (var a = 0; a < o.children.length; a++) {
+                if (o.children[a].id == idd) {
+                    o.children[a].children.push({
+                        name: tt,
+                        id: tid,
+                        children: []
+                    });
+                }
+                else {
+                    testpush(o.children[a], idd, tt, tid);
+                }
+            }
+        };
+
+
+
+
+        //My JSON note the
+        //no_parent: true this ensures that the node will not be linked to its parent
+        //hidden: true ensures that the nodes is not visible.
+        var root = {
+            name: "",
+            id: 0,
+            hidden: true,
+            children: [{
+                name: "",
+                id: 1,
+                hidden: false,
+                
+                children: []
+            }]
+        };
+
+
+        var model = @Html.Raw(Json.Encode((Model.personen)));
+        var index = 1;
+        for (i = 0;i<model.length;i++){
+            for(j = 0;j<model.length;j++){
+                if(parseInt(model[j].kekuleId)== 1){
+                    personen.name =  model[j].voornaam;
+                } else if(parseInt(model[j].kekuleId) == index){
+                    var indexP;
+                    if(index%2 == 0){
+                        indexP = index/2;
+                    }else if(index%2 == 1){
+                        indexP = (index - 1)/2
+                    }
+                    testpush(root,indexP,model[j].voornaam,parseInt(model[j].kekuleId))
+                    
+                }
+            }
+            index++;
+            console.log(index)
+            
+        }
+
+        console.log(personen)
+
+        /* vader en moeder aan persoon toevoegen
+        ,children: [{
+            name: "berteratus",
+            id: 6,
+            no_parent: true
+        }, {
+            name: "",
+            id: 98,
+            hidden: true
+
+        }, {
+            name: "gino",
+            id: 7,
+            no_parent: true
+        }]
+        */
+        var allNodes = flatten(root);
+        //This maps the siblings together mapping uses the ID using the blue line
+        var siblings = [];
+        /* relatie tevoegen
+        ,{
+            source: {
+                id: 2
+            },
+            target: {
+                id: 3
+            }
+        }
+        */
+        // Compute the layout.
+        var tree = d3.layout.tree().size([width, height]),
+            nodes = tree.nodes(root),
+            links = tree.links(nodes);
+
+        // Create the link lines.
+        svg.selectAll(".link")
+            .data(links)
+            .enter().append("path")
+            .attr("class", "link")
+            .attr("d", elbow);
+
+
+        var nodes = svg.selectAll(".node")
+            .data(nodes)
+            .enter();
+
+        //First draw sibling line with blue line
+        svg.selectAll(".sibling")
+            .data(siblings)
+            .enter().append("path")
+            .attr("class", "sibling")
+            .attr("d", sblingLine);
+
+        // Create the node rectangles.
+        nodes.append("rect")
+            .attr("class", "node")
+            .attr("height", 20)
+            .attr("width", 60)
+            .attr("id", function (d) {
+                return d.id;
+            })
+            .attr("display", function (d) {
+                if (d.hidden) {
+                    return "none"
+                } else {
+                    return ""
+                };
+            })
+            .attr("x", kx)
+            .attr("y", ky);
+        // Create the node text label.
+        nodes.append("text")
+            .text(function (d) {
+                return d.name;
+            })
+            .attr("x", tx)
+            .attr("y", ty);
+
+        console.log(tx)
+        /**
+        This defines teh line between siblings.
+        **/
+        function sblingLine(d, i) {
+            //start point
+            var start = allNodes.filter(function (v) {
+                if (d.source.id == v.id) {
+                    return true;
+                } else {
+                    return false;
+                }
+            });
+            //end point
+            var end = allNodes.filter(function (v) {
+                if (d.target.id == v.id) {
+                    return true;
+                } else {
+                    return false;
+                }
+            });
+            //define teh start coordinate and end co-ordinate
+            var linedata = [{
+                x: start[0].x,
+                y: start[0].y
+            }, {
+                x: end[0].x,
+                y: end[0].y
+            }];
+            var fun = d3.svg.line().x(function (d) {
+                return d.x;
+            }).y(function (d) {
+                return d.y;
+            }).interpolate("linear");
+            return fun(linedata);
+        }
+
+        /*To make the nodes in flat mode.
+        This gets all teh nodes in same level*/
+        function flatten(root) {
+            var n = [],
+                i = 0;
+
+            function recurse(node) {
+                if (node.children) node.children.forEach(recurse);
+                if (!node.id) node.id = ++i;
+                n.push(node);
+            }
+            recurse(root);
+            return n;
+        }
+        /**
+        This draws the lines between nodes.
+        **/
+        function elbow(d, i) {
+            if (d.target.no_parent) {
+                return "M0,0L0,0";
+            }
+            var diff = d.source.y - d.target.y;
+            //0.40 defines the point from where you need the line to break out change is as per your choice.
+            var ny = d.target.y + diff * 0.40;
+
+            linedata = [{
+                x: d.target.x,
+                y: d.target.y
+            }, {
+                x: d.target.x,
+                y: ny
+            }, {
+                x: d.source.x,
+                y: d.source.y
+            }]
+
+            var fun = d3.svg.line().x(function (d) {
+                return d.x;
+            }).y(function (d) {
+                return d.y;
+            }).interpolate("step-after");
+            return fun(linedata);
+        }
+    }//]]>
+</script>
+<link rel="stylesheet" href="~/Content/visueleStamboomStyle.css" />
+<h2 class="col-sm-1 col-lg-offset-4">@Model.stamboom.familienaam</h2>
+<div id="graph">
+
+</div>
+
+

@@ -103,5 +103,39 @@ namespace AbInitio.Web.Controllers
             return View();
         }
 
+        [HttpGet]
+        public ActionResult visueleStamboom(int stamboomId)
+        {
+            StamboomViewModel viewModel = new StamboomViewModel();
+            try
+            {
+                int accountId;
+                viewModel.stamboom = StamboomDAL.GetStamboom(stamboomId);
+                if (Session["account"] != null)
+                {
+                    accountId = (int)Session["account"];
+                }
+                else
+                {
+                    accountId = 0;
+                }
+                viewModel.personen = stamboomDAL.getPersonenInStamboom(stamboomId, accountId);
+
+                return View(viewModel);
+            }
+            catch (Exception ex)
+            {
+                if (ex is System.Data.SqlClient.SqlException)
+                {
+                    return RedirectToAction("Error", "Home", new { errorMessage = ex.Message });
+                }
+                else
+                {
+                    throw ex;
+                }
+
+            }
+        }
+
     }
 }
