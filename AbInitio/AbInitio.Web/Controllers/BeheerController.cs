@@ -96,9 +96,9 @@ namespace AbInitio.Web.Controllers
 
 
         [HttpGet]
-        public ActionResult MatchPersoon(int? persoonid, char? geslacht, string voornaam = null, string vvg = null, string achternaam = null)
+        public ActionResult MatchPersoon(int? persoonid)
         {
-            int accountid = 1;
+            //int accountid = 1;
             int stamboomid = 1;
 
             StamboomDAL dal = new StamboomDAL();
@@ -111,6 +111,7 @@ namespace AbInitio.Web.Controllers
                 if (matching.S_Persoon != null)
                 {
                     matching.StartMatch();
+
                     viewmodel.Persoon = matching.S_Persoon;
                     if (matching.list_personen.Count > 0)
                     {
@@ -174,50 +175,40 @@ namespace AbInitio.Web.Controllers
             string errors = string.Empty;
             if (ModelState.IsValid)
             {
-
                 RelatieDAL.WijzigRelatie(model, out errors);
-
                 if (string.IsNullOrEmpty(errors))
                 {
                     return RedirectToAction("PersoonDetails", "Beheer", new { persoonid = model.persoonid1 });
                 }
-
             }
-            else
-            {
-                model.relatietypeid = model.relatieid;
-                model.persoon1 = PersoonDal.GetPersoon(model.persoonid1);
-                model.persoon2 = PersoonDal.GetPersoon(model.persoonid2);
-                model.persoonid1 = model.persoon1.persoonid;
-                model.persoonid2 = model.persoon2.persoonid;
-                model.Relatietypes = RelatieDAL.RelatieTypes(model.relatietypeid);
-                ModelState.AddModelError("", errors);
-            }
-            ViewBag.Error = errors;
-            return View("Error");
-
-            
-
+            model.relatietypeid = model.relatieid;
+            model.persoon1 = PersoonDal.GetPersoon(model.persoonid1);
+            model.persoon2 = PersoonDal.GetPersoon(model.persoonid2);
+            model.persoonid1 = model.persoon1.persoonid;
+            model.persoonid2 = model.persoon2.persoonid;
+            model.Relatietypes = RelatieDAL.RelatieTypes(model.relatietypeid);
+            ModelState.AddModelError("", errors);            
+            return View(model);           
         }
 
         [HttpGet]
         public ActionResult ToevoegenRelatie(int stamboomid)
         {
             RelatieModel viewmodel = new RelatieModel();
-            viewmodel.Relatietypes = RelatieDAL.RelatieTypes(0);
             viewmodel.Personen = PersoonDal.PersonenLijst(stamboomid);
-            viewmodel.StamboomdID = stamboomid;
-            return View(viewmodel);
+
+            if (viewmodel.Personen.Count > 0)
+            {
+                viewmodel.Relatietypes = RelatieDAL.RelatieTypes(0);
+                viewmodel.StamboomdID = stamboomid;
+                return View(viewmodel);
+            } return HttpNotFound();      
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult ToevoegenRelatie(RelatieModel viewmodel)
         {
-            viewmodel.Relatietypes = RelatieDAL.RelatieTypes(0);
-            viewmodel.Personen = PersoonDal.PersonenLijst(viewmodel.StamboomdID);
-            viewmodel.StamboomdID = viewmodel.StamboomdID;
-
             if (ModelState.IsValid)
             {
                 string error = string.Empty;
@@ -231,7 +222,10 @@ namespace AbInitio.Web.Controllers
                     ModelState.AddModelError("", error);
                 }
             }
-            return View(viewmodel);
+            viewmodel.Relatietypes = RelatieDAL.RelatieTypes(0);
+            viewmodel.Personen = PersoonDal.PersonenLijst(viewmodel.StamboomdID);
+            viewmodel.StamboomdID = viewmodel.StamboomdID;
+            return View(viewmodel);         
         }
         
 
@@ -249,7 +243,6 @@ namespace AbInitio.Web.Controllers
                 viewmodel.persoon2 = PersoonDal.GetPersoon(viewmodel.Relatie.persoonid2);
                 viewmodel.AvrTypes = RelatieDAL.AvrTypes();
                 return View(viewmodel);
-
             } return HttpNotFound("Relatie niet gevonden");
         }
 
@@ -260,8 +253,6 @@ namespace AbInitio.Web.Controllers
             if (ModelState.IsValid)
             {
                 string error = string.Empty;
-
-
 
                 if (!string.IsNullOrEmpty(viewmodel.Van))
                 {
@@ -322,7 +313,7 @@ namespace AbInitio.Web.Controllers
                 if (ModelState.IsValid)
                 {
                     
-                    if (!string.IsNullOrEmpty(viewmodel.Van))
+                    if (!string.IsNullOrEmpty(viewmodel.Van) && !string.IsNullOrEmpty(viewmodel.Precisie))
                     {
                         viewmodel.VanDatum = Convert.ToDateTime(string.Format("{0:dd-MM-yyyy}", viewmodel.Van));
                     }

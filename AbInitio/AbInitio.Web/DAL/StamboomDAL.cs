@@ -80,6 +80,7 @@ namespace AbInitio.Web.DAL
                 {
                     cmd.Connection = con;
                     cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(new SqlParameter("@persoonid", persoonid));
                     using (SqlDataAdapter sda = new SqlDataAdapter(cmd))
                     {
                         sda.Fill(dt);

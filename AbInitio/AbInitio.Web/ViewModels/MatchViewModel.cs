@@ -17,7 +17,7 @@ namespace AbInitio.Web.ViewModels
 
         public MatchingScore matching { get; set; }
         public PersoonPartial Persoon { get; set; }
-
+        
         public bool FoundMatch { get; set; }
 
     }
