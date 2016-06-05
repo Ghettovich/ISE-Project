@@ -13,7 +13,7 @@ namespace AbInitio.Web.DbContexts
         public string FamilieNaam { get; set; }
         public int stamboomid { get; set; }
         public int id { get; set; }
-        public int kekuleid { get; set; }
+        public string kekuleid { get; set; }
         public string RelatieType { get; set; }
         public int RelatieID { get; set; }
         public string KekuleID { get; set; }

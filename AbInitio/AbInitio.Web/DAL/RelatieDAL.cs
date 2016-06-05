@@ -18,17 +18,16 @@ namespace AbInitio.Web.DAL
         private static string SP_RelatiesTotPersoon = "SP_RelatiesTotPersoon";
         private static string SP_PersonenInRelatie = "SP_PersonenInRelatie";
         private static string SP_AanvullendeRelatieInfo = "SP_AanvullendeRelatieInfo";
+        private static string SP_VaderEnMoeder = "SP_VaderEnMoeder";
 
         private static string SP_ToevoegenAvr = "SP_ToevoegenAvr";
         private static string SP_VerwijderAvr = "SP_VerwijderAvr";
         private static string SP_GeefAvr = "SP_GeefAvr";
         private static string SP_WijzigAanvullendeRelatie = "SP_WijzigAanvullendeRelatie";
 
-
         private static string SP_VerwijderRelatie = "SP_VerwijderRelatie";
         private static string SP_WijzigRelatie = "SP_WijzigRelatie";
         private static string SP_ToevoegenRelatie = "SP_ToevoegenRelatie";
-
 
         //SelectLists
         public static List<SelectListItem> AvrTypes()
@@ -109,7 +108,6 @@ namespace AbInitio.Web.DAL
             {
                 throw;
             }
-
         }
         
         //Lists
@@ -204,6 +202,8 @@ namespace AbInitio.Web.DAL
                 throw;
             }
         }
+        
+        //Partials
         public static RelatiePartial GetRelatieInfo(int relatieid)
         {
             try
@@ -271,7 +271,6 @@ namespace AbInitio.Web.DAL
                 throw;
             }
         }
-
         public static AVRelatiePartial GetAvrInfo(int avrid, int? relatieid)
         {
             try
@@ -318,6 +317,55 @@ namespace AbInitio.Web.DAL
         }
 
         //Voids
+        public static void VaderEnMoeder(int persoonid, out int vaderID, out int moederID)
+        {
+            using (DataConfig dbdc = new DataConfig())
+            {
+                using (IDbCommand cmd = dbdc.CreateCommand())
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.CommandText = SP_VaderEnMoeder;
+
+                    IDataParameter persoonid_dp = cmd.CreateParameter();
+                    persoonid_dp.Direction = ParameterDirection.Input;
+                    persoonid_dp.ParameterName = "@persoonid";
+                    persoonid_dp.Value = persoonid;
+                    cmd.Parameters.Add(persoonid_dp);
+
+                    IDataParameter vaderid_dp = cmd.CreateParameter();
+                    vaderid_dp.Direction = ParameterDirection.Output;
+                    vaderid_dp.ParameterName = "@persoonidVader";
+                    vaderid_dp.DbType = DbType.Int32;
+                    cmd.Parameters.Add(vaderid_dp);
+
+                    IDataParameter moederid_dp = cmd.CreateParameter();
+                    moederid_dp.Direction = ParameterDirection.Output;
+                    moederid_dp.ParameterName = "@persoonidMoeder";
+                    moederid_dp.DbType = DbType.Int32;
+                    cmd.Parameters.Add(moederid_dp);
+
+                    dbdc.Open();
+                    cmd.ExecuteNonQuery();
+
+                    if (vaderid_dp.Value == DBNull.Value)
+                    {
+                        vaderID = 0;
+                    }
+                    else
+                    {
+                        vaderID = (int)vaderid_dp.Value;
+                    }
+                    if (moederid_dp.Value == DBNull.Value)
+                    {
+                        moederID = 0;
+                    }
+                    else
+                    {
+                        moederID = (int)moederid_dp.Value;
+                    }
+                }
+            }
+        }
         public static void VerwijderRelatie(int relatieid, out string error)
         {
             try
@@ -488,7 +536,7 @@ namespace AbInitio.Web.DAL
                         IDataParameter pm_GewijzigdOp = cmd.CreateParameter();
                         pm_GewijzigdOp.Direction = ParameterDirection.Input;
                         pm_GewijzigdOp.ParameterName = "@gewijzigdOp";
-                        pm_GewijzigdOp.Value = model.GewijzigdOp;
+                        pm_GewijzigdOp.Value = model.GewijzigdOp.ToString("yyyy-MM-dd HH:mm:ss");
                         cmd.Parameters.Add(pm_GewijzigdOp);
 
                         cmd.ExecuteNonQuery();

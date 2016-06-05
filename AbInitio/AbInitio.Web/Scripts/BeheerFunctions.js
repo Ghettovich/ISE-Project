@@ -1,5 +1,37 @@
 ﻿$(document).ready(function () {
 
+    
+
+    $("input[name='persoonid']").change(function () {
+        $("#kekuleid").attr("value", $(this).parent("td.kekulecell").attr("data-kekulenr"));
+    });
+
+    $("#voegToe").click(function () {
+
+        if ($("input[name='persoonid']:checked").val()) {
+
+            var kekuleid = $("#kekuleid").attr("value");
+            var stamboomid = $("input[name='stamboomid']").val();
+            var form = $("#myForm");
+            form.attr("action", "/Beheer/ToevoegenRelatie?" + "stamboomid=" + stamboomid + "?persoonid=" + persoonid + "?kekuleid=" + kekuleid);
+            form.submit();
+        }
+        else {
+            alert("selecteer een persoon.");
+        }
+    });
+
+    $(".relatietypes").change(function () {
+
+        if ($(this).val() == 1) {
+            $("#nieuwkekuleid").attr("value", ($("#kekuleid").val() * 2));
+        }
+        else if ($(this).val() == 2) {
+            $("#nieuwkekuleid").attr("value", (($("#kekuleid").val() * 2)+ 1));
+        }
+
+    });
+
 });
 
 $(document).on("click", ".details", function (e) {

@@ -1,0 +1,379 @@
+﻿@*@model AbInitio.Web.Models.PersoonModel
+
+@{
+    ViewBag.Title = "OuderToevoegen";
+}
+
+
+@if (Model.Vader)
+{
+    <div>
+        <h4>Vader</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                Voornaam
+            </dt>
+
+            <dd>
+                @Model.VaderPersoon.voornaam
+            </dd>
+
+            <dt>
+                Overige namen
+            </dt>
+
+            <dd>
+                @Model.VaderPersoon.overigenamen
+            </dd>
+
+            <dt>
+                Tussenvoegsel
+            </dt>
+
+            <dd>
+                @Model.VaderPersoon.tussenvoegsel
+            </dd>
+
+            <dt>
+                Achternaam
+            </dt>
+
+            <dd>
+                @Model.VaderPersoon.achternaam
+            </dd>
+
+            <dt>
+                Achtervoegsel
+            </dt>
+
+            <dd>
+                @Model.VaderPersoon.achtervoegsel
+            </dd>
+
+            <dt>
+                Geboortenaam
+            </dt>
+            <dd>
+                @Model.VaderPersoon.geboortenaam
+            </dd>
+
+            <dt>
+                Geslacht
+            </dt>
+
+            <dd>
+                @(Model.VaderPersoon.GeefGeslacht)
+            </dd>
+
+            <dt>
+                Status
+            </dt>
+
+            <dd>
+                @Model.VaderPersoon.geefStatus
+            </dd>
+
+            <dt>
+                Geboortedatum
+            </dt>
+
+            <dd>
+                @Model.VaderPersoon.geefDatum
+            </dd>
+        </dl>
+    </div>
+}
+else
+{
+    <h2>Vader</h2>
+    <form role="form" action="@Url.Action("OuderToevoegen", "Stamboom")" method="post" id="vaderform">
+        <h3>Vader persoon</h3>
+        @Html.AntiForgeryToken()
+        <div class="form-horizontal">
+            <h4>Persoon</h4>
+            <hr />
+            <input type="hidden" id="stamboomid" name="stamboomid" value="@Model.stamboomid" />
+            <input type="hidden" id="vaderkekule" name="vaderkekule" value="@Model.vaderkekule" />
+            <input type="hidden" id="relatietypeid" name="relatietypeid" value="1" />
+            <div class="form-group">
+                @Html.Label("Voornaam", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    <input type="text" class="form-control" name="voornaam" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.Label("Tussenvoegsel", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    <input type="text" class="form-control" name="tussenvoegsel" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.Label("Achternaam", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    <input type="text" class="form-control" name="achternaam" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.Label("Achtervoegsel", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    <input type="text" class="form-control" name="achtervoegsel" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.Label("Geboortenaam", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    <input type="text" class="form-control" name="geboortenaam" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.Label("Overige namen", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    <input type="text" class="form-control" name="overigenamen" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.Label("Geslacht", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownList("geslacht", Model.geslachtOpties, "", new { @class = "form-control" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.Label("Status", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownList("status", Model.statussen, "", new { @class = "form-control" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.Label("Geboorte precisie", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10 precisie">
+                    @Html.DropDownList("geboortePrecisie", Model.geboortePrecisies, "", new { @class = "form-control" })
+                </div>
+            </div>
+
+            <div class="form-group geboortedatum" style="display:none">
+                @Html.Label("Geboortedatum", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    <input type="text" class="form-control" id="geboortedatumText" name="geboortedatum" value="@Model.geboortedatum" />
+                </div>
+            </div>
+
+            <div class="form-group geboortedatum2" style="display:none">
+                @Html.Label("geboortedatum2", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    <input type="text" class="form-control" id="geboortedatum2Text" name="geboortedatum2" value="@Model.geboortedatum2" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-2">
+                    <button type="button" class="btn btn-default" onclick="location.href = '../../Beheer/Personen'">Aanpassen hrf</button>
+                </div>
+                <div class="col-md-2">
+                    <input type="submit" value="Opslaan" class="btn btn-default" />
+                </div>
+            </div>
+        </div>
+    </form>
+}
+
+@if (Model.Moeder)
+{
+    <div>
+        <h4>Moeder details</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                Voornaam
+            </dt>
+
+            <dd>
+                @Model.MoederPersoon.voornaam
+            </dd>
+
+            <dt>
+                Overige namen
+            </dt>
+
+            <dd>
+                @Model.MoederPersoon.overigenamen
+            </dd>
+
+            <dt>
+                Tussenvoegsel
+            </dt>
+
+            <dd>
+                @Model.MoederPersoon.tussenvoegsel
+            </dd>
+
+            <dt>
+                Achternaam
+            </dt>
+
+            <dd>
+                @Model.MoederPersoon.achternaam
+            </dd>
+
+            <dt>
+                Achtervoegsel
+            </dt>
+
+            <dd>
+                @Model.MoederPersoon.achtervoegsel
+            </dd>
+
+            <dt>
+                Geboortenaam
+            </dt>
+            <dd>
+                @Model.MoederPersoon.geboortenaam
+            </dd>
+
+            <dt>
+                Geslacht
+            </dt>
+
+            <dd>
+                @(Model.MoederPersoon.GeefGeslacht)
+            </dd>
+
+            <dt>
+                Status
+            </dt>
+
+            <dd>
+                @Model.MoederPersoon.geefStatus
+            </dd>
+
+            <dt>
+                Geboortedatum
+            </dt>
+
+            <dd>
+                @Model.MoederPersoon.geefDatum
+            </dd>
+        </dl>
+    </div>
+
+
+}
+else
+{
+    <h3>Moeder persoon toevoegen</h3>
+    <form role="form" action="@Url.Action("OuderToevoegen", "Stamboom")" id="moederform" method="post">
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+            <h4>Persoon</h4>
+            <hr />
+            <input type="hidden" id="stamboomid" name="stamboomid" value="@Model.stamboomid" />
+            <input type="hidden" id="moederkekule" name="moederkekule" value="@Model.moederkekule" />
+            <input type="hidden" id="relatietypeid" name="relatietypeid" value="2" />
+            <div class="form-group">
+                @Html.Label("Voornaam", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    <input type="text" class="form-control" name="voornaam" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.Label("Tussenvoegsel", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    <input type="text" class="form-control" name="tussenvoegsel" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.Label("Achternaam", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    <input type="text" class="form-control" name="achternaam" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.Label("Achtervoegsel", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    <input type="text" class="form-control" name="achtervoegsel" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.Label("Geboortenaam", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    <input type="text" class="form-control" name="geboortenaam" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.Label("Overige namen", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    <input type="text" class="form-control" name="overigenamen" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.Label("Geslacht", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownList("geslacht", Model.geslachtOpties, "", new { @class = "form-control" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.Label("Status", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownList("status", Model.statussen, "", new { @class = "form-control" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.Label("Geboorte precisie", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10 precisie">
+                    @Html.DropDownList("geboortePrecisie", Model.geboortePrecisies, "", new { @class = "form-control" })
+                </div>
+            </div>
+
+            <div class="form-group geboortedatum" style="display:none">
+                @Html.Label("Geboortedatum", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    <input type="text" class="form-control" id="geboortedatumText" name="geboortedatum" value="@Model.geboortedatum" />
+                </div>
+            </div>
+
+            <div class="form-group geboortedatum2" style="display:none">
+                @Html.Label("geboortedatum2", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    <input type="text" class="form-control" id="geboortedatum2Text" name="geboortedatum2" value="@Model.geboortedatum2" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-2">
+                    <button type="button" class="btn btn-default" onclick="location.href = '../../Beheer/Personen'">Aanpassen hrf</button>
+                </div>
+                <div class="col-md-2">
+                    <input type="submit" value="Opslaan" class="btn btn-default" />
+                </div>
+            </div>
+        </div>
+    </form>
+}
+@if (Model.Vader && Model.Moeder)
+{
+    <p>Beide ouders zijn bekend</p>
+}
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}*@

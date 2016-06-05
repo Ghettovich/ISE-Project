@@ -120,20 +120,6 @@ namespace AbInitio.Web.Controllers
             }
         }
 
-
-        [HttpGet]
-        public ActionResult NieuwPersoon()
-        {
-            NieuwPersoonModel model = new NieuwPersoonModel();
-            return View(model);
-        }
-
-        [HttpPost]
-        public ActionResult NieuwPersoon(NieuwPersoonModel model)
-        {
-            return View();
-        }
-
         [HttpGet]
         public ActionResult AfschermenStamboom(int stamboomId)
         {
@@ -147,8 +133,57 @@ namespace AbInitio.Web.Controllers
             return Redirect("OverzichtStambomen");
         }
 
+        [HttpGet]
+        public ActionResult OuderToevoegen (int persoonid, int kekuleid, int stamboomid)
+        {
+            int vaderid, moederid;
+            PersoonModel viewmodel = new PersoonModel();
+            RelatieDAL.VaderEnMoeder(persoonid, out vaderid, out moederid);
+
+            //if (vaderid > 0)
+            //{
+            //    viewmodel.Vader = true;
+            //    viewmodel.VaderPersoon = PersoonDal.GetPersoon(vaderid);
+            //}
+            //else
+            //{                
+            //    viewmodel.Vader = false;
+            //}
+            //if (moederid > 0)
+            //{
+            //    viewmodel.Moeder = true;
+            //    viewmodel.MoederPersoon = PersoonDal.GetPersoon(moederid);
+            //}
+            //else
+            //{
+            //    viewmodel.Moeder = false;
+            //}
+            //if (!viewmodel.Vader || !viewmodel.Moeder)
+            //{
+                
+            //    viewmodel.BerekenKekule(kekuleid);
+            //    viewmodel.geslachtOpties = PersoonDal.geslachtOptiesOphalen();
+            //    viewmodel.statussen = PersoonDal.statussen();
+            //    viewmodel.geboortePrecisies = PersoonDal.geboortePrecisies();
+            //}
+            return View(viewmodel);
+        }
+
+        [HttpPost]        
+        public ActionResult OuderToevoegen(int? vaderkekule, int? moederkekule, PersoonModel model)
+        {
+            if (vaderkekule.HasValue)
+            {
+
+            }
+            else if (moederkekule.HasValue)
+            {
+
+            }
 
 
+            return View();
+        }
 
         [HttpGet]
         public ActionResult WijzigStamboom(int stamboomid)

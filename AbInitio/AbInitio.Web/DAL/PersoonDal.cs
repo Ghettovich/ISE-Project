@@ -306,7 +306,7 @@ namespace AbInitio.Web.DAL
                                     geboortedatum = (results.GetValue(7) != null ? results.GetValue(7).ToString().Substring(0, 9) : string.Empty),
                                     geboorteprecisie = (results.GetValue(8) != null ? results.GetValue(8).ToString() : string.Empty),
                                     geboortedatum2 = (results.GetValue(9) != null ? results.GetValue(9).ToString() : string.Empty),
-                                    kekuleid = (int)results.GetValue(10)
+                                    kekuleid = (results.GetValue(10) != null ? results.GetValue(10).ToString() : string.Empty)
 
                                 });
                             }
@@ -361,7 +361,7 @@ namespace AbInitio.Web.DAL
                                     geboortedatum = (results.GetValue(7) != null ? results.GetValue(7).ToString().Substring(0, 9) : string.Empty),
                                     geboorteprecisie = (results.GetValue(8) != null ? results.GetValue(8).ToString() : string.Empty),
                                     geboortedatum2 = (results.GetValue(9) != null ? results.GetValue(9).ToString() : string.Empty),
-                                    kekuleid = (int)results.GetValue(10)
+                                    kekuleid = (results.GetValue(10) != null ? results.GetValue(10).ToString() : string.Empty)
 
                                 });
                             }

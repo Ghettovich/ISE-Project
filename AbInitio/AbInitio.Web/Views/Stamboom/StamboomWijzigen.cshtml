@@ -52,8 +52,10 @@
         }
     </div>
 
-    <form id="myForm">
+    <form id="myForm" action="" method="get">
         <input type="hidden" id="stamboomid" name="stamboomid" value="@Model.stamboom.stamboomid" />
+        <input type="hidden" id="kekuleid" name="kekuleid" value="" />
+
         <table class="table table-striped">
             <tr>
                 <th>
@@ -85,8 +87,8 @@
                 foreach (var item in Model.personen)
                 {
                     <tr>
-                        <td>
-                            <input type="radio" id="persoonid1" name="persoonid1" value="@item.persoonId"/>
+                        <td data-kekulenr="@item.kekuleId" class="kekulecell">
+                            <input type="radio" id="persoonid" name="persoonid" value="@item.persoonId" />
                         </td>
                         <td>
                             @item.kekuleId
@@ -133,7 +135,7 @@
     var afscherm = '@Model.stamboom.afgeschermd';
 
     $(document).ready(function () {
-
+        
         $("#verwijder").click(function () {
             var form = $("#myForm");
             var radioValue = $("input[name='persoonid']:checked").val();
@@ -148,15 +150,6 @@
             form.submit();
         });
 
-        $("#voegToe").click(function () {
-            var radioValue = $("input[name='persoonid']:checked").val();
-            var stamboomid = $("input[name='stamboomid']").val();
-            var form = $("#myForm");
-            form.attr("action", "@Url.Action("ToevoegenRelatie", "Beheer",new {stamboomid = 0, persoonid1 = 1 })");
-            form.replace(1,radioValue);
-            form.submit();
-        });
-
         $("#wijzig").click(function () {
             $(".wijzigForm").fadeIn('fast');
             $(".overzichtHeader").fadeOut('fast');
@@ -164,15 +157,17 @@
             $("#stamboomid").attr('value', stamboomid);
 
         });
+        if (afscherm == 'True') {
+            $('#afschermIcon').removeClass('glyphicon glyphicon-lock').addClass('glyphicon glyphicon-ok');
+        }
+        else if (afscherm == 'False')
+        {
+            $('#afschermIcon').removeClass('glyphicon glyphicon-ok').addClass('glyphicon glyphicon-lock');
+        }
+    });
 
-                if (afscherm == 'True') {
-                    $('#afschermIcon').removeClass('glyphicon glyphicon-lock').addClass('glyphicon glyphicon-ok');
-                }
-                else if (afscherm == 'False')
-                {
-                    $('#afschermIcon').removeClass('glyphicon glyphicon-ok').addClass('glyphicon glyphicon-lock');
-                }
-            });
+
+
 
 </script>
 
