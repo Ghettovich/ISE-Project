@@ -19,13 +19,14 @@ namespace AbInitio.Web.DAL
         private static string SP_PersonenInRelatie = "SP_PersonenInRelatie";
         private static string SP_AanvullendeRelatieInfo = "SP_AanvullendeRelatieInfo";
         private static string SP_VaderEnMoeder = "SP_VaderEnMoeder";
+        private static string SP_RelatieVaderEnMoeder = "SP_RelatiesVaderMoederTotPersoon";
 
         private static string SP_ToevoegenAvr = "SP_ToevoegenAvr";
         private static string SP_VerwijderAvr = "SP_VerwijderAvr";
         private static string SP_GeefAvr = "SP_GeefAvr";
         private static string SP_WijzigAanvullendeRelatie = "SP_WijzigAanvullendeRelatie";
 
-        private static string SP_VerwijderRelatie = "SP_VerwijderRelatie";
+        private static string SP_VerwijderRelatie = "spd_verwijderPersoonInStamboom";
         private static string SP_WijzigRelatie = "SP_WijzigRelatie";
         private static string SP_ToevoegenRelatie = "SP_ToevoegenRelatie";
 
@@ -158,6 +159,58 @@ namespace AbInitio.Web.DAL
                 throw;
             }
         }
+
+        //Lists
+        public static List<PersoonPartial> RelatiesMoederEnVaderTotPersoon(int persoonid)
+        {
+            try
+            {
+                List<PersoonPartial> persoonrelaties = new List<PersoonPartial>();
+
+                using (DataConfig dbdc = new DataConfig())
+                {
+                    dbdc.Open();
+                    using (IDbCommand cmd = dbdc.CreateCommand())
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.CommandText = SP_RelatieVaderEnMoeder;
+
+                        IDataParameter dp_persoonid1;
+                        dp_persoonid1 = cmd.CreateParameter();
+                        dp_persoonid1.ParameterName = "@persoonid1";
+                        dp_persoonid1.Value = persoonid;
+                        cmd.Parameters.Add(dp_persoonid1);
+
+                        using (IDataReader dr = dbdc.CreateSqlReader())
+                        {
+                            object[] results = new object[dr.FieldCount];
+
+                            while (dr.Read())
+                            {
+                                dr.GetValues(results);
+                                persoonrelaties.Add(new PersoonPartial
+                                {
+                                    persoonid = (int)results.GetValue(0),
+                                    voornaam = (results.GetValue(1) != null ? results.GetValue(1).ToString() : string.Empty),
+                                    tussenvoegsel = (results.GetValue(2) != null ? results.GetValue(2).ToString() : string.Empty),
+                                    achternaam = (results.GetValue(3) != null ? results.GetValue(3).ToString() : string.Empty),
+                                    geboortedatum = (results.GetValue(4) != null ? results.GetValue(4).ToString() : string.Empty),
+                                    RelatieID = (int)results.GetValue(5),
+                                    RelatieType = results.GetValue(6).ToString()
+                                });
+                            }
+                        }
+                    }
+                }
+                return persoonrelaties;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+
         public static List<AVRelatiePartial> AanvullendeRelatieInfo(int relatieid)
         {
             try
@@ -366,7 +419,7 @@ namespace AbInitio.Web.DAL
                 }
             }
         }
-        public static void VerwijderRelatie(int relatieid, out string error)
+        public static void VerwijderRelatie(int persoonid,int stamboomid, out string error)
         {
             try
             {
@@ -378,12 +431,24 @@ namespace AbInitio.Web.DAL
                     {
                         cmd.CommandText = SP_VerwijderRelatie;
                         cmd.CommandType = CommandType.StoredProcedure;
+
                         IDataParameter pm = cmd.CreateParameter();
                         pm.Direction = ParameterDirection.Input;
-                        pm.ParameterName = "@relatieid";
-                        pm.Value = relatieid;
+                        pm.ParameterName = "@persoonId";
+                        pm.Value = persoonid;
                         cmd.Parameters.Add(pm);
-                        cmd.ExecuteReader();
+
+                        pm.Direction = ParameterDirection.Input;
+                        pm.ParameterName = "@stamboomId";
+                        pm.Value = stamboomid;
+                        cmd.Parameters.Add(pm);
+
+                        pm.Direction = ParameterDirection.Input;
+                        pm.ParameterName = "@persoonVerwijderen";
+                        pm.Value = 0;
+                        cmd.Parameters.Add(pm);
+
+                        cmd.ExecuteNonQuery();
                     }
                 }
             }

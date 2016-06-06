@@ -229,9 +229,7 @@ namespace AbInitio.Web.Controllers
                     throw ex;
                 }
             }
-            Session["familienaam"] = familienaam;
-            return Redirect("WijzigStamboom?stamboomid=" + stamboomid);
-        }
+                 }
 
         [HttpGet]
         public ActionResult visueleStamboom(int stamboomId)

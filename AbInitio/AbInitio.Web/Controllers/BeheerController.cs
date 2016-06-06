@@ -400,20 +400,36 @@ namespace AbInitio.Web.Controllers
             return View(viewmodel);
         }
 
+        [HttpGet]
+        public ActionResult VerwijderRelatie(int stamboomid,int persoonid)
+        {
+            BeheerViewModel viewmodel = new BeheerViewModel();
+            viewmodel.PersoonLijst = RelatieDAL.RelatiesMoederEnVaderTotPersoon(persoonid);
+
+            if (viewmodel.PersoonLijst != null)
+            {
+                viewmodel.stamboomid = stamboomid;
+                viewmodel.Persoon = PersoonDal.GetPersoon(persoonid);
+                viewmodel.Vader = viewmodel.PersoonLijst[0];
+                viewmodel.Moeder = viewmodel.PersoonLijst[1];
+
+                return View(viewmodel);
+            }
+            return HttpNotFound();
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult VerwijderRelatie()
         {
             NameValueCollection nvc = Request.Form;
-            int persoonid = Int32.Parse(nvc["persoonid"]);
-            int relatieid = Int32.Parse(nvc["relatieid"]);
+            int persoonid = Int32.Parse(nvc["persoon2"]);
+            int stamboomid = Int32.Parse(nvc["StamboomdID"]);
 
             string error;
-            RelatieDAL.VerwijderRelatie(relatieid, out error);
-            if (string.IsNullOrEmpty(error))
-            {
-                return RedirectToAction("PersoonDetails", new { persoonid = persoonid });
-            } return View("Error", error);
+            RelatieDAL.VerwijderRelatie(persoonid,stamboomid, out error);
+
+                return Redirect("../Stamboom/OverzichtStambomen");
         }
 
         [HttpPost]
