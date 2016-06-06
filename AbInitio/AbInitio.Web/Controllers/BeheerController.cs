@@ -96,7 +96,7 @@ namespace AbInitio.Web.Controllers
         public ActionResult MatchPersoon(int? persoonid)
         {
             //int accountid = 1;
-            int stamboomid = 1;
+            int stamboomid = (int)Session["stamboomid"];
 
             StamboomDAL dal = new StamboomDAL();
             MatchViewModel viewmodel = new MatchViewModel();
