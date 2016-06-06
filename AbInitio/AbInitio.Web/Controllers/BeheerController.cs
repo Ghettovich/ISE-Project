@@ -437,14 +437,14 @@ namespace AbInitio.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult VerwijderRelatie(int relatieid)
+        public ActionResult VerwijderRelatie()
         {
             NameValueCollection nvc = Request.Form;
             int persoonid = Int32.Parse(nvc["persoon2"]);
             int stamboomid = Int32.Parse(nvc["StamboomdID"]);
 
             string error;
-            RelatieDAL.VerwijderRelatie(relatieid, out error);
+            RelatieDAL.VerwijderRelatie(persoonid,stamboomid, out error);
             if (string.IsNullOrEmpty(error))
             {
                 BeheerViewModel viewmodel = new BeheerViewModel();
