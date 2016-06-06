@@ -131,17 +131,20 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Code\Matching.cs" />
+    <Compile Include="Controllers\AanvullendPersoonController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BeheerController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PersoonController.cs" />
     <Compile Include="Controllers\StamboomController.cs" />
+    <Compile Include="Controllers\StamboomRechtenController.cs" />
     <Compile Include="Controllers\ZoekenController.cs" />
     <Compile Include="DAL\AanvullendPersoonDAL.cs" />
     <Compile Include="DAL\AccountDAL.cs" />
     <Compile Include="DAL\PersoonDal.cs" />
     <Compile Include="DAL\RelatieDAL.cs" />
     <Compile Include="DAL\StamboomDAL.cs" />
+    <Compile Include="DAL\StamboomRechtenDAL.cs" />
     <Compile Include="DbContexts\aanvullendepersooninformatie.cs">
       <DependentUpon>AbInitioModel.tt</DependentUpon>
     </Compile>
@@ -220,6 +223,7 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\visueleStamboomStyle.css" />
     <Content Include="DbContexts\AbInitioModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>AbInitioModel.edmx</DependentUpon>
@@ -254,6 +258,7 @@
     <Content Include="Scripts\BeheerFunctions.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\d3.js" />
     <Content Include="Scripts\jquery-2.2.3.js" />
     <Content Include="Scripts\jquery-2.2.3.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
@@ -319,6 +324,14 @@
     <Content Include="Views\AanvullendPersoon\AanvullendPersoonLijst.cshtml" />
     <Content Include="Views\AanvullendPersoon\NieuwAanvullendPersoon.cshtml" />
     <Content Include="Views\AanvullendPersoon\WijzigAanvullendPersoon.cshtml" />
+    <Content Include="Views\Stamboom\StamboomWijzigen.cshtml" />
+    <Content Include="Views\Stamboom\visueleStamboom.cshtml" />
+    <Content Include="Views\StamboomRechten\Index.cshtml" />
+    <Content Include="Views\StamboomRechten\Toevoegen.cshtml" />
+    <Content Include="Views\StamboomRechten\wijzigenRecht.cshtml" />
+    <Content Include="Views\Beheer\PersonenInStamboom.cshtml" />
+    <Content Include="Views\Stamboom\OuderToevoegen.cshtml" />
+    <Content Include="Views\Home\Schakelbord.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
