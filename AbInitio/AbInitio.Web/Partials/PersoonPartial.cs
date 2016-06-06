@@ -53,17 +53,17 @@ namespace AbInitio.Web.DbContexts
         {
             get 
             {
+
                 if (geboorteprecisie == "op" 
                     || geboorteprecisie == "voor" 
                     || geboorteprecisie == "na" && !string.IsNullOrEmpty(geboortedatum))
                 {
-                    return geboorteprecisie + " " + string.Format("{0:dd-MM-yyyy}", geboortedatum);
+                    return geboorteprecisie + " " + geboortedatum;
 
                 }
                 else if (geboorteprecisie == "tussen")
                 {
-                    return geboorteprecisie + " " + string.Format("{0:dd-MM-yyyy}", geboortedatum) + " en "
-                        + string.Format("{0:dd-MM-yyyy}", geboortedatum2);
+                    return geboorteprecisie + geboortedatum + " en " + geboortedatum2;
                 }
                 else
                 {

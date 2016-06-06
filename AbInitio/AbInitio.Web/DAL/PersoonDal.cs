@@ -23,11 +23,19 @@ namespace AbInitio.Web.DAL
         /// Dient alleen ff om de personen in een dropdown te krijgen voor toevoegen relaties
         /// </summary>
 
-        public static List<SelectListItem> PersonenLijst(int stamboomid)
+        public static List<SelectListItem> PersonenLijst(int stamboomid, bool ouderkind)
         {
-            List<PersoonPartial> personen = PersonenNietInStamboom(stamboomid);
+            List<PersoonPartial> personen = new List<PersoonPartial>();
             List<SelectListItem> listitems = new List<SelectListItem>();
 
+            if (ouderkind)
+            {
+                personen = PersonenNietInStamboom(stamboomid);
+            }
+            else
+            {
+                personen = PersonenInStamboom(stamboomid);                
+            }
             foreach (var item in personen)
             {
                 SelectListItem listitem = new SelectListItem();
@@ -303,9 +311,9 @@ namespace AbInitio.Web.DAL
                                     geboortenaam = (results.GetValue(4) != null ? results.GetValue(4).ToString() : string.Empty),
                                     geslacht = (results.GetValue(5) != null ? results.GetValue(5).ToString() : string.Empty),
                                     status = (results.GetValue(6) != null ? results.GetValue(6).ToString() : string.Empty),
-                                    geboortedatum = (results.GetValue(7) != null ? results.GetValue(7).ToString().Substring(0, 9) : string.Empty),
+                                    geboortedatum = (results.GetValue(7) != null ? string.Format("{0:dd-MM-yyyy}", results.GetValue(7)) : string.Empty),
                                     geboorteprecisie = (results.GetValue(8) != null ? results.GetValue(8).ToString() : string.Empty),
-                                    geboortedatum2 = (results.GetValue(9) != null ? results.GetValue(9).ToString() : string.Empty),
+                                    geboortedatum2 = (results.GetValue(9) != null ? string.Format("{0:dd-MM-yyyy}", results.GetValue(9)) : string.Empty),
                                     kekuleid = (results.GetValue(10) != null ? results.GetValue(10).ToString() : string.Empty)
 
                                 });
