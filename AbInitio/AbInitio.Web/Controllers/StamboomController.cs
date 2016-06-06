@@ -81,7 +81,6 @@ namespace AbInitio.Web.Controllers
             StamboomViewModel viewModel = new StamboomViewModel();
             try
             {
-                System.Web.HttpContext.Current.Session["stamboomid"] = stamboomId;
                 int accountId;
                 viewModel.stamboom = StamboomDAL.GetStamboom(stamboomId);
                 if (Session["account"] != null) {
@@ -139,8 +138,8 @@ namespace AbInitio.Web.Controllers
 
 
 
-        [HttpGet]
-        public ActionResult WijzigStamboom(int stamboomid)
+        [HttpPost]
+        public ActionResult GetWijzigStamboom(int stamboomid)
         {
             StamboomViewModel model = new StamboomViewModel();
             model.stamboomid = stamboomid;
@@ -152,13 +151,19 @@ namespace AbInitio.Web.Controllers
         [HttpPost]
         public ActionResult WijzigStamboom(int stamboomid,string familienaam,DateTime gewijzigdOp)
         {
+            StamboomViewModel model = new StamboomViewModel();
             StamboomModel update = new StamboomModel();
             update.stamboomId = stamboomid;
             update.familieNaam = familienaam;
             update.gewijzigdOp = gewijzigdOp;
 
             stamboomDAL.wijzigStamboom(update);
-            return Redirect("WijzigStamboom");
+
+            model.stamboomid = stamboomid;
+            model.stamboom = StamboomDAL.GetStamboom(stamboomid);
+            model.personen = stamboomDAL.getPersonenInStamboom(stamboomid, (int)Session["account"]);
+
+            return View("StamboomWijzigen", model);
         }
 
     }

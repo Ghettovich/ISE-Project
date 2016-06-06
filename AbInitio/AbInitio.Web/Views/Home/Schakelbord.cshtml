@@ -18,7 +18,10 @@
         <div class="col-md-3 bordered">
             <p>Een uitnodigende teks om de stamboom verder uit te werken.</p>
             </br></br>
-            @Html.ActionLink("Stamboom wijzigen", "WijzigStamboom", "Stamboom", new {stamboomid = @Session["stamboomid"] }, new { @class = "btn btn-primary btn-block" })
+            @using (Html.BeginForm("GetWijzigStamboom", "Stamboom", FormMethod.Post, new { }))
+            {
+                <button type="submit" class="btn btn-primary btn-block" id="stamboomid" name="stamboomid" value="@Session["stamboomid"]">Stamboom wijzigen</button>
+            }
         </div>
         <div class="col-md-4 col-md-push-1 bordered">
             <p>Een uitnodigende teks om de stamboom verder uit te werken.</p>
