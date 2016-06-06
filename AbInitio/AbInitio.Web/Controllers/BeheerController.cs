@@ -198,25 +198,25 @@ namespace AbInitio.Web.Controllers
         public ActionResult ToevoegenRelatie(int stamboomid, int? persoonid, int? kekuleid)
         {
             RelatieModel viewmodel = new RelatieModel();
-            viewmodel.Personen = PersoonDal.PersonenLijst(stamboomid);
+            viewmodel.StamboomdID = stamboomid;
 
-            if (viewmodel.Personen != null)
+            if (persoonid.HasValue && kekuleid.HasValue)
             {
-                viewmodel.StamboomdID = stamboomid;
-
-                if (persoonid.HasValue)
-                {
-                    viewmodel.persoon1 = PersoonDal.GetPersoon(persoonid.Value);
-                }               
+                viewmodel.kekuleid = kekuleid.Value;
                 
-                if (kekuleid.HasValue)
-                {
-                    viewmodel.kekuleid = kekuleid.Value;                    
-                }
-                else
-                {
-                    viewmodel.Relatietypes = RelatieDAL.RelatieTypes(0);                    
-                } return View(viewmodel);
+                viewmodel.persoon1 = PersoonDal.GetPersoon(persoonid.Value);
+                viewmodel.Personen = PersoonDal.PersonenLijst(stamboomid, true);
+            }
+            else
+            {
+                viewmodel.Relatietypes = RelatieDAL.RelatieTypes(0);
+                viewmodel.Personen = PersoonDal.PersonenLijst(stamboomid, false);
+            }
+
+            if (viewmodel.Personen.Count > 0)
+            {
+                
+                return View(viewmodel);
             } return HttpNotFound();            
         }
 
@@ -230,7 +230,15 @@ namespace AbInitio.Web.Controllers
                 RelatieDAL.ToevoegenRelatie(viewmodel, out error);
                 if (string.IsNullOrEmpty(error))
                 {
-                    return RedirectToAction("PersoonDetails", "Beheer", new { persoonid = viewmodel.persoonid1 });
+                    if (viewmodel.nieuwkekuleid > 0)
+                    {
+                        return RedirectToAction("WijzigStamboom", "Stamboom", new { stamboomid = viewmodel.StamboomdID });
+                    }
+                    else
+                    {
+                        return RedirectToAction("BeheerStamboom", "Beheer", new { stamboomid = viewmodel.StamboomdID });
+                    }
+                    
                 }
                 else
                 {
@@ -241,10 +249,15 @@ namespace AbInitio.Web.Controllers
             {
                 viewmodel.StamboomdID = viewmodel.StamboomdID;
                 viewmodel.persoon1 = PersoonDal.GetPersoon(viewmodel.persoonid1);
-                viewmodel.Personen = PersoonDal.PersonenLijst(viewmodel.StamboomdID);
+                
                 if (viewmodel.kekuleid < 1)
                 {
                     viewmodel.Relatietypes = RelatieDAL.RelatieTypes(0);
+                    viewmodel.Personen = PersoonDal.PersonenLijst(viewmodel.StamboomdID, false);
+                }
+                else
+                {
+                    viewmodel.Personen = PersoonDal.PersonenLijst(viewmodel.StamboomdID, true);
                 } return View(viewmodel);
             } return View("Error");
         }
