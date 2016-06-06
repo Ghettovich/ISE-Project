@@ -25,14 +25,14 @@ namespace AbInitio.Web.Models
         public string geboortedatum2 { get; set; }
         public DateTime gewijzigdOp { get; set; }
         public int stamboomid { get; set; }
-
+        public int relatietypeid { get; set; }
+        public int kekuleid { get; set; }        
         public List<SelectListItem> geboortePrecisies { get; set; }
         public List<SelectListItem> geslachtOpties { get; set; }
         public List<SelectListItem> statussen { get; set; }
-    }
+              
 
-    public class PersoonDBContext : DbContext
-    {
-        public DbSet<PersoonModel> Personen { get; set; }
+
+
     }
 }

@@ -13,10 +13,11 @@ namespace AbInitio.Web.DbContexts
         public string FamilieNaam { get; set; }
         public int stamboomid { get; set; }
         public int id { get; set; }
-        public int? kekuleid { get; set; }
+        public string kekuleid { get; set; }
 
         public string RelatieType { get; set; }
         public int RelatieID { get; set; }
+        public string KekuleID { get; set; }
         public string GeefGeslacht
         {
             get
@@ -26,12 +27,12 @@ namespace AbInitio.Web.DbContexts
                     if (geslacht == "M")
                     {
                         return "Man";
-                    } return "Vrouw";
-                } return "Onbekend";
+                    }
+                    return "Vrouw";
+                }
+                return "Onbekend";
             }
         }
-        public string KekuleID { get; set; }
-
         public string GeefVolledigeNaam
         {
             get
@@ -39,7 +40,6 @@ namespace AbInitio.Web.DbContexts
                 return string.Format("{0} {1}{2}", voornaam, (tussenvoegsel != string.Empty ? tussenvoegsel + " " : ""), achternaam);
             }
         }
-
         public string geefStatus
         {
             get
@@ -50,42 +50,28 @@ namespace AbInitio.Web.DbContexts
                 } return "Overleden";
             }
         }
-
         public string geefDatum
         {
             get 
             {
-                if(geboortedatum != null && geboortedatum != "")
+                if (geboorteprecisie == "op" 
+                    || geboorteprecisie == "voor" 
+                    || geboorteprecisie == "na" && !string.IsNullOrEmpty(geboortedatum))
                 {
-                    DateTime d = DateTime.Parse(geboortedatum);
-                    return d.ToString("dd-MM-yyyy");
-                } else
+                    return geboorteprecisie + " " + string.Format("{0:dd-MM-yyyy}", geboortedatum);
+
+                }
+                else if (geboorteprecisie == "tussen")
+                {
+                    return geboorteprecisie + " " + string.Format("{0:dd-MM-yyyy}", geboortedatum) + " en "
+                        + string.Format("{0:dd-MM-yyyy}", geboortedatum2);
+                }
+                else
                 {
                     return "";
-                }
-                
-            }
-            
+                }                
+            }            
         }
-
-        public string geefDatum2
-        {
-            get
-            {
-                if(geboortedatum2 != null && geboortedatum2 != "")
-                {
-                    DateTime d = DateTime.Parse(geboortedatum2);
-                    return d.ToString("dd-MM-yyyy");
-                } else
-                {
-                    return "";
-                }
-                
-            }
-
-        }
-
-
         public bool HeeftVvg
         {
             get
@@ -96,7 +82,6 @@ namespace AbInitio.Web.DbContexts
                 }return true;
             }
         }
-
         public string GeefAchternaam
         {
             get
@@ -113,20 +98,18 @@ namespace AbInitio.Web.DbContexts
     {
         public int ScoreVoornaam { get; set; }
         public int ScoreOverigenamen { get; set; }
-        public int ScoreTussenvoegsel { get; set; }
         public int ScoreAchternaam { get; set; }
         public int ScoreAchtervoegsel { get; set; }
-        public int ScoreGeboortenaam { get; set; }
-        public int ScoreGeslacht { get; set; }
-        public int ScoreStatus { get; set; }
-        public int ScoreGeboortedatum { get; set; }
+        public int ScoreGeboortenaam { get; set; }        
         public int Totaal { get; set; }
-        public int LevenshteinAfstand { get; set; }
+        public int LevenshteinAfstandTT { get; set; }
         public int AantalAanvullendInfo { get; set; }
+        public int AantalKolommen { get; set; }
+        public string MatchKolommen { get; set; }
 
         public bool CheckLevenhstein()
         {
-            if (ScoreVoornaam > 0 && ScoreVoornaam < 3)
+            if (ScoreVoornaam >= 0 && ScoreVoornaam < 3)
             {
                 return true;
             }
@@ -134,30 +117,34 @@ namespace AbInitio.Web.DbContexts
             {
                 return true;
             }
-            if (ScoreAchternaam > 0 && ScoreAchternaam <3)
+            if (ScoreAchternaam >= 0 && ScoreAchternaam <3)
             {
                 return true;
             }
-            if (ScoreAchtervoegsel > 0 && ScoreAchtervoegsel < 3)
+            if (ScoreAchtervoegsel >= 0 && ScoreAchtervoegsel < 3)
             {
                 return true;
             }
-            if (ScoreGeboortenaam > 0 && ScoreGeboortenaam < 3)
+            if (ScoreGeboortenaam >= 0 && ScoreGeboortenaam < 3)
             {
                 return true;
             } return false;
         }
 
-        public int TotaleLevenhstein
+        public bool MatchGevonden
+        {
+            get
+            {
+                return (AantalKolommen > 0 ? true : false);
+            }
+        }
+
+        public int TotaalScore
         {
             get
             {
                 return ScoreVoornaam + ScoreOverigenamen + ScoreAchternaam + ScoreAchtervoegsel + ScoreGeboortenaam;
             }
         }
-
-
-    }
-
-    
+    }    
 }

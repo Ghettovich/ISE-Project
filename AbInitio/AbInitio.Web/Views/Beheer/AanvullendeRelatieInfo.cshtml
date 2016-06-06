@@ -22,6 +22,7 @@
         <th>
             Relatieinformatie
         </th>
+        <th>Datum(s)</th>
         <th></th>
     </tr>
     @foreach (var item in Model.AvrLijst) {
@@ -31,6 +32,9 @@
             </td>
             <td>
                 @item.relatieinformatie
+            </td>
+            <td>
+                @item.geefDatum
             </td>
             <td class="actions">
                 <a class="detail_avr" href="@(Url.Action("AvrDetails", "Beheer", new  { avrid = item.aanvullenderelatieinformatieid }))">
@@ -47,6 +51,9 @@
     }
 
 </table>
+
+@Html.ActionLink("Terug naar persoon", "PersoonDetails", new { persoonid = Model.Relatie.persoonid1 })
+
 
 <div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">

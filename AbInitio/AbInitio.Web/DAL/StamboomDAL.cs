@@ -17,23 +17,6 @@ namespace AbInitio.Web.DAL
 
         public IDataReader reader { get; set; }
 
-        public void PersoonToevoegen(NieuwPersoonModel p)
-        {
-            try
-            {
-                using (AbInitioEntities abi = new AbInitioEntities())
-                {
-                    
-
-                }
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-        }
-
         /// <summary>
         /// Alleen voor beheerder, geeft alle stambomen terug
         /// </summary>
@@ -80,14 +63,13 @@ namespace AbInitio.Web.DAL
                 {
                     cmd.Connection = con;
                     cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(new SqlParameter("@persoonid", persoonid));
                     using (SqlDataAdapter sda = new SqlDataAdapter(cmd))
                     {
                         sda.Fill(dt);
                     }
-
                 }
-            }
-            return dt;
+            } return dt;
         }
 
         public static stamboom GetStamboom(int stamboomid)

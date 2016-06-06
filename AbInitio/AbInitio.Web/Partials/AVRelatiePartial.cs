@@ -14,5 +14,28 @@ namespace AbInitio.Web.DbContexts
         public string Precisie { get; set; }
         public string datumTot { get; set; }
 
+
+
+        public string geefDatum
+        {
+            get
+            {
+                if ((datumPrecisie == "op"
+                    || datumPrecisie == "voor"
+                    || datumPrecisie == "na") && !string.IsNullOrEmpty(datumVan))
+                {
+                    return datumPrecisie + " " + datumVan;
+
+                }
+                else if (datumPrecisie == "tussen")
+                {
+                    return datumPrecisie + " " + datumVan + " en "
+                        + datumTot;
+                } return "";
+            }
+        }
+
+
+
     }
 }

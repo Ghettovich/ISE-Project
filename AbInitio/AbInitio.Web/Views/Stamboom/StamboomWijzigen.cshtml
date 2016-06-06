@@ -32,13 +32,13 @@
 
             <div class="form-inline">
                 <h2>Stamboom van</h2>
-                <input type="hidden" id="stamboomid" name="stamboomid" value="" />
+                <input type="hidden" id="stamboomid" name="stamboomid" value=@Model.stamboomid />
                 <input type="hidden" id="wijzigDatum" name="gewijzigdOp" value="@Model.stamboom.gewijzigdOp" />
 
                 <div class="form-inline">
                     @Html.Label("Familienaam", htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-2">
-                        <input type="text" class="form-control" name="familienaam" value="@Model.stamboom.familienaam" />
+                        <input type="text" class="form-control" name="familienaam" value="@Model.stamboom.familienaam" required />
                     </div>
 
                     <div class="col-md-2">
@@ -52,70 +52,78 @@
         }
     </div>
 
+    <form id="myForm" action="" method="get">
+        <input type="hidden" id="stamboomid" name="stamboomid" value="@Model.stamboom.stamboomid" />
+        <input type="hidden" id="kekuleid" name="kekuleid" value="" />
 
-    <table class="table table-striped">
-        <tr>
-            <th>
-                Kekule Nummer
-            </th>
-            <th>
-                Voornaam
-            </th>
-            <th>
-                Tussenvoegsel
-            </th>
-            <th>
-                Achternaam
-            </th>
-            <th>
-                Geboortedatum
-            </th>
-            <th>
-                Trouwdatum
-            </th>
-            <th>
-                Overlijdingsdatum
-            </th>
-        </tr>
-        @if (Model.personen != null)
-        {
-            foreach (var item in Model.personen)
+        <table class="table table-striped">
+            <tr>
+                <th>
+                </th>
+                <th>
+                    Kekule Nummer
+                </th>
+                <th>
+                    Voornaam
+                </th>
+                <th>
+                    Tussenvoegsel
+                </th>
+                <th>
+                    Achternaam
+                </th>
+                <th>
+                    Geboortedatum
+                </th>
+                <th>
+                    Trouwdatum
+                </th>
+                <th>
+                    Overlijdingsdatum
+                </th>
+            </tr>
+            @if (Model.personen != null)
             {
-                <tr>
-                    <td>
-                        @item.kekuleId
-                    </td>
-                    <td>
-                        @item.voornaam
-                    </td>
-                    <td>
-                        @item.tussenvoegsel
-                    </td>
-                    <td>
-                        @item.achternaam
-                    </td>
-                    <td>
-                        @item.geboortePrecisie @if (@item.geboortedatum != null)
-                        { @item.geboortedatum.ToString().Substring(0, 9)} @if (@item.geboortedatum2 != null)
+                foreach (var item in Model.personen)
+                {
+                    <tr>
+                        <td data-kekulenr="@item.kekuleId" class="kekulecell">
+                            <input type="radio" id="persoonid" name="persoonid" value="@item.persoonId" />
+                        </td>
+                        <td>
+                            @item.kekuleId
+                        </td>
+                        <td>
+                            @item.voornaam
+                        </td>
+                        <td>
+                            @item.tussenvoegsel
+                        </td>
+                        <td>
+                            @item.achternaam
+                        </td>
+                        <td>
+                            @item.geboortePrecisie @if (@item.geboortedatum != null)
+                            { @item.geboortedatum.ToString().Substring(0, 9)} @if (@item.geboortedatum2 != null)
                     { <span> en @item.geboortedatum2.ToString().Substring(0, 9)</span>}
-                    </td>
-                    <td>
-                        @item.trouwdatum
-                    </td>
-                    <td>
-                        @item.overlijdingsdatum
-                    </td>
-                </tr>
+                        </td>
+                        <td>
+                            @item.trouwdatum
+                        </td>
+                        <td>
+                            @item.overlijdingsdatum
+                        </td>
+                    </tr>
+                }
             }
-        }
-    </table>
+        </table>
 
-    <div id="relatieKnoppen" style="display:inline-block">
-        <input type="submit" class="btn btn-primary" value="Verwijder Ouder" />
-        <input type="submit" class="btn btn-primary" value="Aanvullende Informatie" />
-        <input type="submit" class="btn btn-primary" value="Voeg Ouder Toe" />
-    </div>
-
+        <div id="relatieKnoppen" style="display:inline-block">
+                <button id="verwijder" class="btn btn-primary">Verwijder Ouder</button>
+                <button id="aanvullend" class="btn btn-primary">Relatie Informatie</button>
+                <button id="voegToe" class="btn btn-primary">Voeg Ouder Toe</button>
+        </div>
+    </form>
 </div>
 
 <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
@@ -127,6 +135,20 @@
     var afscherm = '@Model.stamboom.afgeschermd';
 
     $(document).ready(function () {
+        
+        $("#verwijder").click(function () {
+            var form = $("#myForm");
+            var radioValue = $("input[name='persoonid']:checked").val();
+            form.attr("action", "@Url.Action("VerwijderRelatie", "Beheer")");
+            form.submit();
+        });
+
+        $("#aanvullend").click(function () {
+            var radioValue = $("input[name='persoonid']:checked").val();
+            var form = $("#myForm");
+            form.attr("action", "@Url.Action("ToevoegenAvr", "Beheer")");
+            form.submit();
+        });
 
         $("#wijzig").click(function () {
             $(".wijzigForm").fadeIn('fast');
@@ -135,14 +157,17 @@
             $("#stamboomid").attr('value', stamboomid);
 
         });
+        if (afscherm == 'True') {
+            $('#afschermIcon').removeClass('glyphicon glyphicon-lock').addClass('glyphicon glyphicon-ok');
+        }
+        else if (afscherm == 'False')
+        {
+            $('#afschermIcon').removeClass('glyphicon glyphicon-ok').addClass('glyphicon glyphicon-lock');
+        }
+    });
 
-                if (afscherm == 'True') {
-                    $('#afschermIcon').removeClass('glyphicon glyphicon-lock').addClass('glyphicon glyphicon-ok');
-                }
-                else if (afscherm == 'False')
-                {
-                    $('#afschermIcon').removeClass('glyphicon glyphicon-ok').addClass('glyphicon glyphicon-lock');
-                }
-            });
+
+
+
 </script>
 

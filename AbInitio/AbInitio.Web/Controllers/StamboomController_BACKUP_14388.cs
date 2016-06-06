@@ -181,11 +181,16 @@ namespace AbInitio.Web.Controllers
             }
 
 
+<<<<<<< HEAD
+        [HttpPost]
+        public ActionResult GetWijzigStamboom(int stamboomid)
+=======
             return View();
         }
 
-        [HttpPost]
-        public ActionResult GetWijzigStamboom(int stamboomid)
+        [HttpGet]
+        public ActionResult WijzigStamboom(int stamboomid)
+>>>>>>> 1232cac00b529a28053ca393746332140f6be27f
         {
             StamboomViewModel model = new StamboomViewModel();
             model.stamboomid = stamboomid;
@@ -197,13 +202,16 @@ namespace AbInitio.Web.Controllers
         [HttpPost]
         public ActionResult WijzigStamboom(int stamboomid,string familienaam,DateTime gewijzigdOp)
         {
+<<<<<<< HEAD
             StamboomViewModel model = new StamboomViewModel();
+=======
             Regex reg = new Regex(@"^[a-zA-Z]+$");
             Debug.WriteLine(familienaam);
             if (reg.IsMatch(familienaam) == false)
             {
                 return RedirectToAction("Error", "Home", new { errorMessage = "Foutive invoer!" });
             }
+>>>>>>> 1232cac00b529a28053ca393746332140f6be27f
             StamboomModel update = new StamboomModel();
             update.stamboomId = stamboomid;
             update.familieNaam = familienaam;
@@ -211,12 +219,6 @@ namespace AbInitio.Web.Controllers
             try
             {
                 stamboomDAL.wijzigStamboom(update);
-
-                model.stamboomid = stamboomid;
-                model.stamboom = StamboomDAL.GetStamboom(stamboomid);
-                model.personen = stamboomDAL.getPersonenInStamboom(stamboomid, (int)Session["account"]);
-
-                return View("StamboomWijzigen", model);
             }
             catch (Exception ex)
             {
@@ -233,6 +235,15 @@ namespace AbInitio.Web.Controllers
             return Redirect("WijzigStamboom?stamboomid=" + stamboomid);
         }
 
+<<<<<<< HEAD
+            stamboomDAL.wijzigStamboom(update);
+
+            model.stamboomid = stamboomid;
+            model.stamboom = StamboomDAL.GetStamboom(stamboomid);
+            model.personen = stamboomDAL.getPersonenInStamboom(stamboomid, (int)Session["account"]);
+
+            return View("StamboomWijzigen", model);
+=======
         [HttpGet]
         public ActionResult visueleStamboom(int stamboomId)
         {
@@ -265,6 +276,7 @@ namespace AbInitio.Web.Controllers
                 }
 
             }
+>>>>>>> 1232cac00b529a28053ca393746332140f6be27f
         }
 
     }

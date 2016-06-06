@@ -70,7 +70,8 @@
                     }
                 </td>
                 <td>
-                    @{ 
+                    @item.geefDatum
+                    @*@{ 
                         if(@item.geboorteprecisie == "tussen")
                         {
                             <p>@item.geboorteprecisie  @item.geefDatum en @item.geefDatum2</p>
@@ -78,7 +79,7 @@
                         {
                             <p>@item.geboorteprecisie @item.geefDatum</p>
                         }
-                    }
+                    }*@
                     
                 </td>
                 <td class="actions">

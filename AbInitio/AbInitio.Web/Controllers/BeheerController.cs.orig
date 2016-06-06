@@ -125,8 +125,13 @@ namespace AbInitio.Web.Controllers
                 return View(viewmodel);
             } return HttpNotFound("Persoon kan niet worden gevonden");
         }
+<<<<<<< HEAD
         
         [HttpPost]
+=======
+
+        [HttpGet]
+>>>>>>> 1232cac00b529a28053ca393746332140f6be27f
         public ActionResult PersoonDetails(int persoonid)
         {
             try

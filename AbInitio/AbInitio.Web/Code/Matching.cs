@@ -52,95 +52,192 @@ namespace AbInitio.Web.Code
                 {
                     m_persoon = new MatchPersoon();
                     m_persoon.Totaal = 0;
+                    m_persoon.LevenshteinAfstandTT = 0;
+                    m_persoon.AantalKolommen = 0;
+                    m_persoon.MatchKolommen = "";
                     int ldistance = 0;
                     
                     //Voornaam
-                    if (reader.GetValue(1) != DBNull.Value)
+                    if (reader.GetValue(1) != DBNull.Value && !string.IsNullOrEmpty(s_persoon.voornaam))
                     {
+                        
                         ldistance = LevenshteinDistance.Compute(reader.GetString(1), s_persoon.voornaam);
+                        if (ldistance <= 3)
+                        {
+                            m_persoon.LevenshteinAfstandTT += ldistance;
+                            m_persoon.AantalKolommen++;
+                            m_persoon.MatchKolommen += "Voornaam ";
+                            if (ldistance == 0)
+                            {                                
+                                m_persoon.ScoreVoornaam = 10;
+                            }
+                            else if (ldistance == 1)
+                            {
+                                m_persoon.ScoreVoornaam = 7;
 
-                        if (ldistance > 0 && ldistance < 3)
-                        {
-                            m_persoon.ScoreVoornaam += ldistance;                            
+                            }
+                            else if (ldistance == 2)
+                            {
+                                m_persoon.ScoreVoornaam = 4;
+
+                            }
+                            else if (ldistance == 3)
+                            {
+                                m_persoon.ScoreVoornaam = 1;
+                            }
                         }
-                        if (reader.GetValue(1).ToString() == s_persoon.voornaam)
-                        {
-                            m_persoon.Totaal++;
-                        }
-                        if (reader.GetValue(1).ToString().StartsWith(s_persoon.voornaam))
-                        {
-                            var test = s_persoon.voornaam;
-                        }                        
                     }
                     //overigenamen
-                    if (reader.GetValue(2) != DBNull.Value)
+                    if (reader.GetValue(2) != DBNull.Value && !string.IsNullOrEmpty(s_persoon.voornaam))
                     {
+                        
                         ldistance = LevenshteinDistance.Compute(reader.GetString(2), s_persoon.overigenamen);
-                        if (ldistance > 0 && ldistance < 3)
+                        if (ldistance <= 3)
                         {
-                            m_persoon.ScoreOverigenamen += ldistance;
-                        }
-                        if (reader.GetValue(2).ToString() == s_persoon.overigenamen)
-                        {
-                            m_persoon.Totaal++;
+                            m_persoon.LevenshteinAfstandTT += ldistance;
+                            m_persoon.AantalKolommen++;
+                            m_persoon.MatchKolommen += "Overigenamen ";
+                            if (ldistance == 0)
+                            {
+                                m_persoon.ScoreOverigenamen = 10;
+                            }
+                            else if (ldistance == 1)
+                            {
+                                m_persoon.ScoreOverigenamen = 7;
+
+                            }
+                            else if (ldistance == 2)
+                            {
+                                m_persoon.ScoreOverigenamen = 4;
+
+                            }
+                            else if (ldistance == 3)
+                            {
+                                m_persoon.ScoreOverigenamen = 1;
+                            }
                         }
                     }
                     //tussenvoegsel en achternaam
-                    if (reader.GetValue(3) != DBNull.Value && reader.GetValue(4) != DBNull.Value)
+                    if (reader.GetValue(3) != DBNull.Value && reader.GetValue(4) != DBNull.Value 
+                        && !string.IsNullOrEmpty(s_persoon.tussenvoegsel) && !string.IsNullOrEmpty(s_persoon.achternaam))
                     {
                         ldistance = LevenshteinDistance.Compute(reader.GetString(3) + " " + reader.GetString(4), s_persoon.GeefAchternaam);
-                        if (ldistance > 0 && ldistance < 3)
+                        if (ldistance <= 3)
                         {
-                            m_persoon.ScoreAchternaam += ldistance;
-                        }
-                        if (reader.GetValue(3).ToString() + " " + reader.GetString(4) == s_persoon.overigenamen)
-                        {
-                            m_persoon.Totaal++;
-                        }
+                            m_persoon.LevenshteinAfstandTT += ldistance;
+                            m_persoon.AantalKolommen++;
+                            m_persoon.MatchKolommen += "Achternaam ";
+                            if (ldistance == 0)
+                            {
+                                m_persoon.ScoreAchternaam = 10;
+                            }
+                            else if (ldistance == 1)
+                            {
+                                m_persoon.ScoreAchternaam = 7;
+
+                            }
+                            else if (ldistance == 2)
+                            {
+                                m_persoon.ScoreAchternaam = 4;
+
+                            }
+                            else if (ldistance == 3)
+                            {
+                                m_persoon.ScoreAchternaam = 1;
+                            }
+                        }                        
                     }
-                    //achternaam
-                    else if (reader.GetValue(4) != DBNull.Value)
+                    //alleen achternaam
+                    else if (reader.GetValue(4) != DBNull.Value && !string.IsNullOrEmpty(s_persoon.achternaam))
                     {
                         ldistance = LevenshteinDistance.Compute(reader.GetString(4), s_persoon.achternaam);
-                        if (ldistance > 0 && ldistance < 3)
+                        if (ldistance <= 3)
                         {
-                            m_persoon.ScoreAchternaam += ldistance;
-                        }
-                        if (reader.GetValue(4).ToString() == s_persoon.achternaam)
-                        {
-                            m_persoon.Totaal++;
+                            m_persoon.LevenshteinAfstandTT += ldistance;
+                            m_persoon.AantalKolommen++;
+                            m_persoon.MatchKolommen += "Achternaam ";
+                            if (ldistance == 0)
+                            {
+                                m_persoon.ScoreAchternaam = 10;
+                            }
+                            else if (ldistance == 1)
+                            {
+                                m_persoon.ScoreAchternaam = 7;
+
+                            }
+                            else if (ldistance == 2)
+                            {
+                                m_persoon.ScoreAchternaam = 4;
+
+                            }
+                            else if (ldistance == 3)
+                            {
+                                m_persoon.ScoreAchternaam = 1;
+                            }
                         }
 
                     }
                     //achtervoegsel
-                    if (reader.GetValue(5) != DBNull.Value)
+                    if (reader.GetValue(5) != DBNull.Value && !string.IsNullOrEmpty(s_persoon.achtervoegsel))
                     {
                         ldistance = LevenshteinDistance.Compute(reader.GetString(5), s_persoon.achtervoegsel);
-                        if (ldistance > 0 && ldistance < 3)
+                        if (ldistance <= 3)
                         {
-                            m_persoon.ScoreAchtervoegsel += ldistance;
-                        }
-                        if (reader.GetValue(5).ToString() == s_persoon.achtervoegsel)
-                        {
-                            m_persoon.Totaal++;
+                            m_persoon.LevenshteinAfstandTT += ldistance;
+                            m_persoon.AantalKolommen++;
+                            m_persoon.MatchKolommen += "Achtervoegsel ";
+                            if (ldistance == 0)
+                            {
+                                m_persoon.ScoreAchtervoegsel = 10;
+                            }
+                            else if (ldistance == 1)
+                            {
+                                m_persoon.ScoreAchtervoegsel = 7;
+
+                            }
+                            else if (ldistance == 2)
+                            {
+                                m_persoon.ScoreAchtervoegsel = 4;
+
+                            }
+                            else if (ldistance == 3)
+                            {
+                                m_persoon.ScoreAchtervoegsel = 1;
+                            }
                         }
                     }
 
                     //geboortenaam
-                    if (reader.GetValue(6) != DBNull.Value && reader.GetString(6) == s_persoon.geboortenaam)
+                    if (reader.GetValue(6) != DBNull.Value && !string.IsNullOrEmpty(s_persoon.geboortenaam))
                     {
                         ldistance = LevenshteinDistance.Compute(reader.GetString(6), s_persoon.geboortenaam);
-                        if (ldistance > 0 && ldistance < 3)
+                        if (ldistance <= 3)
                         {
-                            m_persoon.ScoreGeboortenaam += ldistance;
-                        }
-                        if (reader.GetValue(6).ToString() == s_persoon.geboortenaam)
-                        {
-                            m_persoon.Totaal++;
+                            m_persoon.LevenshteinAfstandTT += ldistance;
+                            m_persoon.AantalKolommen++;
+                            m_persoon.MatchKolommen += "Geboortenaam ";
+                            if (ldistance == 0)
+                            {
+                                m_persoon.ScoreGeboortenaam = 10;
+                            }
+                            else if (ldistance == 1)
+                            {
+                                m_persoon.ScoreGeboortenaam = 7;
+
+                            }
+                            else if (ldistance == 2)
+                            {
+                                m_persoon.ScoreGeboortenaam = 4;
+
+                            }
+                            else if (ldistance == 3)
+                            {
+                                m_persoon.ScoreGeboortenaam = 1;
+                            }
                         }
                     }
 
-                    if (m_persoon.CheckLevenhstein())
+                    if (m_persoon.MatchGevonden)
                     {
                         m_persoon.persoonid = reader.GetInt32(0);
                         m_persoon.voornaam = (reader.GetValue(1) != null ? reader.GetValue(1).ToString() : string.Empty);
@@ -155,11 +252,12 @@ namespace AbInitio.Web.Code
                         m_persoon.geboorteprecisie = (reader.GetValue(10) != null ? reader.GetValue(10).ToString() : string.Empty);
                         m_persoon.geboortedatum2 = (reader.GetValue(11) != null ? string.Format("{0:dd-MM-yyyy}", reader.GetValue(11)) : string.Empty);
                         m_persoon.AantalAanvullendInfo = ((int)reader.GetValue(12) > 0 ? reader.GetInt32(12) : 0);
+                        
                         list_personen.Add(m_persoon);
                     }
                 }
             }
-            list_personen = list_personen.OrderByDescending(x => x.Totaal).ThenByDescending(x => x.AantalAanvullendInfo).ToList();
+            list_personen = list_personen.OrderByDescending(x => x.TotaalScore).ThenByDescending(x => x.AantalKolommen).ThenByDescending(x => x.AantalAanvullendInfo).ToList();
             dt_personen.Dispose();
         }     
     }
