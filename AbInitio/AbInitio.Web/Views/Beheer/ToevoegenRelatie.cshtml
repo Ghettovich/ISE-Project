@@ -4,23 +4,27 @@
 }
 
 <h2>ToevoegenRelatie</h2>
-@if (Model.kekuleid > 0)
+
+@using (Html.BeginForm("ToevoegenRelatie", "Beheer", FormMethod.Post))
 {
-    using (Html.BeginForm("ToevoegenRelatie", "Beheer", FormMethod.Post))
-    {
-        @Html.AntiForgeryToken()
-        <input type="hidden" value="@Model.StamboomdID" name="StamboomdID" />
-        <input type="hidden" value="@Model.kekuleid" name="kekuleid" id="kekuleid" />
-        <input type="hidden" value="" name="nieuwkekuleid" id="nieuwkekuleid" />
-        <input type="hidden" value="@Model.persoon1.persoonid" name="persoonid1" />
-        <div class="form-horizontal">
-            <h4>relatie</h4>
-            <hr />
-            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.AntiForgeryToken()
+    <input type="hidden" value="@Model.StamboomdID" name="StamboomdID" />
+    
+    
+    <div class="form-horizontal">
+        <h4>relatie</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        @if (Model.kekuleid > 0)
+        {
+            <input type="hidden" value="" name="nieuwkekuleid" id="nieuwkekuleid" />
+            <input type="hidden" value="@Model.persoon1.persoonid" name="persoonid1" />
+            <input type="hidden" value="@Model.kekuleid" name="kekuleid" id="kekuleid" />
             <div class="form-group">
                 @Html.Label("Personen", htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    <input name="persoon1" type=text readonly value="@Model.persoon1.GeefVolledigeNaam" class="form-control">
+                    <input name="naampersoon1" type=text readonly value="@Model.persoon1.GeefVolledigeNaam" class="form-control">
                 </div>
             </div>
             <div class="form-group">
@@ -33,59 +37,43 @@
                     </select>
                 </div>
             </div>
+        }
+        else
+        {
             <div class="form-group">
                 @Html.Label("Personen", htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @Html.DropDownList("persoonid2", Model.Personen, new { @class = "form-control" })
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="col-md-offset-2 col-md-10">
-                    <a class="btn btn-default" href="@Url.Action("BeheerStamboom", "Beheer", new { stamboomid = Model.StamboomdID })">Terug</a>
-                    <input type="submit" value="Opslaan" class="btn btn-primary" />
-                </div>
-            </div>
-        </div>
-    }
-}
-else
-{
-    using (Html.BeginForm("ToevoegenRelatie", "Beheer", FormMethod.Post))
-    {
-        @Html.AntiForgeryToken()
-        <input type="hidden" value="@Model.StamboomdID" name="StamboomdID" />
-        <input type="hidden" value="@Model.persoonid1" name="persoonid1" />
-        <div class="form-horizontal">
-            <h4>relatie</h4>
-            <hr />
-            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-            <div class="form-group">
-                @Html.Label("Personen", htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    <input name="persoon1" type=text readonly value="@Model.persoon1.GeefVolledigeNaam" class="form-control">
+                    @Html.DropDownList("persoonid1", Model.Personen, new { @class = "form-control" })
                 </div>
             </div>
             <div class="form-group">
                 @Html.Label("Relatietypes", htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @Html.DropDownList("relatietypeid", Model.Relatietypes, new { @class = "form-control" })
+                    <select name="relatietypeid" class="form-control relatietypes">
+                        <option selected>Kies relatie</option>
+                        <option value="3">Getrouwd</option>
+                        <option value="4">Gescheiden</option>
+                        <option value="5">Partners</option>
+                        <option value="6">Uiteen</option>
+                        <option value="7">Overig</option>
+                    </select>
                 </div>
             </div>
-            <div class="form-group">
-                @Html.Label("Personen", htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.DropDownList("persoonid2", Model.Personen, new { @class = "form-control" })
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="col-md-offset-2 col-md-10">
-                    <a class="btn btn-default" href="@Url.Action("BeheerStamboom", "Beheer", new { stamboomid = Model.StamboomdID })">Terug</a>
-                    <input type="submit" value="Opslaan" class="btn btn-primary" />
-                </div>
+
+        }
+        <div class="form-group">
+            @Html.Label("Personen", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("persoonid2", Model.Personen, new { @class = "form-control" })
             </div>
         </div>
-    }
-
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <a class="btn btn-default" href="@Url.Action("BeheerStamboom", "Beheer", new { stamboomid = Model.StamboomdID })">Terug</a>
+                <input type="submit" value="Opslaan" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
 }
 
 <div>

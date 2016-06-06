@@ -87,9 +87,16 @@
                 foreach (var item in Model.personen)
                 {
                     <tr>
-                        <td data-kekulenr="@item.kekuleId" class="kekulecell">
-                            <input type="radio" id="persoonid" name="persoonid" value="@item.persoonId" />
-                        </td>
+                        @if (!string.IsNullOrEmpty(item.kekuleId))
+                        {
+                            <td data-kekulenr="@item.kekuleId" class="kekulecell">
+                                <input type="radio" id="persoonid" name="persoonid" value="@item.persoonId" />
+                            </td>
+                        }
+                        else
+                        {
+                            <td></td>
+                        }
                         <td>
                             @item.kekuleId
                         </td>

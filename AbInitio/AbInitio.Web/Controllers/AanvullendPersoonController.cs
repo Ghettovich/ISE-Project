@@ -16,8 +16,8 @@ namespace AbInitio.Web.Controllers
 {
     public class AanvullendPersoonController : Controller
     {
-        [HttpGet]
-        public ActionResult NieuwAanvullendPersoon(int persoonid)
+        [HttpPost]
+        public ActionResult GetNieuwAanvullendPersoon(int persoonid)
         {
             AanvullendPersoonModel model = new AanvullendPersoonModel();
 
@@ -25,7 +25,7 @@ namespace AbInitio.Web.Controllers
             model.datumPrecisies = AanvullendPersoonDAL.datumPrecisiesOphalen();
             model.aanvullendPersoonInformatieTypes = AanvullendPersoonDAL.aanvullendPersoonInformatieTypesOphalen();
 
-            return View(model);
+            return View("../AanvullendPersoon/NieuwAanvullendPersoon", model);
         }
 
         [HttpPost]
@@ -59,8 +59,9 @@ namespace AbInitio.Web.Controllers
 
                 AanvullendPersoonDAL.nieuwAanvullendPersoonInDatabase(model);
 
-                // Redirect goed zetten.
-                return Redirect("../AanvullendPersoon/AanvullendPersoonLijst/?persoonid=" + model.persoonid);
+                model.aanvullendPersoonInformatieLijst = AanvullendPersoonDAL.aanvullendePersoonInformatieVan(model.persoonid);
+
+                return View("../AanvullendPersoon/AanvullendPersoonLijst", model);
             }
             catch (Exception ex)
             {
@@ -76,8 +77,8 @@ namespace AbInitio.Web.Controllers
             }
         }
 
-        [HttpGet]
-        public ActionResult WijzigAanvullendPersoon(int aanvullendPersoonInformatieId)
+        [HttpPost]
+        public ActionResult GetWijzigAanvullendPersoon(int aanvullendPersoonInformatieId)
         {
             AanvullendPersoonModel m = new AanvullendPersoonModel();
             m = AanvullendPersoonDAL.getAanvullendPersoon(aanvullendPersoonInformatieId);
@@ -95,7 +96,7 @@ namespace AbInitio.Web.Controllers
             model.datumPrecisies = AanvullendPersoonDAL.datumPrecisiesOphalen();
             model.aanvullendPersoonInformatieTypes = AanvullendPersoonDAL.aanvullendPersoonInformatieTypesOphalen();
 
-            return View(model);
+            return View("WijzigAanvullendPersoon", model);
         }
 
         [HttpPost]
@@ -131,8 +132,10 @@ namespace AbInitio.Web.Controllers
                 model.gewijzigdOp = DateTime.Parse(nvc["gewijzigdOp"]);
 
                 AanvullendPersoonDAL.wijzigAanvullendPersoonInDatabase(model);
-                // Pad nog goed zetten
-                return Redirect("AanvullendPersoon/OverzichtAanvullendPersoon");
+
+                model.aanvullendPersoonInformatieLijst = AanvullendPersoonDAL.aanvullendePersoonInformatieVan(model.persoonid);
+
+                return View("../AanvullendPersoon/AanvullendPersoonLijst", model);
             }
             catch (Exception ex)
             {
@@ -150,16 +153,21 @@ namespace AbInitio.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult VerwijderAanvullendPersoon()
+        public ActionResult VerwijderAanvullendPersoon(int persoonid)
         {
             NameValueCollection nvc = Request.Form;
             int aanvullendPersoonInformatieId = Int32.Parse(nvc["aanvullendPersoonInformatieId"]);
             AanvullendPersoonDAL.verwijderAanvullendPersoonInDatabase(aanvullendPersoonInformatieId);
 
-            return RedirectToAction("");
+            AanvullendPersoonModel model = new AanvullendPersoonModel();
+
+            model.aanvullendPersoonInformatieLijst = AanvullendPersoonDAL.aanvullendePersoonInformatieVan(persoonid);
+            model.persoonid = persoonid;
+
+            return View("../AanvullendPersoon/AanvullendPersoonLijst", model);
         }
 
-        [HttpGet]
+        [HttpPost]
         public ActionResult AanvullendPersoonLijst(int persoonid)
         {
             AanvullendPersoonModel model = new AanvullendPersoonModel();
@@ -167,7 +175,7 @@ namespace AbInitio.Web.Controllers
             model.aanvullendPersoonInformatieLijst = AanvullendPersoonDAL.aanvullendePersoonInformatieVan(persoonid);
             model.persoonid = persoonid;
 
-            return View(model);
+            return View("../AanvullendPersoon/AanvullendPersoonLijst", model);
         }
     }
 }

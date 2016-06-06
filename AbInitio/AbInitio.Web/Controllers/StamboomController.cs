@@ -43,7 +43,15 @@ namespace AbInitio.Web.Controllers
             StamboomViewModel viewModel = new StamboomViewModel();
 
             viewModel.stamboom =  stamboomDAL.maakStamboom((int)Session["account"], familienaam);
-            return RedirectToAction("NieuwPersoon", "Persoon", new { stamboomid = viewModel.stamboom.stamboomid });
+            System.Web.HttpContext.Current.Session["stamboomid"] = viewModel.stamboomid;
+
+            PersoonModel model = new PersoonModel();
+            model.stamboomid = (int)Session["stamboomid"];
+            model.geslachtOpties = PersoonDal.geslachtOptiesOphalen();
+            model.statussen = PersoonDal.statussen();
+            model.geboortePrecisies = PersoonDal.geboortePrecisies();
+
+            return View("../Persoon/NieuwPersoon", model);
         }
 
         [HttpGet]
@@ -133,59 +141,7 @@ namespace AbInitio.Web.Controllers
         }
 
         [HttpGet]
-        public ActionResult OuderToevoegen (int persoonid, int kekuleid, int stamboomid)
-        {
-            int vaderid, moederid;
-            PersoonModel viewmodel = new PersoonModel();
-            RelatieDAL.VaderEnMoeder(persoonid, out vaderid, out moederid);
-
-            //if (vaderid > 0)
-            //{
-            //    viewmodel.Vader = true;
-            //    viewmodel.VaderPersoon = PersoonDal.GetPersoon(vaderid);
-            //}
-            //else
-            //{                
-            //    viewmodel.Vader = false;
-            //}
-            //if (moederid > 0)
-            //{
-            //    viewmodel.Moeder = true;
-            //    viewmodel.MoederPersoon = PersoonDal.GetPersoon(moederid);
-            //}
-            //else
-            //{
-            //    viewmodel.Moeder = false;
-            //}
-            //if (!viewmodel.Vader || !viewmodel.Moeder)
-            //{
-                
-            //    viewmodel.BerekenKekule(kekuleid);
-            //    viewmodel.geslachtOpties = PersoonDal.geslachtOptiesOphalen();
-            //    viewmodel.statussen = PersoonDal.statussen();
-            //    viewmodel.geboortePrecisies = PersoonDal.geboortePrecisies();
-            //}
-            return View(viewmodel);
-        }
-
-        [HttpPost]        
-        public ActionResult OuderToevoegen(int? vaderkekule, int? moederkekule, PersoonModel model)
-        {
-            if (vaderkekule.HasValue)
-            {
-
-            }
-            else if (moederkekule.HasValue)
-            {
-
-            }
-
-
-            return View();
-        }
-
-        [HttpPost]
-        public ActionResult GetWijzigStamboom(int stamboomid)
+        public ActionResult WijzigStamboom(int stamboomid)
         {
             StamboomViewModel model = new StamboomViewModel();
             model.stamboomid = stamboomid;
@@ -215,6 +171,7 @@ namespace AbInitio.Web.Controllers
                 model.stamboomid = stamboomid;
                 model.stamboom = StamboomDAL.GetStamboom(stamboomid);
                 model.personen = stamboomDAL.getPersonenInStamboom(stamboomid, (int)Session["account"]);
+                System.Web.HttpContext.Current.Session["familienaam"] = familienaam;
 
                 return View("StamboomWijzigen", model);
             }
@@ -228,8 +185,8 @@ namespace AbInitio.Web.Controllers
                 {
                     throw ex;
                 }
-            }
-                 }
+            }           
+        }
 
         [HttpGet]
         public ActionResult visueleStamboom(int stamboomId)

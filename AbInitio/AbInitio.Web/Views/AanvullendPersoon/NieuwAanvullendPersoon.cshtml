@@ -24,22 +24,22 @@
 
         <div class="form-group">
             @Html.Label("Datum precisie", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10 precisie">
+            <div class="col-md-10 precisieAv">
                 @Html.DropDownList("datumPrecisie", Model.datumPrecisies, "", new { @class = "form-control" })
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="form-group van" style="display:none">
             @Html.Label("Van", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                <input type="text" class="form-control" name="van" />
+                <input type="text" class="form-control" id="vanText" name="van" />
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="form-group tot" style="display:none">
             @Html.Label("Tot", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                <input type="text" class="form-control" name="tot" />
+                <input type="text" class="form-control" id="totText" name="tot" />
             </div>
         </div>
 
@@ -51,9 +51,10 @@
         </div>
 
         <div class="form-group">
-            <div class="col-md-2">
-                <button type="button" class="btn btn-default" onclick="location.href = '../AanvullendPersoon/AanvullendPersoonLijst/?persoonid=@Model.persoonid'">Terug naar overzicht</button>
-            </div>
+            @using (Html.BeginForm("AanvullendPersoonlijst", "AanvullendPersoon", FormMethod.Post, new { @class = "col-md-3" }))
+            {
+                <button type="submit" class="btn btn-primary btn-block" id="persoonid" name="persoonid" value="@Model.persoonid">Terug naar overzicht</button>
+            }
             <div class="col-md-2">
                 <input type="submit" value="Opslaan" class="btn btn-default" />
             </div>

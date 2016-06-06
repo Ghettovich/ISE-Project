@@ -83,7 +83,14 @@
     </dl>
 </div>
 <p>
-    <a class="btn btn-default" href="@Url.Action("WijzigPersoon", "Persoon", new { persoonId = Model.Persoon.persoonid })">Wijzig persoon</a>
+    @using (Html.BeginForm("WijzigPersoon", "Persoon", FormMethod.Post, new { @class = "col-md-3" }))
+    {
+        <button type="submit" class="btn btn-primary btn-block" id="persoonId" name="persoonId" value="@Model.Persoon.persoonid">Wijzig Persoon</button>
+    }
+    @using (Html.BeginForm("AanvullendPersoonlijst", "AanvullendPersoon", FormMethod.Post, new { @class = "col-md-3" }))
+    {
+        <button type="submit" class="btn btn-primary btn-block" id="persoonid" name="persoonid" value="@Model.Persoon.persoonid">Aanvullende Informatie</button>
+    }
 </p>
 <div class="row">
     <div class="col-md-2">
@@ -110,7 +117,7 @@
             <form action="@Url.Action("VerwijderRelatie", "Beheer")" method="post">
                 @Html.AntiForgeryToken()
                 <input type="hidden" value="@Model.Persoon.persoonid" id="persoonid" name="persoonid" />
-                <input type="hidden" id="relatieid" name="relatieid" />
+                <input type="hidden" id="Hidden" name="relatieid" />
                 <div class="modal-header">
                     <p class="text-info">Relatie verwijderen</p>                    
                 </div>

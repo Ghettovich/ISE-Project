@@ -40,23 +40,39 @@
                     @item.persooninformatie
                 </td>
                 <td class="actions">
-                    <a class="wijzig_persoon" href="@(Url.Action("WijzigAanvullendPersoon", "AanvullendPersoon", new { aanvullendepersooninformatieid = item.aanvullendepersooninformatieid }))">
-                        <span class="glyphicon glyphicon-pencil"></span>
-                    </a>
-                    <a class="delete_link" href="#" data-persoonid="@item.aanvullendepersooninformatieid" data-toggle="modal" data-target="#confirm-delete">
-                        <span class="glyphicon glyphicon-remove"></span>
-                    </a>
+                    @using (Html.BeginForm("GetWijzigAanvullendPersoon", "AanvullendPersoon", FormMethod.Post, new { @class = "col-md-1", @style = "padding:0px" }))
+                    {
+                        <span>
+                            <button type="submit" class="btn btn-link" style="padding:0px" id="aanvullendPersoonInformatieId" name="aanvullendPersoonInformatieId" value="@item.aanvullendepersooninformatieid">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                            </button>
+                        </span>
+                    }
+                    <div class="col-md-1" style="padding:0px">
+                        <a class="delete_link" id="aanvullendepersooninformatieidDelete-@item.aanvullendepersooninformatieid" href="#" value="@item.aanvullendepersooninformatieid" data-toggle="modal" data-target="#confirm-delete" onclick="setHiddenField('aanvullendepersooninformatieid-' + @item.aanvullendepersooninformatieid)">
+                            <input type="hidden" id="aanvullendepersooninformatieid-@item.aanvullendepersooninformatieid" value="@item.aanvullendepersooninformatieid" />
+                            <span class="glyphicon glyphicon-remove"></span>
+                        </a>
+                    </div>
                 </td>
             </tr>
         }
     </table>
 </div>
 <div class="row">
-    <div class="col-md-3">
-        @Html.ActionLink("Terug", "PersoonDetails", "Beheer", new {persoonid = Model.persoonid }, new { @class = "btn btn-primary btn-block" })
-    </div>
+    @using (Html.BeginForm("PersoonDetails", "Beheer", FormMethod.Post, new { @class = "col-md-4", @style = "padding:0px" }))
+    {
+        <span>
+            <button type="submit" class="btn btn-primary btn-block" id="persoonid" name="persoonid" value="@Model.persoonid">
+                Terug
+            </button>
+        </span>
+    }
     <div class="col-md-3 col-md-push-5">
-        @Html.ActionLink("Informatie toevoegen", "NieuwAanvullendPersoon", "AanvullendPersoon", new {persoonid = Model.persoonid }, new { @class = "btn btn-primary btn-block" })
+        @using (Html.BeginForm("GetNieuwAanvullendPersoon", "AanvullendPersoon", FormMethod.Post, new {  }))
+        {
+            <button type="submit" class="btn btn-primary btn-block" id="persoonid" name="persoonid" value="@Model.persoonid">Aanvullende Informatie toevoegen</button>
+        }
     </div>
 </div>
 <div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -64,7 +80,8 @@
         <div class="modal-content">
             <form action="@Url.Action("VerwijderAanvullendPersoon", "AanvullendPersoon")" method="post">
                 @Html.AntiForgeryToken()
-                <input type="hidden" id="persoonid" name="persoonid" />
+                <input type="hidden" id="Hidden" name="aanvullendPersoonInformatieId" />
+                <input type="hidden" id="persoonid" name="persoonid" value="@Model.persoonid" />
                 <div class="modal-header">
                     <p>Verwijder persoon</p>
                 </div>

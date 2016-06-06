@@ -145,9 +145,11 @@ namespace AbInitio.Web.DAL
                                     voornaam = (results.GetValue(1) != null ? results.GetValue(1).ToString() : string.Empty),
                                     tussenvoegsel = (results.GetValue(2) != null ? results.GetValue(2).ToString() : string.Empty),
                                     achternaam = (results.GetValue(3) != null ? results.GetValue(3).ToString() : string.Empty),
-                                    geboortedatum = (results.GetValue(4) != null ? results.GetValue(4).ToString() : string.Empty),
-                                    RelatieID = (int)results.GetValue(5),
-                                    RelatieType = results.GetValue(6).ToString()
+                                    geboortedatum = (results.GetValue(4) != null ? string.Format("{0:dd-MM-yyyy}", results.GetValue(4)) : string.Empty),
+                                    geboorteprecisie = (results.GetValue(5) != null ? results.GetValue(5).ToString() : string.Empty),
+                                    geboortedatum2 = (results.GetValue(6) != null ? string.Format("{0:dd-MM-yyyy}", results.GetValue(6)) : string.Empty),
+                                    RelatieID = (int)results.GetValue(7),
+                                    RelatieType = results.GetValue(8).ToString()
                                 });
                             }
                         }
@@ -632,7 +634,7 @@ namespace AbInitio.Web.DAL
 
                         pm = cmd.CreateParameter();
                         pm.ParameterName = "@persoonid1";
-                        pm.Value = model.persoon1.persoonid;
+                        pm.Value = model.persoonid1;
                         cmd.Parameters.Add(pm);
 
                         pm = cmd.CreateParameter();
