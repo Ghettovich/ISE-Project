@@ -140,8 +140,8 @@ namespace AbInitio.Web.Controllers
             return Redirect("OverzichtStambomen");
         }
 
-        [HttpPost]
-        public ActionResult GetWijzigStamboom(int stamboomid)
+        [HttpGet]
+        public ActionResult WijzigStamboom(int stamboomid)
         {
             StamboomViewModel model = new StamboomViewModel();
             model.stamboomid = stamboomid;
