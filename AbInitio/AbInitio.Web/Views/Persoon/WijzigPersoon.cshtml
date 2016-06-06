@@ -61,21 +61,21 @@
         <div class="form-group">
             @Html.Label("Geslacht", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("geslacht", Model.geslachtOpties, "", new { @class = "form-control" })
+                @Html.DropDownList("geslacht", Model.geslachtOpties, new { @class = "form-control" })
             </div>
         </div>
 
         <div class="form-group">
             @Html.Label("Status", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("status", Model.statussen, "", new { @class = "form-control" })
+                @Html.DropDownList("status", Model.statussen, new { @class = "form-control" })
             </div>
         </div>
 
         <div class="form-group">
             @Html.Label("Geboorte precisie", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10 precisie">
-                @Html.DropDownList("geboortePrecisie", Model.geboortePrecisies, "", new { @class = "form-control" })
+                @Html.DropDownList("geboortePrecisie", Model.geboortePrecisies, new { @class = "form-control" })
             </div>
         </div>
 

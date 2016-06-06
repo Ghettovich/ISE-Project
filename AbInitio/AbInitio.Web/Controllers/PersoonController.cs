@@ -57,10 +57,10 @@ namespace AbInitio.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult NieuwPersoon(int stamboomid)
+        public ActionResult NieuwPersoon()
         {
             PersoonModel model = new PersoonModel();
-            model.stamboomid = stamboomid;
+            model.stamboomid = (int)Session["stamboomid"];
             model.geslachtOpties = PersoonDal.geslachtOptiesOphalen();
             model.statussen = PersoonDal.statussen();
             model.geboortePrecisies = PersoonDal.geboortePrecisies();
@@ -104,17 +104,17 @@ namespace AbInitio.Web.Controllers
                 model.geboortedatum2 = nvc["geboortedatum2"];
             }
 
-            persoonid =  PersoonDal.nieuwPersoonInDatabase(model);
-            StamboomDAL.persoonInStamboom(model.stamboomid,persoonid.id);
+            PersoonDal.nieuwPersoonInDatabase(model);
+            StamboomDAL.persoonInStamboom((int)Session["stamboomid"], persoonid.id);
 
             BeheerViewModel viewmodel = new BeheerViewModel();
             viewmodel.PersoonLijst = PersoonDal.PersonenStamboom((int)Session["stamboomid"]);
 
             if (Request.IsAjaxRequest())
             {
-                return PartialView("_Personen", viewmodel);
+                return PartialView("../Beheer/_Personen", viewmodel);
             }
-            return View("PersonenInStamboom", viewmodel);
+            return View("../Beheer/PersonenInStamboom", viewmodel);
         }
 
         [HttpPost]

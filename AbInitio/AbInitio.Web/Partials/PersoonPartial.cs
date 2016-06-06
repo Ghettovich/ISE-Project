@@ -58,13 +58,13 @@ namespace AbInitio.Web.DbContexts
                     || geboorteprecisie == "voor" 
                     || geboorteprecisie == "na" && !string.IsNullOrEmpty(geboortedatum))
                 {
-                    return geboorteprecisie + " " + string.Format("{0:dd-MM-yyyy}", geboortedatum);
+                    return geboorteprecisie + " " + DateTime.Parse(geboortedatum).ToString("dd-MM-yyyy");
 
                 }
-                else if (geboorteprecisie == "tussen")
+                else if (geboorteprecisie == "tussen" && !geboortedatum2.Equals(""))
                 {
-                    return geboorteprecisie + " " + string.Format("{0:dd-MM-yyyy}", geboortedatum) + " en "
-                        + string.Format("{0:dd-MM-yyyy}", geboortedatum2);
+                    return geboorteprecisie + " " + DateTime.Parse(geboortedatum).ToString("dd-MM-yyyy") + " en "
+                        + DateTime.Parse(geboortedatum2).ToString("dd-MM-yyyy");
                 }
                 else
                 {

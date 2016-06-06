@@ -26,22 +26,22 @@
 
         <div class="form-group">
             @Html.Label("Datum precisie", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10 precisie">
+            <div class="col-md-10 precisieAv">
                 @Html.DropDownList("datumPrecisie", Model.datumPrecisies, "", new { @class = "form-control" })
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="form-group van" style="display:none">
             @Html.Label("Van", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                <input type="text" class="form-control" name="van" value="@Model.van"/>
+                <input type="text" class="form-control" id="vanText" name="van" value="@Model.van"/>
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="form-group tot" style="display:none">
             @Html.Label("Tot", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                <input type="text" class="form-control" name="tot" value="@Model.tot"/>
+                <input type="text" class="form-control" id="totText" name="tot" value="@Model.tot"/>
             </div>
         </div>
 
