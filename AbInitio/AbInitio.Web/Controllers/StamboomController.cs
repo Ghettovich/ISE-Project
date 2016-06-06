@@ -43,7 +43,15 @@ namespace AbInitio.Web.Controllers
             StamboomViewModel viewModel = new StamboomViewModel();
 
             viewModel.stamboom =  stamboomDAL.maakStamboom((int)Session["account"], familienaam);
-            return RedirectToAction("NieuwPersoon", "Persoon", new { stamboomid = viewModel.stamboom.stamboomid });
+            System.Web.HttpContext.Current.Session["stamboomid"] = viewModel.stamboomid;
+
+            PersoonModel model = new PersoonModel();
+            model.stamboomid = (int)Session["stamboomid"];
+            model.geslachtOpties = PersoonDal.geslachtOptiesOphalen();
+            model.statussen = PersoonDal.statussen();
+            model.geboortePrecisies = PersoonDal.geboortePrecisies();
+
+            return View("../Persoon/NieuwPersoon", model);
         }
 
         [HttpGet]
@@ -132,8 +140,8 @@ namespace AbInitio.Web.Controllers
             return Redirect("OverzichtStambomen");
         }
 
-        [HttpGet]
-        public ActionResult WijzigStamboom(int stamboomid)
+        [HttpPost]
+        public ActionResult GetWijzigStamboom(int stamboomid)
         {
             StamboomViewModel model = new StamboomViewModel();
             model.stamboomid = stamboomid;
@@ -163,6 +171,7 @@ namespace AbInitio.Web.Controllers
                 model.stamboomid = stamboomid;
                 model.stamboom = StamboomDAL.GetStamboom(stamboomid);
                 model.personen = stamboomDAL.getPersonenInStamboom(stamboomid, (int)Session["account"]);
+                System.Web.HttpContext.Current.Session["familienaam"] = familienaam;
 
                 return View("StamboomWijzigen", model);
             }
@@ -176,9 +185,7 @@ namespace AbInitio.Web.Controllers
                 {
                     throw ex;
                 }
-            }
-            Session["familienaam"] = familienaam;
-            return Redirect("WijzigStamboom?stamboomid=" + stamboomid);
+            }           
         }
 
         [HttpGet]

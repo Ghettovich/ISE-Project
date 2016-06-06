@@ -151,7 +151,7 @@ namespace AbInitio.Web.DAL
                                     status = (results.GetValue(8) != null ? results.GetValue(8).ToString() : string.Empty),
                                     geboortedatum = (results.GetValue(9) != null ? string.Format("{0:dd-MM-yyyy}", results.GetValue(9)) : string.Empty),
                                     geboorteprecisie = (results.GetValue(10) != null ? results.GetValue(10).ToString() : string.Empty),
-                                    geboortedatum2 = (results.GetValue(11) != null ? string.Format("{0:dd-MM-yyyy}", results.GetValue(3)) : string.Empty),
+                                    geboortedatum2 = (results.GetValue(11) != null ? string.Format("{0:dd-MM-yyyy}", results.GetValue(11)) : string.Empty),
                                     gewijzigdOp = DateTime.Parse(results.GetValue(12).ToString())
                                 };
                             }

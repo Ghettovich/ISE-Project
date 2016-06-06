@@ -1,0 +1,54 @@
+﻿@model AbInitio.Web.ViewModels.BeheerViewModel
+@{
+    ViewBag.Title = "VerwijderRelatie";
+}
+
+<h2>Verwijder Ouder</h2>
+    @using (Html.BeginForm("VerwijderRelatie", "Beheer", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        <input type="hidden" value="@Model.stamboomid" id="StamboomdID" name="StamboomdID" />
+        <input type="hidden" value="@Model.Persoon.persoonid" name="persoonid1" />
+        <div class="form-horizontal">
+            <h4>Relatie</h4>
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="form-group">
+                @Html.Label("Persoon", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    <input name="persoon1" type=text readonly value="@Model.Persoon.GeefVolledigeNaam" class="form-control">
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.Label("Relatietype", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    <select id="relatietypeid" name="relatietypeid" class="form-control relatietypes">
+                        <option selected >Selecteer Relatie</option>
+                        <option value="1">Vader</option>
+                        <option value="2">Moeder</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.Label("Ouder", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    <input name="persoon2" id="persoon2" type=hidden readonly class="form-control">
+                    <input id="vaderId" type=hidden value="@Model.Vader.persoonid">
+                    <input id="moederId" type=hidden value="@Model.Moeder.persoonid">
+                    <input id="vader" type=text readonly  value="@Model.Vader.GeefVolledigeNaam" class ="form-control">
+                    <input id="moeder" type=text readonly value="@Model.Moeder.GeefVolledigeNaam" class="form-control">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <a class="btn btn-default" href="@Url.Action("BeheerStamboom", "Beheer", new { stamboomid = Model.stamboomid })">Terug</a>
+                    <input type="submit" value="Verwijder" class="btn btn-primary" />
+                </div>
+            </div>
+        </div>
+    }
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+

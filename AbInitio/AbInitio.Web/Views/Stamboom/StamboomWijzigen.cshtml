@@ -142,20 +142,6 @@
     var afscherm = '@Model.stamboom.afgeschermd';
 
     $(document).ready(function () {
-        
-        $("#verwijder").click(function () {
-            var form = $("#myForm");
-            var radioValue = $("input[name='persoonid']:checked").val();
-            form.attr("action", "@Url.Action("VerwijderRelatie", "Beheer")");
-            form.submit();
-        });
-
-        $("#aanvullend").click(function () {
-            var radioValue = $("input[name='persoonid']:checked").val();
-            var form = $("#myForm");
-            form.attr("action", "@Url.Action("ToevoegenAvr", "Beheer")");
-            form.submit();
-        });
 
         $("#wijzig").click(function () {
             $(".wijzigForm").fadeIn('fast');

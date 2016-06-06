@@ -1,6 +1,20 @@
 ﻿$(document).ready(function () {
+    $('#vader').hide();
+    $('#moeder').hide();
 
-    
+
+    $("#relatietypeid").on('change', function () {
+        if ($("#relatietypeid option:selected").text() == "Vader") {
+            $('#vader').show();
+            $('#moeder').hide();
+            document.getElementById('persoon2').value = document.getElementById('vaderId').value;
+        }
+        else {
+            $('#vader').hide();
+            $('#moeder').show();
+            document.getElementById('persoon2').value = document.getElementById('moederId').value;
+        }
+    });
 
     $("input[name='persoonid']").change(function () {
         $("#kekuleid").attr("value", $(this).parent("td.kekulecell").attr("data-kekulenr"));
@@ -20,6 +34,19 @@
             alert("selecteer een persoon.");
         }
     });
+
+    $("#verwijder").click(function () {
+        if ($("input[name='persoonid']:checked").val()) {
+            var form = $("#myForm");
+            form.attr("action", "/Beheer/VerwijderRelatie?" + "stamboomid=" + stamboomid + "?persoonid=" + persoonid );
+            form.submit();
+        }
+        else {
+            alert("selecteer een persoon.");
+        }
+    });
+
+
 
     $(".relatietypes").change(function () {
 

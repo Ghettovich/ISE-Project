@@ -10,6 +10,8 @@ namespace AbInitio.Web.ViewModels
     {
         public int stamboomid { get; set; }
         public PersoonPartial Persoon { get; set; }
+        public PersoonPartial Vader { get; set; }
+        public PersoonPartial Moeder { get; set; }
         public stamboom Stamboom { get; set; }
         public List<PersoonPartial> PersoonLijst { get; set; }
         public List<stamboom> StamboomLijst { get; set; }

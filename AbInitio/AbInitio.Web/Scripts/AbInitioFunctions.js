@@ -46,5 +46,36 @@ $(document).ready(function(){
             document.getElementById("geboortedatum2Text").value = "";
         }
     });
-});
 
+    $('.precisieAv').on('change', function () {
+        if (document.getElementById("datumPrecisie").value == "tussen") {
+            $('.van').show();
+            $('.tot').show();
+        } else if (document.getElementById("datumPrecisie").value == "op" || document.getElementById("datumPrecisie").value == "voor" || document.getElementById("datumPrecisie").value == "na") {
+            $('.van').show();
+            $('.tot').hide();
+            document.getElementById("totText").value = "";
+        } else {
+            $('.van').hide();
+            document.getElementById("vanText").value = "";
+            $('.tot').hide();
+            document.getElementById("totText").value = "";
+        }
+    });
+
+    $('.precisieAv').load('change', function () {
+        if (document.getElementById("datumPrecisie").value == "tussen") {
+            $('.van').show();
+            $('.tot').show();
+        } else if (document.getElementById("datumPrecisie").value == "op" || document.getElementById("datumPrecisie").value == "voor" || document.getElementById("datumPrecisie").value == "na") {
+            $('.van').show();
+            $('.tot').hide();
+            document.getElementById("totText").value = "";
+        } else {
+            $('.van').hide();
+            document.getElementById("vanText").value = "";
+            $('.tot').hide();
+            document.getElementById("totText").value = "";
+        }
+    });
+});

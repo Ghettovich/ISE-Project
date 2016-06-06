@@ -12,7 +12,14 @@
 <hr />
 
 <p>
-    <a href="@Url.Action("ToevoegenAvr", "Beheer", new { relatieid = Model.relatieid })">Toevoegen aanvullende relatie</a>
+    @using (Html.BeginForm("GetToevoegenAvr", "Beheer", FormMethod.Post, new { @class = "col-md-1", @style = "padding:0px" }))
+    {
+        <span>
+            <button type="submit" class="btn btn-primary" id="relatieid" name="relatieid" value="@Model.relatieid">
+                Aanvullende relatie informatie toevoegen
+            </button>
+        </span>
+    }
 </p>
 <table class="table">
     <tr>
@@ -37,15 +44,28 @@
                 @item.geefDatum
             </td>
             <td class="actions">
-                <a class="detail_avr" href="@(Url.Action("AvrDetails", "Beheer", new  { avrid = item.aanvullenderelatieinformatieid }))">
-                    <span class="glyphicon glyphicon-book"></span>
-                </a>
-                <a class="wijzig_persoon" href="@(Url.Action("WijzigAvr", "Beheer", new { avrid = item.aanvullenderelatieinformatieid }))">
-                    <span class="glyphicon glyphicon-pencil"></span>
-                </a>
-                <a class="delete_link" href="#" data-avrid="@item.aanvullenderelatieinformatieid" data-toggle="modal" data-target="#confirm-delete">
-                    <span class="glyphicon glyphicon-remove"></span>
-                </a>
+                @using (Html.BeginForm("AvrDetails", "Beheer", FormMethod.Post, new { @class = "col-md-2", @style = "padding:0px" }))
+                {
+                    <span>
+                        <button type="submit" class="btn btn-link" style="padding:0px" id="avrid" name="avrid" value="@item.aanvullenderelatieinformatieid">
+                            <span class="glyphicon glyphicon-book"></span>
+                        </button>
+                    </span>
+                }
+                @using (Html.BeginForm("GetWijzigAvr", "Beheer", FormMethod.Post, new { @class = "col-md-2", @style = "padding:0px" }))
+                {
+                    <span>
+                        <button type="submit" class="btn btn-link" style="padding:0px" id="avrid" name="avrid" value="@item.aanvullenderelatieinformatieid">
+                            <span class="glyphicon glyphicon-pencil"></span>
+                        </button>
+                    </span>
+                }
+                <div class="col-md-2" style="padding:0px">
+                    <a class="delete_link" id="avrDelete-@item.aanvullenderelatieinformatieid" href="#" value="@item.aanvullenderelatieinformatieid" data-toggle="modal" data-target="#confirm-delete" onclick="setHiddenField('avrid-' + @item.aanvullenderelatieinformatieid)">
+                        <input type="hidden" id="avrid-@item.aanvullenderelatieinformatieid" value="@item.aanvullenderelatieinformatieid" />
+                        <span class="glyphicon glyphicon-remove"></span>
+                    </a>
+                </div>
             </td>
         </tr>
     }
@@ -61,7 +81,7 @@
             <form action="@Url.Action("VerwijderAvr", "Beheer")" method="post">
                 @Html.AntiForgeryToken()
                 <input type="hidden" value="@Model.Relatie.relatieid" name="relatieid" id="relatieid" />
-                <input type="hidden" value=""  name="avrid"  id="avrid" />
+                <input type="hidden" name="avrid"  id="Hidden" />
                 <div class="modal-header">
                     <p>Relatie informatie</p>
                 </div>

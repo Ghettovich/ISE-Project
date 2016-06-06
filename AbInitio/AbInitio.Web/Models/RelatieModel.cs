@@ -57,6 +57,7 @@ namespace AbInitio.Web.Models
         public List<SelectListItem> DatumPrecisies { get; set; }
         public List<SelectListItem> AvrTypes { get; set; }
         public List<SelectListItem> Personen { get; set; }
+        public List<PersoonPartial> Ouders { get; set; }
 
     }    
 }
