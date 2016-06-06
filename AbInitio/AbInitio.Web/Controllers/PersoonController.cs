@@ -56,7 +56,7 @@ namespace AbInitio.Web.Controllers
             return View(viewmodel);
         }
 
-        [HttpGet]
+        [HttpPost]
         public ActionResult NieuwPersoon(int stamboomid)
         {
             PersoonModel model = new PersoonModel();
@@ -69,7 +69,7 @@ namespace AbInitio.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult NieuwPersoon(PersoonModel model)
+        public ActionResult MaakNieuwPersoon(PersoonModel model)
         {
             StamboomDAL stamboomDAL = new StamboomDAL();
             PersoonPartial persoonid = new PersoonPartial();
@@ -83,17 +83,7 @@ namespace AbInitio.Web.Controllers
             model.achtervoegsel = nvc["achtervoegsel"];
             model.geboortenaam = nvc["geboortenaam"];
             model.geslacht = nvc["geslacht"];
-            if (nvc["status"].Equals("True"))
-            {
-                model.status = "1";
-            }
-            else if (nvc["status"].Equals("False"))
-            {
-                model.status = "0";
-            } else
-            {
-                model.status = null;
-            }
+            model.status = nvc["status"];
             if (!string.IsNullOrEmpty(nvc["geboortedatum"]))
             {
                 DateTime d = DateTime.Parse(nvc["geboortedatum"]);
@@ -117,11 +107,17 @@ namespace AbInitio.Web.Controllers
             persoonid =  PersoonDal.nieuwPersoonInDatabase(model);
             StamboomDAL.persoonInStamboom(model.stamboomid,persoonid.id);
 
+            BeheerViewModel viewmodel = new BeheerViewModel();
+            viewmodel.PersoonLijst = PersoonDal.PersonenStamboom((int)Session["stamboomid"]);
 
-            return Redirect("../Stamboom/WijzigStamboom?stamboomId=" + model.stamboomid);
+            if (Request.IsAjaxRequest())
+            {
+                return PartialView("_Personen", viewmodel);
+            }
+            return View("PersonenInStamboom", viewmodel);
         }
 
-        [HttpGet]
+        [HttpPost]
         public ActionResult WijzigPersoon(int persoonId)
         {
             NameValueCollection nvc = Request.Form;
@@ -152,7 +148,7 @@ namespace AbInitio.Web.Controllers
     
 
         [HttpPost]
-        public ActionResult WijzigPersoon(PersoonModel model)
+        public ActionResult DoeWijzigPersoon(PersoonModel model)
         {
             try
             {
@@ -166,18 +162,7 @@ namespace AbInitio.Web.Controllers
                 model.achtervoegsel = nvc["achtervoegsel"];
                 model.geboortenaam = nvc["geboortenaam"];
                 model.geslacht = nvc["geslacht"];
-                if (nvc["status"].Equals("True"))
-                {
-                    model.status = "1";
-                }
-                else if (nvc["status"].Equals("True"))
-                {
-                    model.status = "0";
-                }
-                else
-                {
-                    model.status = null;
-                }
+                model.status = nvc["status"];
                 if (!string.IsNullOrEmpty(nvc["geboortedatum"]))
                 {
                     DateTime d = DateTime.Parse(nvc["geboortedatum"]);
@@ -202,7 +187,14 @@ namespace AbInitio.Web.Controllers
 
                 PersoonDal.wijzigPersoonInDatabase(model);
 
-                return Redirect("../Beheer/Personen");
+                BeheerViewModel viewmodel = new BeheerViewModel();
+                viewmodel.PersoonLijst = PersoonDal.PersonenStamboom((int)Session["stamboomid"]);
+
+                if (Request.IsAjaxRequest())
+                {
+                    return PartialView("../Beheer/_Personen", viewmodel);
+                }
+                return View("../Beheer/PersonenInStamboom", viewmodel);
             }
             catch (Exception ex)
             {
@@ -220,14 +212,20 @@ namespace AbInitio.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult VerwijderPersoon()
+        public ActionResult VerwijderPersoon(int persoonid)
         {
-            NameValueCollection nvc = Request.Form;
-            int persoonid = Int32.Parse(nvc["persoonid"]);
+            /*NameValueCollection nvc = Request.Form;
+            int persoonid = Int32.Parse(nvc["persoonid"]);*/
             PersoonDal.verwijderPersoonInDatabase(persoonid);
 
+            BeheerViewModel viewmodel = new BeheerViewModel();
+            viewmodel.PersoonLijst = PersoonDal.PersonenStamboom((int)Session["stamboomid"]);
 
-            return RedirectToAction("Personen", "Beheer");
+            if (Request.IsAjaxRequest())
+            {
+                return PartialView("../Beheer/_Personen", viewmodel);
+            }
+            return View("../Beheer/PersonenInStamboom", viewmodel);
         }
     }
 }

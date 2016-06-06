@@ -92,7 +92,6 @@ namespace AbInitio.Web.Controllers
             StamboomViewModel viewModel = new StamboomViewModel();
             try
             {
-                System.Web.HttpContext.Current.Session["stamboomid"] = stamboomId;
                 int accountId;
                 viewModel.stamboom = StamboomDAL.GetStamboom(stamboomId);
                 if (Session["account"] != null) {
@@ -146,6 +145,7 @@ namespace AbInitio.Web.Controllers
         [HttpPost]
         public ActionResult WijzigStamboom(int stamboomid,string familienaam,DateTime gewijzigdOp)
         {
+            StamboomViewModel model = new StamboomViewModel();
             Regex reg = new Regex(@"^[a-zA-Z]+$");
             Debug.WriteLine(familienaam);
             if (reg.IsMatch(familienaam) == false)
@@ -159,6 +159,12 @@ namespace AbInitio.Web.Controllers
             try
             {
                 stamboomDAL.wijzigStamboom(update);
+
+                model.stamboomid = stamboomid;
+                model.stamboom = StamboomDAL.GetStamboom(stamboomid);
+                model.personen = stamboomDAL.getPersonenInStamboom(stamboomid, (int)Session["account"]);
+
+                return View("StamboomWijzigen", model);
             }
             catch (Exception ex)
             {

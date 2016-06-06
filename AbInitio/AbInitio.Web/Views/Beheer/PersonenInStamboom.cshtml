@@ -25,9 +25,9 @@
         }
     </div>
 </div>
-@Html.Partial("_Personen", Model)
+@Html.Partial("../Beheer/_Personen", Model)
 <div class="row">
-    @using (Html.BeginForm("NieuwPersoon", "Persoon", FormMethod.Get, new { @class = "col-md-3 col-md-push-9" }))
+    @using (Html.BeginForm("NieuwPersoon", "Persoon", FormMethod.Post, new { @class = "col-md-3 col-md-push-9" }))
     {
         <button type="submit" class="btn btn-primary btn-block" id="stamboomid" name="stamboomid" value="@Session["stamboomid"]">Persoon toevoegen</button>
     }
@@ -37,7 +37,7 @@
         <div class="modal-content">
             <form action="@Url.Action("VerwijderPersoon", "Persoon")" method="post">
                 @Html.AntiForgeryToken()
-                <input type="hidden" id="persoonid" name="persoonid" />
+                <input type="hidden" id="Hidden" name="persoonid" />
                 <div class="modal-header">
                     <p>Verwijder persoon</p>
                 </div>

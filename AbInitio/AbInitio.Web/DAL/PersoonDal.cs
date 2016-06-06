@@ -421,10 +421,9 @@ namespace AbInitio.Web.DAL
                                     geboortenaam = (results.GetValue(4) != null ? results.GetValue(4).ToString() : string.Empty),
                                     geslacht = (results.GetValue(5) != null ? results.GetValue(5).ToString() : string.Empty),
                                     status = (results.GetValue(6) != null ? results.GetValue(6).ToString() : string.Empty),
-                                    geboortedatum = (results.GetValue(7) != null ? results.GetValue(7).ToString().Substring(0, 9) : string.Empty),
+                                    geboortedatum = (results.GetValue(7) != null ? results.GetValue(7).ToString() : string.Empty),
                                     geboorteprecisie = (results.GetValue(8) != null ? results.GetValue(8).ToString() : string.Empty),
-                                    geboortedatum2 = (results.GetValue(9) != null ? results.GetValue(9).ToString() : string.Empty),
-        
+                                    geboortedatum2 = (results.GetValue(9) != null ? results.GetValue(9).ToString() : string.Empty)
 
                                 });
                             }
@@ -478,7 +477,7 @@ namespace AbInitio.Web.DAL
                                     geboortenaam = (results.GetValue(6) != null ? results.GetValue(6).ToString() : string.Empty),
                                     geslacht = (results.GetValue(7) != null ? results.GetValue(7).ToString() : string.Empty),
                                     status = (results.GetValue(8) != null ? results.GetValue(8).ToString() : string.Empty),
-                                    geboortedatum = (results.GetValue(9) != null ? results.GetValue(9).ToString().Substring(0, 9) : string.Empty),
+                                    geboortedatum = (results.GetValue(9) != null ? results.GetValue(9).ToString() : string.Empty),
                                     geboorteprecisie = (results.GetValue(10) != null ? results.GetValue(10).ToString() : string.Empty),
                                     geboortedatum2 = (results.GetValue(11) != null ? results.GetValue(11).ToString() : string.Empty)
 

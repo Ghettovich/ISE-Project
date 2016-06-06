@@ -87,5 +87,5 @@ $("#afschermIcon").click(function () {
 
 function setHiddenField(elementId) {
     window.alert(document.getElementById(elementId).value);
-    document.getElementById("stamboomidHidden").value = document.getElementById(elementId).value;
+    document.getElementById("Hidden").value = document.getElementById(elementId).value;
 }
