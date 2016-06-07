@@ -16,12 +16,12 @@ namespace AbInitio.Web.Controllers
         // GET: StamboomRechten
         public ActionResult Index()
         {
-            Session["stamboom"] = 1;
-            if (Session["stamboom"] == null)
+            System.Diagnostics.Debug.WriteLine(Session["stamboomid"]);
+            if (Session["stamboomid"] == null)
             {
                 return Redirect("/Home");
             }
-            List<AccountModel> accounts = rechtenDAL.getGerechtigden((int)Session["stamboom"]);
+            List<AccountModel> accounts = rechtenDAL.getGerechtigden((int)Session["stamboomid"]);
 
             return View(accounts);
         }
@@ -42,7 +42,7 @@ namespace AbInitio.Web.Controllers
                 return Redirect("Toevoegen");
             }
             List<AccountModel> accounts = new List<AccountModel>();
-            accounts = rechtenDAL.getGebruikers(model.gebruikersnaam, (int)Session["stamboom"]);
+            accounts = rechtenDAL.getGebruikers(model.gebruikersnaam, (int)Session["stamboomid"]);
             return View(accounts);
         }
 
@@ -56,7 +56,7 @@ namespace AbInitio.Web.Controllers
         [HttpPost]
         public ActionResult ToevoegenRecht(AccountModel model)
         {
-            rechtenDAL.toevoegenGerechtigde(model.accountId,(int)Session["stamboom"],Request["rechtenText"].ToString());
+            rechtenDAL.toevoegenGerechtigde(model.accountId,(int)Session["stamboomid"],Request["rechtenText"].ToString());
             return Redirect("Index");
         }
 
