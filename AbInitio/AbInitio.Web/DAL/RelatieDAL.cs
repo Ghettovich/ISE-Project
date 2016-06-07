@@ -426,6 +426,7 @@ namespace AbInitio.Web.DAL
             try
             {
                 error = string.Empty;
+                int bit = 0;
                 using (DataConfig dbdc = new DataConfig())
                 {
                     dbdc.Open();
@@ -440,15 +441,17 @@ namespace AbInitio.Web.DAL
                         pm.Value = persoonid;
                         cmd.Parameters.Add(pm);
 
-                        pm.Direction = ParameterDirection.Input;
-                        pm.ParameterName = "@stamboomId";
-                        pm.Value = stamboomid;
-                        cmd.Parameters.Add(pm);
+                        IDataParameter pm1 = cmd.CreateParameter();
+                        pm1.Direction = ParameterDirection.Input;
+                        pm1.ParameterName = "@stamboomId";
+                        pm1.Value = stamboomid;
+                        cmd.Parameters.Add(pm1);
 
-                        pm.Direction = ParameterDirection.Input;
-                        pm.ParameterName = "@persoonVerwijderen";
-                        pm.Value = 0;
-                        cmd.Parameters.Add(pm);
+                        IDataParameter pm2 = cmd.CreateParameter();
+                        pm2.Direction = ParameterDirection.Input;
+                        pm2.ParameterName = "@persoonVerwijderen";
+                        pm2.Value = bit;
+                        cmd.Parameters.Add(pm2);
 
                         cmd.ExecuteNonQuery();
                     }

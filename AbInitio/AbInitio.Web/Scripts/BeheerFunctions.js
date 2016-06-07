@@ -2,17 +2,20 @@
     $('#vader').hide();
     $('#moeder').hide();
 
-
     $("#relatietypeid").on('change', function () {
         if ($("#relatietypeid option:selected").text() == "Vader") {
             $('#vader').show();
             $('#moeder').hide();
             document.getElementById('persoon2').value = document.getElementById('vaderId').value;
         }
-        else {
+      else if ($("#relatietypeid option:selected").text() == "Moeder") {
+          $('#vader').hide();
+          $('#moeder').show();
+          document.getElementById('persoon2').value = document.getElementById('moederId').value;
+      }
+      else if ($("#relatietypeid option:selected").text() == "Selecteer Relatie") {
             $('#vader').hide();
-            $('#moeder').show();
-            document.getElementById('persoon2').value = document.getElementById('moederId').value;
+            $('#moeder').hide();
         }
     });
 
