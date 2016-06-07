@@ -2,22 +2,26 @@
     $('#vader').hide();
     $('#moeder').hide();
 
-
     $("#relatietypeid").on('change', function () {
         if ($("#relatietypeid option:selected").text() == "Vader") {
             $('#vader').show();
             $('#moeder').hide();
             document.getElementById('persoon2').value = document.getElementById('vaderId').value;
         }
-        else {
+      else if ($("#relatietypeid option:selected").text() == "Moeder") {
+          $('#vader').hide();
+          $('#moeder').show();
+          document.getElementById('persoon2').value = document.getElementById('moederId').value;
+      }
+      else if ($("#relatietypeid option:selected").text() == "Selecteer Relatie") {
             $('#vader').hide();
-            $('#moeder').show();
-            document.getElementById('persoon2').value = document.getElementById('moederId').value;
+            $('#moeder').hide();
         }
     });
 
     $("input[name='persoonid']").change(function () {
         $("#kekuleid").attr("value", $(this).parent("td.kekulecell").attr("data-kekulenr"));
+        $("#relatieid").attr("value", $(this).parent("td.kekulecell").attr("data-relatieid"));
     });
 
     $("#voegToe").click(function () {
@@ -46,8 +50,6 @@
         }
     });
 
-
-
     $(".relatietypes").change(function () {
 
         if ($(this).val() == 1) {
@@ -56,7 +58,6 @@
         else if ($(this).val() == 2) {
             $("#nieuwkekuleid").attr("value", (($("#kekuleid").val() * 2)+ 1));
         }
-
     });
 
 });

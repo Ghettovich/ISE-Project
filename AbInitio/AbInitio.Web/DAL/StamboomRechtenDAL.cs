@@ -132,7 +132,7 @@ namespace AbInitio.Web.DAL
                         cmd.Parameters.Add(pm);
                         pm = cmd.CreateParameter();
                         pm.ParameterName = "@recht";
-                        pm.Value = rechten;
+                        pm.Value = Int32.Parse(rechten);
                         cmd.Parameters.Add(pm);
 
                         cmd.ExecuteReader();

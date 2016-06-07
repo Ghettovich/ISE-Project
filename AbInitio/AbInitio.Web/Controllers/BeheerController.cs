@@ -195,6 +195,23 @@ namespace AbInitio.Web.Controllers
         }
 
         [HttpGet]
+        public ActionResult RelatieDetails(int relatieid)
+        {
+            RelatieModel viewmodel = new RelatieModel();
+            viewmodel.Relatie = RelatieDAL.GetRelatieInfo(relatieid);
+
+            if (viewmodel.Relatie != null)
+            {
+                viewmodel.persoon1 = PersoonDal.GetPersoon(viewmodel.Relatie.persoonid1);
+                viewmodel.persoon2 = PersoonDal.GetPersoon(viewmodel.Relatie.persoonid2);
+                viewmodel.Relatietypes = RelatieDAL.RelatieTypes(viewmodel.Relatie.relatietypeid);
+            }
+
+
+            return View(viewmodel);
+        }
+
+        [HttpGet]
         public ActionResult ToevoegenRelatie(int stamboomid, int? persoonid, int? kekuleid)
         {
             RelatieModel viewmodel = new RelatieModel();
@@ -202,8 +219,7 @@ namespace AbInitio.Web.Controllers
 
             if (persoonid.HasValue && kekuleid.HasValue)
             {
-                viewmodel.kekuleid = kekuleid.Value;
-                
+                viewmodel.kekuleid = kekuleid.Value;                
                 viewmodel.persoon1 = PersoonDal.GetPersoon(persoonid.Value);
                 viewmodel.Personen = PersoonDal.PersonenLijst(stamboomid, true);
             }
@@ -242,8 +258,7 @@ namespace AbInitio.Web.Controllers
                     }
                     else
                     {
-                        return RedirectToAction("BeheerStamboom", "Beheer", new { stamboomid = viewmodel.StamboomdID });
-
+                        return RedirectToAction("PersoonDetails", "Beheer", new { persoonid = viewmodel.persoonid1 });
                     }
                     
                 }
@@ -434,9 +449,25 @@ namespace AbInitio.Web.Controllers
             {
                 viewmodel.stamboomid = stamboomid;
                 viewmodel.Persoon = PersoonDal.GetPersoon(persoonid);
-                viewmodel.Vader = viewmodel.PersoonLijst[0];
-                viewmodel.Moeder = viewmodel.PersoonLijst[1];
 
+                if (viewmodel.PersoonLijst.Count() == 1)
+                {
+                    if (viewmodel.PersoonLijst[0].RelatieType == "Vader")
+                    {
+                        viewmodel.Vader = viewmodel.PersoonLijst[0];
+                        //viewmodel.Moeder.voornaam = " ";
+                    }
+                    else
+                    {
+                        viewmodel.Moeder = viewmodel.PersoonLijst[0];
+                        //viewmodel.Vader.voornaam = " ";
+                    }
+                }
+                else
+                {
+                    viewmodel.Vader = viewmodel.PersoonLijst[0];
+                    viewmodel.Moeder = viewmodel.PersoonLijst[1];
+                }
                 return View(viewmodel);
             }
             return HttpNotFound();
