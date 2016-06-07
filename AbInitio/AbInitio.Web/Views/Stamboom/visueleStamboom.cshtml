@@ -4,6 +4,11 @@
     ViewBag.Title = "visueleStamboom";
 }
 
+@using (Html.BeginForm("Schakelbord", "Home", FormMethod.Post, new { @class = "col-md-3 col-md-push-9" }))
+{
+    <button type="submit" class="btn btn-primary btn-block" id="stamboomid" name="stamboomid" value="@Session["stamboomid"]">Mijn Stamboom</button>
+}
+
 <script src="~/Scripts/d3.js"></script>
 <script>
     //<![CDATA[
