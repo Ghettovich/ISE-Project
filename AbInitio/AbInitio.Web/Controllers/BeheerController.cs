@@ -258,7 +258,10 @@ namespace AbInitio.Web.Controllers
                     }
                     else
                     {
-                        return RedirectToAction("PersoonDetails", "Beheer", new { persoonid = viewmodel.persoonid1 });
+                        BeheerViewModel model = new BeheerViewModel();
+                        model.Persoon = PersoonDal.GetPersoon(viewmodel.persoonid1);
+                        model.PersoonLijst = RelatieDAL.RelatiesTotPersoon(viewmodel.persoonid1);
+                        return View("PersoonDetails", model);
                     }
                     
                 }
