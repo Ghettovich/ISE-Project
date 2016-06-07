@@ -143,7 +143,7 @@ namespace AbInitio.Web.Controllers
             }
             catch (Exception e)
             {
-                return View("Error", e.Message);
+                return RedirectToAction("Error", "Home", new { errorMessage = e.Message });
             } return HttpNotFound();
         }
 
@@ -168,7 +168,8 @@ namespace AbInitio.Web.Controllers
             catch (Exception e)
             {
                 ViewBag.Error = e.Message;
-            } return View("Error");
+            }
+            return RedirectToAction("Error", "Home", new { errorMessage = "error" });
         }
 
         [HttpPost]
@@ -281,7 +282,8 @@ namespace AbInitio.Web.Controllers
                 {
                     viewmodel.Personen = PersoonDal.PersonenLijst(viewmodel.StamboomdID, true);
                 } return View(viewmodel);
-            } return View("Error");
+            }
+            return RedirectToAction("Error", "Home", new { errorMessage = "Error" });
         }
 
 
@@ -402,7 +404,7 @@ namespace AbInitio.Web.Controllers
             }
             catch (Exception e)
             {
-                return View("Error", e.Message);
+                return RedirectToAction("Error", "Home", new { errorMessage = e.Message });
             } return HttpNotFound();          
         }
 
@@ -427,7 +429,7 @@ namespace AbInitio.Web.Controllers
             }
             catch (Exception e)
             {
-                return View("Error", e.Message);
+                return RedirectToAction("Error", "Home", new { errorMessage = e.Message });
             } return HttpNotFound();
         }
 
@@ -445,7 +447,7 @@ namespace AbInitio.Web.Controllers
             BeheerViewModel viewmodel = new BeheerViewModel();
             viewmodel.PersoonLijst = RelatieDAL.RelatiesMoederEnVaderTotPersoon(persoonid);
 
-            if (viewmodel.PersoonLijst != null)
+            if (viewmodel.PersoonLijst.Count != 0)
             {
                 viewmodel.stamboomid = stamboomid;
                 viewmodel.Persoon = PersoonDal.GetPersoon(persoonid);
@@ -470,7 +472,7 @@ namespace AbInitio.Web.Controllers
                 }
                 return View(viewmodel);
             }
-            return HttpNotFound();
+            return RedirectToAction("Error", "Home", new { errorMessage = "Persoon heeft geen vader en moeder" });
         }
 
         [HttpPost]
@@ -492,9 +494,15 @@ namespace AbInitio.Web.Controllers
                 {
                     viewmodel.StamboomLijst = PersoonDal.PersoonInStambomen(persoonid);
                     viewmodel.PersoonLijst = RelatieDAL.RelatiesTotPersoon(persoonid);
-                    return View("PersoonDetails", viewmodel);
+                    StamboomViewModel model = new StamboomViewModel();
+                    StamboomDAL stamboomDAL = new StamboomDAL();
+                    model.stamboomid = (int)Session["stamboomid"];
+                    model.stamboom = StamboomDAL.GetStamboom((int)Session["stamboomid"]);
+                    model.personen = stamboomDAL.getPersonenInStamboom((int)Session["stamboomid"], (int)Session["account"]);
+                    return View("../Stamboom/StamboomWijzigen", model);
                 }
-            } return View("Error", error);
+            }
+            return RedirectToAction("Error", "Home", new { errorMessage = error });
         }
 
         [HttpPost]
@@ -514,7 +522,8 @@ namespace AbInitio.Web.Controllers
                 viewmodel.persoon2 = PersoonDal.GetPersoon(viewmodel.Relatie.persoonid2);
                 viewmodel.AvrLijst = RelatieDAL.AanvullendeRelatieInfo(relatieid);
                 return View("AanvullendeRelatieInfo", viewmodel);
-            } return View("Error", error);
+            }
+            return RedirectToAction("Error", "Home", new { errorMessage = error });
         }
 
     }

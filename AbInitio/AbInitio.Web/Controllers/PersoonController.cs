@@ -105,7 +105,7 @@ namespace AbInitio.Web.Controllers
             }
 
             PersoonDal.nieuwPersoonInDatabase(model);
-            StamboomDAL.persoonInStamboom((int)Session["stamboomid"], persoonid.id);
+            StamboomDAL.persoonInStamboom((int)Session["stamboomid"]);
 
             BeheerViewModel viewmodel = new BeheerViewModel();
             viewmodel.PersoonLijst = PersoonDal.PersonenStamboom((int)Session["stamboomid"]);
