@@ -430,15 +430,15 @@ namespace AbInitio.Web.Controllers
 
                 if (viewmodel.PersoonLijst.Count() == 1)
                 {
-                    if (viewmodel.PersoonLijst[0].RelatieType == "1")
+                    if (viewmodel.PersoonLijst[0].RelatieType == "Vader")
                     {
                         viewmodel.Vader = viewmodel.PersoonLijst[0];
-                        viewmodel.Moeder.voornaam = " ";
+                        //viewmodel.Moeder.voornaam = " ";
                     }
                     else
                     {
                         viewmodel.Moeder = viewmodel.PersoonLijst[0];
-                        viewmodel.Vader.voornaam = " ";
+                        //viewmodel.Vader.voornaam = " ";
                     }
                 }
                 else
