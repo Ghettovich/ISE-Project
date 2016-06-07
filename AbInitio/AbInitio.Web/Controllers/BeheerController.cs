@@ -492,7 +492,12 @@ namespace AbInitio.Web.Controllers
                 {
                     viewmodel.StamboomLijst = PersoonDal.PersoonInStambomen(persoonid);
                     viewmodel.PersoonLijst = RelatieDAL.RelatiesTotPersoon(persoonid);
-                    return View("PersoonDetails", viewmodel);
+                    StamboomViewModel model = new StamboomViewModel();
+                    StamboomDAL stamboomDAL = new StamboomDAL();
+                    model.stamboomid = (int)Session["stamboomid"];
+                    model.stamboom = StamboomDAL.GetStamboom((int)Session["stamboomid"]);
+                    model.personen = stamboomDAL.getPersonenInStamboom((int)Session["stamboomid"], (int)Session["account"]);
+                    return View("../Stamboom/StamboomWijzigen", model);
                 }
             } return View("Error", error);
         }
