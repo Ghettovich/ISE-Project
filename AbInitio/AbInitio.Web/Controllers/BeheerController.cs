@@ -133,10 +133,8 @@ namespace AbInitio.Web.Controllers
             {
                 BeheerViewModel viewmodel = new BeheerViewModel();
                 viewmodel.Persoon = PersoonDal.GetPersoon(persoonid);
-
                 if (viewmodel.Persoon != null)
                 {
-                    viewmodel.StamboomLijst = PersoonDal.PersoonInStambomen(persoonid);
                     viewmodel.PersoonLijst = RelatieDAL.RelatiesTotPersoon(persoonid);
                     return View(viewmodel);
                 }
@@ -157,11 +155,12 @@ namespace AbInitio.Web.Controllers
                 if (viewmodel.Relatie != null)
                 {
                     viewmodel.relatieid = relatieid;
+                    viewmodel.relatietypeid = viewmodel.Relatie.relatietypeid;
                     viewmodel.persoonid1 = viewmodel.Relatie.persoonid1;
                     viewmodel.persoonid2 = viewmodel.Relatie.persoonid2;
                     viewmodel.persoon1 = PersoonDal.GetPersoon(viewmodel.Relatie.persoonid1);
                     viewmodel.persoon2 = PersoonDal.GetPersoon(viewmodel.Relatie.persoonid2);
-                    viewmodel.Relatietypes = RelatieDAL.RelatieTypes(viewmodel.relatietypeid);
+                    viewmodel.Relatietypes = RelatieDAL.RelatieTypes(viewmodel.Relatie.relatietypeid);
                     return View(viewmodel);
                 }
             }
@@ -358,6 +357,7 @@ namespace AbInitio.Web.Controllers
                 viewmodel.persoon1 = PersoonDal.GetPersoon(viewmodel.Relatie.persoonid1);
                 viewmodel.persoon2 = PersoonDal.GetPersoon(viewmodel.Relatie.persoonid2);
                 viewmodel.AvrTypes = RelatieDAL.AvrTypes();
+                viewmodel.AvrInfoID = viewmodel.AvrRelatie.relatieinformatietypeid;
                 viewmodel.DatumPrecisies = PersoonDal.geboortePrecisies();
                 return View("WijzigAvr", viewmodel);
             }

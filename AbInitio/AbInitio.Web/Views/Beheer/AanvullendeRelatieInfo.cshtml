@@ -7,75 +7,84 @@
     <button type="submit" class="btn btn-primary btn-block" id="stamboomid" name="stamboomid" value="@Session["stamboomid"]">Mijn Stamboom</button>
 }
 <h2>AanvullendeRelatieInfo</h2>
+<div class="row">
+    <p>Relatie tussen:</p>
+    <p>@(Model.persoon1.GeefVolledigeNaam + " " + Model.persoon1.geboortedatum)</p>
+    <p>@(Model.persoon2.GeefVolledigeNaam + " " + Model.persoon2.geboortedatum)</p>
+    <p>Relatietype: @(Model.Relatie.RelatieType)</p>
+    <hr />
 
-<p>Relatie tussen:</p>
-<p>@(Model.persoon1.GeefVolledigeNaam + " " + Model.persoon1.geboortedatum)</p>
-<p>@(Model.persoon2.GeefVolledigeNaam + " " + Model.persoon2.geboortedatum)</p>
-<p>Relatietype: @(Model.Relatie.RelatieType)</p>
-<hr />
-
-<p>
-    @using (Html.BeginForm("GetToevoegenAvr", "Beheer", FormMethod.Post, new { @class = "col-md-1", @style = "padding:0px" }))
-    {
-        <span>
-            <button type="submit" class="btn btn-primary" id="relatieid" name="relatieid" value="@Model.relatieid">
-                Aanvullende relatie informatie toevoegen
-            </button>
-        </span>
-    }
-</p>
-<table class="table">
-    <tr>
-        <th>
-            Relatietype
-        </th>
-        <th>
-            Relatieinformatie
-        </th>
-        <th>Datum(s)</th>
-        <th></th>
-    </tr>
-    @foreach (var item in Model.AvrLijst) {
+    <p>
+        @using (Html.BeginForm("GetToevoegenAvr", "Beheer", FormMethod.Post, new { @class = "col-md-1", @style = "padding:0px" }))
+        {
+            <span>
+                <button type="submit" class="btn btn-primary" id="relatieid" name="relatieid" value="@Model.relatieid">
+                    Aanvullende relatie informatie toevoegen
+                </button>
+            </span>
+        }
+    </p>
+    <table class="table">
         <tr>
-            <td>
-                @item.AVInfoType
-            </td>
-            <td>
-                @item.relatieinformatie
-            </td>
-            <td>
-                @item.geefDatum
-            </td>
-            <td class="actions">
-                @using (Html.BeginForm("AvrDetails", "Beheer", FormMethod.Post, new { @class = "col-md-2", @style = "padding:0px" }))
-                {
-                    <span>
-                        <button type="submit" class="btn btn-link" style="padding:0px" id="avrid" name="avrid" value="@item.aanvullenderelatieinformatieid">
-                            <span class="glyphicon glyphicon-book"></span>
-                        </button>
-                    </span>
-                }
-                @using (Html.BeginForm("GetWijzigAvr", "Beheer", FormMethod.Post, new { @class = "col-md-2", @style = "padding:0px" }))
-                {
-                    <span>
-                        <button type="submit" class="btn btn-link" style="padding:0px" id="avrid" name="avrid" value="@item.aanvullenderelatieinformatieid">
-                            <span class="glyphicon glyphicon-pencil"></span>
-                        </button>
-                    </span>
-                }
-                <div class="col-md-2" style="padding:0px">
-                    <a class="delete_link" id="avrDelete-@item.aanvullenderelatieinformatieid" href="#" value="@item.aanvullenderelatieinformatieid" data-toggle="modal" data-target="#confirm-delete" onclick="setHiddenField('avrid-' + @item.aanvullenderelatieinformatieid)">
-                        <input type="hidden" id="avrid-@item.aanvullenderelatieinformatieid" value="@item.aanvullenderelatieinformatieid" />
-                        <span class="glyphicon glyphicon-remove"></span>
-                    </a>
-                </div>
-            </td>
+            <th>
+                Relatietype
+            </th>
+            <th>
+                Relatieinformatie
+            </th>
+            <th>Datum(s)</th>
+            <th></th>
         </tr>
+        @foreach (var item in Model.AvrLijst)
+        {
+            <tr>
+                <td>
+                    @item.AVInfoType
+                </td>
+                <td>
+                    @item.relatieinformatie
+                </td>
+                <td>
+                    @item.geefDatum
+                </td>
+                <td class="actions">
+                    @using (Html.BeginForm("AvrDetails", "Beheer", FormMethod.Post, new { @class = "col-md-2", @style = "padding:0px" }))
+                    {
+                        <span>
+                            <button type="submit" class="btn btn-link" style="padding:0px" id="avrid" name="avrid" value="@item.aanvullenderelatieinformatieid">
+                                <span class="glyphicon glyphicon-book"></span>
+                            </button>
+                        </span>
+                    }
+                    @using (Html.BeginForm("GetWijzigAvr", "Beheer", FormMethod.Post, new { @class = "col-md-2", @style = "padding:0px" }))
+                    {
+                        <span>
+                            <button type="submit" class="btn btn-link" style="padding:0px" id="avrid" name="avrid" value="@item.aanvullenderelatieinformatieid">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                            </button>
+                        </span>
+                    }
+                    <div class="col-md-2" style="padding:0px">
+                        <a class="delete_link" id="avrDelete-@item.aanvullenderelatieinformatieid" href="#" value="@item.aanvullenderelatieinformatieid" data-toggle="modal" data-target="#confirm-delete" onclick="setHiddenField('avrid-' + @item.aanvullenderelatieinformatieid)">
+                            <input type="hidden" id="avrid-@item.aanvullenderelatieinformatieid" value="@item.aanvullenderelatieinformatieid" />
+                            <span class="glyphicon glyphicon-remove"></span>
+                        </a>
+                    </div>
+                </td>
+            </tr>
+        }
+    </table>
+    @using (Html.BeginForm("PersoonDetails", "Beheer", FormMethod.Post, new { @class = "col-md-1", @style = "padding:0px" }))
+    {
+        <input type="hidden" value="@Model.persoon1.persoonid" name="persoonid" id="persoonid" />
+            <span>
+                <button type="submit" class="btn btn-primary" id="relatieid" name="relatieid">
+                    Terug naar persoon
+                </button>
+            </span>
     }
 
-</table>
-
-@Html.ActionLink("Terug naar persoon", "PersoonDetails", new { persoonid = Model.Relatie.persoonid1 })
+</div>
 
 
 <div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
