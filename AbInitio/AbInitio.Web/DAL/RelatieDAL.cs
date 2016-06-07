@@ -460,7 +460,6 @@ namespace AbInitio.Web.DAL
             }
 
         }
-
         public static void VerwijderAvr(int avrid, out string error)
         {
             try
@@ -488,7 +487,6 @@ namespace AbInitio.Web.DAL
             }
 
         }
-
         public static void WijzigRelatie(RelatieModel model, out string error)
         {
             try
@@ -532,7 +530,6 @@ namespace AbInitio.Web.DAL
                 error = e.Message;
             }
         }
-
         public static void WijzigAvr(RelatieModel model, out string error)
         {
             try
@@ -615,7 +612,6 @@ namespace AbInitio.Web.DAL
                 error = e.Message;
             }
         }
-
         public static void ToevoegenRelatie(RelatieModel model, out string error)
         {
             try
@@ -656,7 +652,6 @@ namespace AbInitio.Web.DAL
                 error = e.Message;
             }
         }
-
         public static void ToevoegenAvr(RelatieModel model, out string error)
         {
             try
@@ -732,8 +727,6 @@ namespace AbInitio.Web.DAL
                 error = e.Message;
             }
         }
-
-
         private static string FormatDate(DateTime? s)
         {
             if (s.HasValue)
