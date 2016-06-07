@@ -232,11 +232,18 @@ namespace AbInitio.Web.Controllers
                 {
                     if (viewmodel.nieuwkekuleid > 0)
                     {
-                        return RedirectToAction("WijzigStamboom", "Stamboom", new { stamboomid = viewmodel.StamboomdID });
+                        //return RedirectToAction("WijzigStamboom", "Stamboom", new { stamboomid = viewmodel.StamboomdID });
+                        StamboomDAL stamboomDAL = new StamboomDAL();
+                        StamboomViewModel model = new StamboomViewModel();
+                        model.stamboomid = (int)Session["stamboomid"];
+                        model.stamboom = StamboomDAL.GetStamboom((int)Session["stamboomid"]);
+                        model.personen = stamboomDAL.getPersonenInStamboom((int)Session["stamboomid"], (int)Session["account"]);
+                        return View("../Stamboom/StamboomWijzigen", model);
                     }
                     else
                     {
                         return RedirectToAction("BeheerStamboom", "Beheer", new { stamboomid = viewmodel.StamboomdID });
+
                     }
                     
                 }
