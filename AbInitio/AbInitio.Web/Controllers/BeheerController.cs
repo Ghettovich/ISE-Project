@@ -427,9 +427,25 @@ namespace AbInitio.Web.Controllers
             {
                 viewmodel.stamboomid = stamboomid;
                 viewmodel.Persoon = PersoonDal.GetPersoon(persoonid);
-                viewmodel.Vader = viewmodel.PersoonLijst[0];
-                viewmodel.Moeder = viewmodel.PersoonLijst[1];
 
+                if (viewmodel.PersoonLijst.Count() == 1)
+                {
+                    if (viewmodel.PersoonLijst[0].RelatieType == "1")
+                    {
+                        viewmodel.Vader = viewmodel.PersoonLijst[0];
+                        viewmodel.Moeder.voornaam = " ";
+                    }
+                    else
+                    {
+                        viewmodel.Moeder = viewmodel.PersoonLijst[0];
+                        viewmodel.Vader.voornaam = " ";
+                    }
+                }
+                else
+                {
+                    viewmodel.Vader = viewmodel.PersoonLijst[0];
+                    viewmodel.Moeder = viewmodel.PersoonLijst[1];
+                }
                 return View(viewmodel);
             }
             return HttpNotFound();
