@@ -14,6 +14,7 @@ namespace AbInitio.Web.Models
         public string familieNaam { get; set; }
         public string persoonId { get; set; }
         public string kekuleId { get; set; }
+        public int relatieid { get; set; }
         public string voornaam { get; set; }
         public string achternaam { get; set; }
         public string tussenvoegsel { get; set; }

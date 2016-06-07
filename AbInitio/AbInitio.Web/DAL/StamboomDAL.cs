@@ -266,7 +266,7 @@ namespace AbInitio.Web.DAL
             }
         }
 
-        public static void persoonInStamboom(int stamboomid,int persoonid)
+        public static void persoonInStamboom(int stamboomid)
         {
             try
             {
@@ -285,10 +285,6 @@ namespace AbInitio.Web.DAL
                         pm.Value = stamboomid;
                         cmd.Parameters.Add(pm);
 
-                        pm = cmd.CreateParameter();
-                        pm.ParameterName = "@persoonid";
-                        pm.Value = persoonid;
-                        cmd.Parameters.Add(pm);
 
                         cmd.ExecuteReader();
                     }
