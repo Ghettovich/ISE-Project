@@ -43,7 +43,7 @@ namespace AbInitio.Web.Controllers
             StamboomViewModel viewModel = new StamboomViewModel();
 
             viewModel.stamboom =  stamboomDAL.maakStamboom((int)Session["account"], familienaam);
-            System.Web.HttpContext.Current.Session["stamboomid"] = viewModel.stamboomid;
+            System.Web.HttpContext.Current.Session["stamboomid"] = viewModel.stamboom.stamboomid;
 
             PersoonModel model = new PersoonModel();
             model.stamboomid = (int)Session["stamboomid"];

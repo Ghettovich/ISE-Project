@@ -3,6 +3,11 @@
     ViewBag.Title = "MatchPersoon";
 }
 
+@using (Html.BeginForm("Schakelbord", "Home", FormMethod.Post, new { @class = "col-md-3 col-md-push-9" }))
+{
+    <button type="submit" class="btn btn-primary btn-block" id="stamboomid" name="stamboomid" value="@Session["stamboomid"]">Mijn Stamboom</button>
+}
+
 @if (Model.FoundMatch)
 {
 
