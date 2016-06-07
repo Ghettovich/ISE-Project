@@ -18,6 +18,7 @@
 
     $("input[name='persoonid']").change(function () {
         $("#kekuleid").attr("value", $(this).parent("td.kekulecell").attr("data-kekulenr"));
+        $("#relatieid").attr("value", $(this).parent("td.kekulecell").attr("data-relatieid"));
     });
 
     $("#voegToe").click(function () {
@@ -46,8 +47,6 @@
         }
     });
 
-
-
     $(".relatietypes").change(function () {
 
         if ($(this).val() == 1) {
@@ -56,7 +55,6 @@
         else if ($(this).val() == 2) {
             $("#nieuwkekuleid").attr("value", (($("#kekuleid").val() * 2)+ 1));
         }
-
     });
 
 });
