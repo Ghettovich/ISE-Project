@@ -433,12 +433,10 @@ namespace AbInitio.Web.Controllers
                     if (viewmodel.PersoonLijst[0].RelatieType == "Vader")
                     {
                         viewmodel.Vader = viewmodel.PersoonLijst[0];
-                        //viewmodel.Moeder.voornaam = " ";
                     }
                     else
                     {
                         viewmodel.Moeder = viewmodel.PersoonLijst[0];
-                        //viewmodel.Vader.voornaam = " ";
                     }
                 }
                 else

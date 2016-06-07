@@ -104,7 +104,7 @@ namespace AbInitio.Web.Controllers
                 model.geboortedatum2 = nvc["geboortedatum2"];
             }
 
-            PersoonDal.nieuwPersoonInDatabase(model);
+            persoonid = PersoonDal.nieuwPersoonInDatabase(model);
             StamboomDAL.persoonInStamboom((int)Session["stamboomid"], persoonid.id);
 
             BeheerViewModel viewmodel = new BeheerViewModel();

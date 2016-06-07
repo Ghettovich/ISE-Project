@@ -33,25 +33,22 @@
                 @Html.Label("Ouder", htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
                     <input name="persoon2" id="persoon2" type=hidden readonly class="form-control">
-                    @if (Model.Vader != null)
+                    @if(Model.Vader != null)
                     {
                         <input id="vaderId" type=hidden value="@Model.Vader.persoonid">
                     }
-                    @if (Model.Moeder != null)
+                    @if(Model.Moeder != null)
                     {
                         <input id="moederId" type=hidden value="@Model.Moeder.persoonid">
                     }
-                    @if (Model.Vader != null)
+                    @if(Model.Vader != null)
                     {
                         <input id="vader" type=text readonly value="@Model.Vader.GeefVolledigeNaam" class="form-control">
                     }
-                    @if (Model.Moeder != null)
+                    @if(Model.Moeder != null)
                     {
                         <input id="moeder" type=text readonly value="@Model.Moeder.GeefVolledigeNaam" class="form-control">
                     }
-
-
-
                 </div>
             </div>
             <div class="form-group">
