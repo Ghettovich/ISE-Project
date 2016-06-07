@@ -64,7 +64,7 @@ namespace AbInitio.Web.DbContexts
                 }
                 else if (geboorteprecisie == "tussen")
                 {
-                    return geboorteprecisie + geboortedatum + " en " + geboortedatum2;
+                    return geboorteprecisie + " " + geboortedatum + " en " + geboortedatum2;
                 }
                 else
                 {
