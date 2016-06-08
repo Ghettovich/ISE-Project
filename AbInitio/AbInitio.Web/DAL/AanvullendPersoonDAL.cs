@@ -35,6 +35,10 @@ namespace AbInitio.Web.DAL
             return datumPrecisies;
         }
 
+        /// <summary>
+        /// vind alle soorten aanvullende persoonsinformatie.
+        /// </summary>
+        /// <returns>Lijst met soorten aanvullende persoonsinformatie/returns>
         public static List<SelectListItem> aanvullendPersoonInformatieTypesOphalen()
         {
             try
@@ -71,7 +75,10 @@ namespace AbInitio.Web.DAL
             }
 
         }
-
+        /// <summary>
+        /// Methode om nieuwe aanvullende persoonsinformatie toe te voegen aan persoon
+        /// </summary>
+        /// <param name="model"></param>
         public static void nieuwAanvullendPersoonInDatabase(AanvullendPersoonModel model)
         {
             try
@@ -108,6 +115,11 @@ namespace AbInitio.Web.DAL
             }
         }
 
+        /// <summary>
+        /// Methode om aanvullende persoonsinformatie te vinden.
+        /// </summary>
+        /// <param name="id">aanvullendepersoonsinformatieid</param>
+        /// <returns>AanvullendePersoonModel</returns>
         public static AanvullendPersoonModel getAanvullendPersoon(int id)
         {
             try
@@ -156,6 +168,11 @@ namespace AbInitio.Web.DAL
             }
         }
 
+        /// <summary>
+        /// Methode om alle aanvullende persoonsinformatie te vinden van een persoon.
+        /// </summary>
+        /// <param name="id"> persoonid</param>
+        /// <returns>Lijst van AanvullendePersoonModel</returns>
         public static List<AanvullendPersoonModel> aanvullendePersoonInformatieVan(int id)
         {
             try
@@ -204,6 +221,10 @@ namespace AbInitio.Web.DAL
             }
         }
 
+        /// <summary>
+        /// Methode om aanvullendepersoonsinformatie te bewerken van een persoon
+        /// </summary>
+        /// <param name="model"> AanvullendePersoonModel met nieuwe data maar zelfde id</param>
         public static void wijzigAanvullendPersoonInDatabase(AanvullendPersoonModel model)
         {
             try
@@ -242,6 +263,10 @@ namespace AbInitio.Web.DAL
             }
         }
 
+        /// <summary>
+        /// Methode om aanvullendepersoonsinformatie te verwijderen van een persoon
+        /// </summary>
+        /// <param name="id"> aanvullendepersoonsinformatieid</param>
         public static void verwijderAanvullendPersoonInDatabase(int id)
         {
             try

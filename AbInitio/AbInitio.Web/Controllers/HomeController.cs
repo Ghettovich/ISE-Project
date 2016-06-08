@@ -20,6 +20,10 @@ namespace AbInitio.Web.Controllers
             return View();
         }
 
+        /// <summary>
+        /// Centrale stamboomscher vanaf waar je alle stamboom functionaliteiten kunt aanroepen.
+        /// </summary>
+        /// <param name="stamboomid"> id van te bewerken stamboom</param>
         [HttpPost]
         public ActionResult Schakelbord(int stamboomid)
         {
@@ -56,6 +60,10 @@ namespace AbInitio.Web.Controllers
             return Redirect("/Home");
         }
 
+        /// <summary>
+        /// Centrale error pagian waar sommige exceptions naar omgeleid kunnen worden.
+        /// </summary>
+        /// <param name="errorMessage"> te tonen error bericht.</param>
         [HttpGet]
         public ActionResult Error(string errorMessage)
         {
