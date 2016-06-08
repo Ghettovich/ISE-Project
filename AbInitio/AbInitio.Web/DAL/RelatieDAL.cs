@@ -30,7 +30,7 @@ namespace AbInitio.Web.DAL
         private static string SP_WijzigRelatie = "SP_WijzigRelatie";
         private static string SP_ToevoegenRelatie = "SP_ToevoegenRelatie";
 
-        //SelectLists
+        //SelectLists aanvullende relatie types
         public static List<SelectListItem> AvrTypes()
         {
             try
@@ -43,7 +43,6 @@ namespace AbInitio.Web.DAL
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.CommandText = SP_AvrTypes;
-                        //cmd.CommandText = "SELECT rit.relatieinformatietypeid, rit.relatieinformatietype FROM relatieinformatietype rit";
                         using (IDataReader reader = dbdc.CreateSqlReader())
                         {
                             while (reader.Read())
@@ -66,6 +65,7 @@ namespace AbInitio.Web.DAL
                 throw;
             }
         }
+        //SelectList relatietypes type
         public static List<SelectListItem> RelatieTypes(int relatietypeid)
         {
             try
@@ -110,8 +110,8 @@ namespace AbInitio.Web.DAL
                 throw;
             }
         }
-        
-        //Lists
+
+        //Relaties tot persoon ( Exclusief vader en moeder!)
         public static List<PersoonPartial> RelatiesTotPersoon(int persoonid)
         {
             try
@@ -154,7 +154,8 @@ namespace AbInitio.Web.DAL
                             }
                         }
                     }
-                } return persoonrelaties;
+                }
+                return persoonrelaties;
             }
             catch (Exception)
             {
@@ -162,7 +163,7 @@ namespace AbInitio.Web.DAL
             }
         }
 
-        //Lists
+        //Vader en moeder relaties van een persoon
         public static List<PersoonPartial> RelatiesMoederEnVaderTotPersoon(int persoonid)
         {
             try
@@ -211,8 +212,7 @@ namespace AbInitio.Web.DAL
                 throw;
             }
         }
-
-
+        //Alle aanvullende relatie informatie van een relatie
         public static List<AVRelatiePartial> AanvullendeRelatieInfo(int relatieid)
         {
             try
@@ -234,7 +234,7 @@ namespace AbInitio.Web.DAL
                         using (IDataReader reader = dbdc.CreateSqlReader())
                         {
                             object[] results = new object[reader.FieldCount];
-                            
+
                             while (reader.Read())
                             {
                                 reader.GetValues(results);
@@ -249,7 +249,8 @@ namespace AbInitio.Web.DAL
                                 });
                             }
                         }
-                    } return avr;
+                    }
+                    return avr;
                 }
             }
             catch (Exception)
@@ -257,8 +258,8 @@ namespace AbInitio.Web.DAL
                 throw;
             }
         }
-        
-        //Partials
+
+        //Enkel relatie object
         public static RelatiePartial GetRelatieInfo(int relatieid)
         {
             try
@@ -326,6 +327,7 @@ namespace AbInitio.Web.DAL
                 throw;
             }
         }
+        //Enkel aanvullend relatie object
         public static AVRelatiePartial GetAvrInfo(int avrid, int? relatieid)
         {
             try
@@ -361,9 +363,10 @@ namespace AbInitio.Web.DAL
                                 avr_partial.datumPrecisie = (dr.GetValue(6) != DBNull.Value ? dr.GetValue(6).ToString() : string.Empty);
                                 avr_partial.gewijzigdOp = dr.GetDateTime(7);
                             }
-                        } 
+                        }
                     }
-                } return avr_partial;            
+                }
+                return avr_partial;
             }
             catch (Exception)
             {
@@ -371,57 +374,7 @@ namespace AbInitio.Web.DAL
             }
         }
 
-        //Voids
-        public static void VaderEnMoeder(int persoonid, out int vaderID, out int moederID)
-        {
-            using (DataConfig dbdc = new DataConfig())
-            {
-                using (IDbCommand cmd = dbdc.CreateCommand())
-                {
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.CommandText = SP_VaderEnMoeder;
-
-                    IDataParameter persoonid_dp = cmd.CreateParameter();
-                    persoonid_dp.Direction = ParameterDirection.Input;
-                    persoonid_dp.ParameterName = "@persoonid";
-                    persoonid_dp.Value = persoonid;
-                    cmd.Parameters.Add(persoonid_dp);
-
-                    IDataParameter vaderid_dp = cmd.CreateParameter();
-                    vaderid_dp.Direction = ParameterDirection.Output;
-                    vaderid_dp.ParameterName = "@persoonidVader";
-                    vaderid_dp.DbType = DbType.Int32;
-                    cmd.Parameters.Add(vaderid_dp);
-
-                    IDataParameter moederid_dp = cmd.CreateParameter();
-                    moederid_dp.Direction = ParameterDirection.Output;
-                    moederid_dp.ParameterName = "@persoonidMoeder";
-                    moederid_dp.DbType = DbType.Int32;
-                    cmd.Parameters.Add(moederid_dp);
-
-                    dbdc.Open();
-                    cmd.ExecuteNonQuery();
-
-                    if (vaderid_dp.Value == DBNull.Value)
-                    {
-                        vaderID = 0;
-                    }
-                    else
-                    {
-                        vaderID = (int)vaderid_dp.Value;
-                    }
-                    if (moederid_dp.Value == DBNull.Value)
-                    {
-                        moederID = 0;
-                    }
-                    else
-                    {
-                        moederID = (int)moederid_dp.Value;
-                    }
-                }
-            }
-        }
-        public static void VerwijderRelatie(int persoonid,int stamboomid, out string error)
+        public static void VerwijderRelatie(int persoonid, int stamboomid, out string error)
         {
             try
             {
@@ -544,7 +497,7 @@ namespace AbInitio.Web.DAL
                     using (IDbCommand cmd = dbdc.CreateCommand())
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.CommandText = SP_WijzigAanvullendeRelatie;            
+                        cmd.CommandText = SP_WijzigAanvullendeRelatie;
 
                         IDataParameter pm_AvrID = cmd.CreateParameter();
                         pm_AvrID.Direction = ParameterDirection.Input;
@@ -574,7 +527,7 @@ namespace AbInitio.Web.DAL
 
                         if (!string.IsNullOrEmpty(model.Van))
                         {
-                            pm_Van.Value = model.VanDatum;                            
+                            pm_Van.Value = model.VanDatum;
                             pm_Precisie.Value = model.Precisie;
                         }
                         else
@@ -590,15 +543,15 @@ namespace AbInitio.Web.DAL
                         pm_Tot.ParameterName = "@tot";
                         if (!string.IsNullOrEmpty(model.Precisie) && !string.IsNullOrEmpty(model.Tot))
                         {
-                            pm_Tot.Value = model.TotDatum;                        
-                            
+                            pm_Tot.Value = model.TotDatum;
+
                         }
                         else
                         {
-                            pm_Tot.Value = null;                           
+                            pm_Tot.Value = null;
                         }
                         cmd.Parameters.Add(pm_Tot);
-                        
+
 
                         IDataParameter pm_GewijzigdOp = cmd.CreateParameter();
                         pm_GewijzigdOp.Direction = ParameterDirection.Input;
@@ -708,16 +661,16 @@ namespace AbInitio.Web.DAL
                         IDataParameter pm_Tot = cmd.CreateParameter();
                         pm_Tot.Direction = ParameterDirection.Input;
                         pm_Tot.ParameterName = "@tot";
-                        
-                        
+
+
                         if (!string.IsNullOrEmpty(model.Precisie) && !string.IsNullOrEmpty(model.Tot))
                         {
                             pm_Tot.Value = model.TotDatum;
-                            
+
                         }
                         else
                         {
-                            pm_Tot.Value = null;                            
+                            pm_Tot.Value = null;
                         }
                         cmd.Parameters.Add(pm_Tot);
                         cmd.ExecuteReader();
@@ -730,14 +683,9 @@ namespace AbInitio.Web.DAL
                 error = e.Message;
             }
         }
-        private static string FormatDate(DateTime? s)
+        private static string FormatDate(DateTime s)
         {
-            if (s.HasValue)
-            {
-                return string.Format("{0:dd-MM-yyyy}", s);
-            } return "";
-
-            
+            return string.Format("{0:dd-MM-yyyy}", s);
         }
 
     }
