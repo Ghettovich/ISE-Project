@@ -342,7 +342,7 @@ namespace AbInitio.Web.DAL
                     using (IDbCommand cmd = dbdc.CreateCommand())
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.CommandText = "dbo.spd_AllePersonenInStamboom";
+                        cmd.CommandText = "dbo.spd_AllePersonenStamboom";
 
                         IDataParameter voornaam_dp = cmd.CreateParameter();
                         voornaam_dp.Direction = ParameterDirection.Input;
@@ -366,7 +366,7 @@ namespace AbInitio.Web.DAL
                                     geboortenaam = (results.GetValue(4) != null ? results.GetValue(4).ToString() : string.Empty),
                                     geslacht = (results.GetValue(5) != null ? results.GetValue(5).ToString() : string.Empty),
                                     status = (results.GetValue(6) != null ? results.GetValue(6).ToString() : string.Empty),
-                                    geboortedatum = (results.GetValue(7) != null ? results.GetValue(7).ToString().Substring(0, 9) : string.Empty),
+                                    geboortedatum = (results.GetValue(7) != null ? results.GetValue(7).ToString() : string.Empty),
                                     geboorteprecisie = (results.GetValue(8) != null ? results.GetValue(8).ToString() : string.Empty),
                                     geboortedatum2 = (results.GetValue(9) != null ? results.GetValue(9).ToString() : string.Empty),
                                     kekuleid = (results.GetValue(10) != null ? results.GetValue(10).ToString() : string.Empty)
