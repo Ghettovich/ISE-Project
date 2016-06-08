@@ -12,6 +12,11 @@ namespace AbInitio.Web.DAL
     {
         public IDataReader reader { get; set; }
 
+        /// <summary>
+        /// Hiermee worden alle accounts opgehaald die toegang hebben tot een stamboom.
+        /// </summary>
+        /// <param name="stamboomid"></param>
+        /// <returns>Lijst met personen die toegang hebben tot een stamboom</returns>
         public List<AccountModel> getGerechtigden(int stamboomid)
         {
             List <AccountModel> accounts =  new List<AccountModel>();
@@ -59,6 +64,13 @@ namespace AbInitio.Web.DAL
             }
         }
 
+        /// <summary>
+        /// Methode waarmee je kan zoeken op accounts die nog geen toegang
+        /// hebben tot een bepaalde stamboom.
+        /// </summary>
+        /// <param name="gebruikersnaam"></param>
+        /// <param name="stamboomId"></param>
+        /// <returns>Lijst met accounts</returns>
         public List<AccountModel> getGebruikers(string gebruikersnaam, int stamboomId)
         {
             List <AccountModel> accounts =  new List<AccountModel>();
@@ -108,6 +120,12 @@ namespace AbInitio.Web.DAL
             }
         }
 
+        /// <summary>
+        /// Methode voor het toevoegen van een account in de stamboomToegang tabel.
+        /// </summary>
+        /// <param name="accountId"></param>
+        /// <param name="stamboomId"></param>
+        /// <param name="rechten"></param>
         public void toevoegenGerechtigde(int accountId, int stamboomId, string rechten)
         {
             try
@@ -145,6 +163,10 @@ namespace AbInitio.Web.DAL
             }
         }
 
+        /// <summary>
+        /// Methode om een account te verwijderen uit de stamboomToegang tabel.
+        /// </summary>
+        /// <param name="stamboomAccountId"></param>
         public void verwijderenGerechtigde(int stamboomAccountId)
         {
             try
@@ -174,6 +196,12 @@ namespace AbInitio.Web.DAL
             }
         }
 
+        /// <summary>
+        /// Methode om een account in de stamboomToegang te wijzigen van bewerken naar
+        /// inzien en omgekeerd.
+        /// </summary>
+        /// <param name="stamboomAccountId"></param>
+        /// <param name="rechten"></param>
         public void wijzigenGerechtigde(int stamboomAccountId, string rechten)
         {
             try

@@ -53,6 +53,11 @@ namespace AbInitio.Web.DAL
             } return stambomen;
         }
         
+        /// <summary>
+        /// Methode voor het matchen van een persoon met andere personen in de Persoon tabel.
+        /// </summary>
+        /// <param name="persoonid"></param>
+        /// <returns>DataTabel met personen</returns>
         public static DataTable MatchPersonen(int persoonid)
         {
             DataTable dt = new DataTable();
@@ -72,6 +77,11 @@ namespace AbInitio.Web.DAL
             } return dt;
         }
 
+        /// <summary>
+        /// Methode om een specefieke stamboom op te halen uit de database.
+        /// </summary>
+        /// <param name="stamboomid"></param>
+        /// <returns>Een stamboom</returns>
         public static stamboom GetStamboom(int stamboomid)
         {
             stamboom stam = null;
@@ -117,6 +127,12 @@ namespace AbInitio.Web.DAL
             } return stam;
         }
 
+        /// <summary>
+        /// Methode voor het aanmaken van een stamboom in de database.
+        /// </summary>
+        /// <param name="accountId"></param>
+        /// <param name="familieNaam"></param>
+        /// <returns>Een stamboom</returns>
         public stamboom maakStamboom(int accountId, string familieNaam)
         {
                 stamboom stam = null;
@@ -156,6 +172,12 @@ namespace AbInitio.Web.DAL
             } 
         
 
+        /// <summary>
+        /// Een methode om stambomen op te zoeken met een bepaalde familienaam.
+        /// </summary>
+        /// <param name="accountId"></param>
+        /// <param name="familieNaam"></param>
+        /// <returns>Lijst van stambomen met dezelfde familienaam</returns>
         public List<StamboomModel> getStambomen(int accountId, string familieNaam)
         {
             try
@@ -203,6 +225,10 @@ namespace AbInitio.Web.DAL
         }
 
 
+        /// <summary>
+        /// Een methode voor het afschermen van een stamboom.
+        /// </summary>
+        /// <param name="stamboomid"></param>
         public void afschermenStamboom(int stamboomid)
         {
             try
@@ -232,6 +258,11 @@ namespace AbInitio.Web.DAL
             }
         }
 
+        /// <summary>
+        /// Een methode voor het verwijderen van een stamboom.
+        /// </summary>
+        /// <param name="accountid"></param>
+        /// <param name="stamboomid"></param>
         public void verwijderStamboom(int accountid, int stamboomid)
         {
             try
@@ -266,6 +297,11 @@ namespace AbInitio.Web.DAL
             }
         }
 
+        /// <summary>
+        /// Een methode voor het toevoegen van een persoon in de persoon tabel en in de personeninstamboom tabel.
+        /// </summary>
+        /// <param name="stamboomid"></param>
+        /// <param name="persoonid"></param>
         public static void persoonInStamboom(int stamboomid,int persoonid)
         {
             try
@@ -301,6 +337,10 @@ namespace AbInitio.Web.DAL
             }
         }
 
+        /// <summary>
+        /// Een methode om de naam van een stamboom te wijzigen
+        /// </summary>
+        /// <param name="model"></param>
         public void wijzigStamboom(StamboomModel model)
         {
             try
@@ -332,6 +372,11 @@ namespace AbInitio.Web.DAL
             }
         }
 
+        /// <summary>
+        /// Methode om alle stambomen op te halen waar een account de eigenaar van is.
+        /// </summary>
+        /// <param name="accountId"></param>
+        /// <returns>Lijst van stambomen</returns>
         public List<StamboomModel> getEigenStambomen(int accountId)
         {
             try
@@ -374,6 +419,11 @@ namespace AbInitio.Web.DAL
             }
         }
 
+        /// <summary>
+        /// Methode om alle stambomen op te halen waar een account als collaborateur staat.
+        /// </summary>
+        /// <param name="accountId"></param>
+        /// <returns>Lijst van stambomen</returns>
         public List<StamboomModel> getCollaboratieStambomen(int accountId)
         {
             try
@@ -416,6 +466,12 @@ namespace AbInitio.Web.DAL
             }
         }
 
+        /// <summary>
+        /// Methode om alle personen op te halen van een stamboom die in de tabel personeninstamboom staan.
+        /// </summary>
+        /// <param name="stamboomId"></param>
+        /// <param name="aanvragerId"></param>
+        /// <returns>Lijst van personen in een stamboom</returns>
         public List<PersoonInStamboom> getPersonenInStamboom(int stamboomId, int aanvragerId)
         {
             try
