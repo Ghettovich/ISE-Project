@@ -342,7 +342,7 @@ namespace AbInitio.Web.DAL
                     using (IDbCommand cmd = dbdc.CreateCommand())
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.CommandText = "dbo.spd_AllePersonenInStamboom";
+                        cmd.CommandText = "dbo.spd_AllePersonenStamboom";
 
                         IDataParameter voornaam_dp = cmd.CreateParameter();
                         voornaam_dp.Direction = ParameterDirection.Input;
